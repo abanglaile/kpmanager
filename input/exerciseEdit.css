@@ -1,0 +1,59 @@
+.kpstepedit-add-btn {
+  margin-bottom: 8px;
+  margin-top: 8px;
+  float: left;
+  display: inline;
+}
+.kpstepedit-del-btn {
+  margin-bottom: 8px;
+  margin-top: 8px;
+  float: right;
+  display: inline;
+}
+.edit_fillblank_body{
+	margin-top: 8px;
+}
+.fillblank_body{
+
+}
+.edit_choice_select{
+	/*width:5%;*/
+	float: left;
+	display: inline;
+}
+.edit_choice_tex{
+	width: 95%;
+	float: left;
+	display: inline;
+}
+.edit_choice_input{
+	width: 95%;
+	/*float: left;*/
+	display: inline;
+}
+.choice_row{
+	margin-top: 10px;
+}
+.edit_choice_render{
+	width:5%;
+	float: left;
+	display: inline;
+}
+.ans_row,.select_kp{
+	margin-top: 5px;
+}
+.step_input{
+	text-align: center;
+}
+.select_prekp{
+	float: right;display: inline;
+}
+.check_kp{
+	height: 20px;
+	width: 20px;
+	vertical-align: middle;display: inline;
+}
+.chose_kp{
+	width:60%;float: left;display: inline;
+	margin-top: 5px;
+}

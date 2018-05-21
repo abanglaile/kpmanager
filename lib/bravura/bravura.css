@@ -1,0 +1,7 @@
+@font-face {
+  font-family: 'Bravura_120';
+  src: url('fonts/eot/BravuraText.woff.eot');
+  src: url('fonts/eot/BravuraText.eot#iefix') format('embedded-opentype'), url('fonts/woff/Bravura.woff2') format('woff2'), url('fonts/woff/BravuraText.woff') format('woff'), url('fonts/otf/BravuraText.otf') format('otf');
+  font-weight: normal;
+  font-style: normal;
+}
