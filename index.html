@@ -1,16 +1,30 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
+<!doctype html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="/kpmanager/lib/katex/katex.css">
-    <link rel="stylesheet" href="/kpmanager/lib/bravura/bravura.css">
-    <title>modal demo</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/lib/katex/katex.css">
+  <link rel="stylesheet" href="/lib/bravura/bravura.css">
+  <!-- <link rel="stylesheet" href="/mobile-zq/lib/katex/katex.css"> -->
+  <script src="https://as.alipayobjects.com/g/component/fastclick/1.0.6/fastclick.js"></script>
+  <script>
+    if ('addEventListener' in document) {
+      document.addEventListener('DOMContentLoaded', function() {
+        FastClick.attach(document.body);
+      }, false);
+    }
+    if(!window.Promise) {
+      document.writeln('<script src="https://as.alipayobjects.com/g/component/es6-promise/3.2.2/es6-promise.min.js"'+'>'+'<'+'/'+'script>');
+    }
+  </script>
+  <link rel="stylesheet" href="/dist/index.css">
+  <!-- <link rel="stylesheet" href="/mobile-zq/dist/index.css"> -->
 </head>
 <body>
-    <div id="root"></div>
-    <script src="/kpmanager/build/bundle.js"></script>
-    
+  <div id="root" />
+  <script src="https://as.alipayobjects.com/g/component/??react/15.3.2/react.min.js,react/15.3.2/react-dom.min.js"></script>
+  <!-- 引入在线资源 -->
+  <script src="/dist/shared.js"></script>
+  <script src="/dist/index.js"></script>
 </body>
 </html>
+

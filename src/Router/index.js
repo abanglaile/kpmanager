@@ -6,7 +6,8 @@ import ExercisesView from '../Component/exercisesView.js';
 import { Route, IndexRoute } from 'react-router';
 
 export default (
-	<Route path="/">
+
+ 	<Route path="/">
 		<Route path="kpmanager" component={ExerciseEditView}>
 			<Route path="main/:exercise_id" component={ExerciseMain} />
 			<Route path="breakdown/:exercise_id" component={ExerciseEditBreakdown} />

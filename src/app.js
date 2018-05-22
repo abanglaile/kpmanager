@@ -2,15 +2,14 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import { Provider } from 'react-redux'
-import createHistory from 'history/createBrowserHistory';
+// import createHistory from 'history/createBrowserHistory';
 
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { Router, browserHistory } from 'react-router'
 import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux'
 
-import * as reducer from './Reducer/index';
-
+import * as reducer from './Reducer';
 import routes from './Router/'; 
 // import reducers from './reducers' // Or wherever you keep your reducers
 
