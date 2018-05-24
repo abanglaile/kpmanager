@@ -29,22 +29,39 @@ const defaultlState = Immutable.fromJS({
 	});
 
 //手动获取数据
+function checkparams(sample){
+    let keys = [];
+
+    for(var item in JSON.parse(sample)){
+        keys.push(item);
+    }
+    return keys;
+}
+
+
 export const exerciseData = (state = defaultlState, action = {}) => {
     switch(action.type){
     	case 'GET_DATA_START':
     		return state.set('isLoading', true);
     	case 'GET_EXERCISE_SUCCESS': 
             if(action.json.title){
-                var {exercise_type, answer} = action.json;
+                var {exercise_type, answer, sample} = action.json;
                 // var newState = Immutable.fromJS();
+                if(sample[0]){
+                    var sample_key = checkparams(sample[0].sample);
+                    console.log("sample_key  :"+ sample_key);
+                }
                 const answerJson = eval(answer);
                 const mergeState = state.mergeDeep(action.json);
                 if(exercise_type == 0){
-                    return mergeState.set('blankAnswer', Immutable.fromJS(answerJson));
+                    return mergeState.set('blankAnswer', Immutable.fromJS(answerJson))
+                                    .set('sample_key',sample_key);
                 }else if(exercise_type == 1){
-                    return mergeState.set('choiceAnswer', Immutable.fromJS(answerJson));
+                    return mergeState.set('choiceAnswer', Immutable.fromJS(answerJson))
+                                    .set('sample_key',sample_key);
                 }else if(exercise_type == 2){
-                    return mergeState.set('choiceImgAnswer', Immutable.fromJS(answerJson));
+                    return mergeState.set('choiceImgAnswer', Immutable.fromJS(answerJson))
+                                    .set('sample_key',sample_key);
                 }
             }else{
                 console.log("没有该exercise_id！");
