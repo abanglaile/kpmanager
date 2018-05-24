@@ -30,6 +30,7 @@ class ExerciseEditView extends React.Component {
     render(){
     	const link1 = "/kpmanager/main/" + this.props.params.exercise_id;
     	const link2 = "/kpmanager/breakdown/" + this.props.params.exercise_id;
+      const link3 = "/kpmanager/sample/" + this.props.params.exercise_id;
       const link4 = "/kpmanager/exerciseViewByKp";
       const {exercise_id, menu_state} = this.props;
     	var selectKeys = [menu_state];
@@ -57,8 +58,10 @@ class ExerciseEditView extends React.Component {
             				</Link>
           				</Menu.Item>
           				<Menu.Item key="3">
+                    <Link to={ link3 } >
             				<Icon type="mail" />
             					参数输入
+                    </Link>
           				</Menu.Item>
                   <Menu.Item key="4">
                     <Link to={ link4 } >
