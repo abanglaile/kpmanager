@@ -19,7 +19,7 @@ export default class Tex extends React.Component {
     this.setState({content});
   }
 
-  replaceSample(content){
+  replaceSample(content, sample){
     var new_content = content;
     if(sample){
       new_content = content.replace(/(\@.*?\@)/g, function(word){
@@ -32,9 +32,9 @@ export default class Tex extends React.Component {
   }
 
   render() { 
-    var { style, content } = this.props;
+    var { style, content, sample } = this.props;
     content = content?content:'';
-    content = replaceSample(content);
+    content = this.replaceSample(content);
     var htmlContent = content.replace(/(\$.*?\$)/g, function(word){
         //去掉首尾两个$
         word = word.substring(1, word.length - 1);

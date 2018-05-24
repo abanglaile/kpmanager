@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Row, Col, Input, Button, Select, Checkbox} from 'antd';
-import NetUtil from '../utils/NetUtil';
 import Styles from './exerciseEdit.css';
 import Tex from './renderer.js';
+import ExerciseView from './exercise-view.js'
 
-import ImgUpload from './upload-qiniu.js';
 import *as action from '../Action/';
 import {connect} from 'react-redux';
 
@@ -14,108 +13,54 @@ const Option = Select.Option;
 class ExerciseSample extends React.Component {
 
 	renderSample(){
-		const params = this.props.params;
-		let params_rows;
-		for(let key in params){
-			params_rows += 
+		const sample = this.props.sample;
+		const sample_key = this.props.sample_key;
+		let sample_rows = [];
+		for(let key in sample){
+			sample_rows += 
 				<Row>
 					<span>{key}</span>
-		            <Input value={params[key]} onChange={(e) => this.props.blankInputChange(e.target.value, i)} rows={1} />
+		            <Input value={sample[key]} onChange={(e) => this.props.sampleInputChange(e.target.value, i)} rows={1} />
+
 				</Row>;
 		}
-		return params_rows;
-	}
-
-	renderTitle(){
-		return(
-			<div>{this.props.title}</div>
-			<audio src={title_audio_url} controls="controls">
-                Your browser does not support the audio element.
-            </audio>
-            <img src={title_img_url} height="100px"/>
-		)
-	}
-
-    renderAnswer(){
-    	const { choiceAnswer, blankAnswer, choiceImgAnswer, exercise_id, exercise_type } = this.props;
-		var answerRow = [];
-		var isDisabled = false;
-		switch(exercise_type){
-			//填空题
-		    case 0:
-		    	isDisabled = blankAnswer.length <= 1 ? true : false;
-		    	answerRow = blankAnswer.map((item, i) => {
-					return(
-						<Row className="choice_row" gutter={16} type="flex" justify="space-between">
-		                    <Col span={12}>
-		                        <Input className="edit_choice_input" value={item.value} onChange={(e) => this.props.blankInputChange(e.target.value, i)} rows={1} />
-		                    </Col>
-		                    <Col span={12}>
-		                        <Tex content={item.value} />
-		                    </Col>
-		                </Row>
-					);
-		    	});
-		    	break;
-			//文字选择题
-			case 1:
-				isDisabled = choiceAnswer.length <=2 ? true : false;
-				answerRow = choiceAnswer.map((item, i) => {
-		            return(
-		                <Row className="choice_row" gutter={16} type="flex" justify="space-between">
-		                    <Col span={12}>
-		                        <Checkbox className="edit_choice_select" checked={item.correct} onChange={(e) => this.props.choiceSelectChange(i)} />
-		                        <Input className="edit_choice_input" value={item.value} onChange={(e) => this.props.choiceInputChange(e.target.value, i)} rows={1} />
-		                    </Col>
-		                    <Col span={12}>
-		                        <Checkbox className="edit_choice_select" checked={item.correct} />
-		                        <Tex content={item.value} />
-		                    </Col>
-		                </Row>
-		            );
-		        });
-		        break;
-		    case 2:
-		    	//图片选择题
-				answerRow = choiceImgAnswer.map((item, i) => {
-		            return(
-		                <Row gutter={16} type="flex" justify="space-between">
-		                    <Col span={12}>
-		                        <Checkbox className="edit_choice_select" checked={item.correct} onChange={(e) => this.props.choiceImgSelectChange(i)} />
-		                        <ImgUpload button="Option_Img" onRemove={() => this.props.choiceImgRemove(i)} onChange={file => this.props.answerImgChange(i, file.url)} />
-		                    </Col>
-		                    <Col span={12}>
-		                        <Checkbox className="edit_choice_select" checked={item.correct} />
-		                        <img src={item.url} height='100' />
-		                    </Col>
-		                </Row>
-		                );
-		        });
-		        break;
-		    default:
-		    	break;
-		}
+		return sample_rows;
 	}
     
-    render(){	
+    render(){
+    	var answer = this.props.choiceAnswer;
+    	switch(this.props.exercise_type){
+    		case 0:
+    			answer = this.props.blankAnswer;
+    			break;
+    		case 1:
+    			answer = this.props.choiceAnswer;
+    			break;
+    		case 2:
+    			answer = this.props.choiceImgAnswer;
+    			break;
+    	}
+
+    	var exercise = {
+    		exercise_id: this.props.exercise_id,
+    		exercise_type: this.props.exercise_type,
+    		title: this.props.title,
+			title_img_url: this.props.title_img_url,
+    		title_audio_url: this.props.title_audio_url,
+    		answer: answer,
+    		breakdown: this.props.breakdown, 
+    		sample: this.props.sample,
+    	}	
     	return(
     		<div>
     			<Row style={{marginTop: '10px'}} type = "flex">
-    				<Select value={exercise_type.toString()} style={{ width: '120px' }} onChange={e => this.props.exerciseTypeChange(e)}>
-						<Option value="0">填空题</Option>
-						<Option value="1">文字选择题</Option>
-						<Option value="2">图片选择题</Option>
-					</Select>
-					<Button icon="plus" onClick={()=>this.props.addAnswer(exercise_type)}></Button>
-					<Button disabled = {isDisabled} icon="minus" onClick={()=>this.props.delAnswer(exercise_type)}></Button>
 				</Row>
 				<Row>
 					<Col span={12}>
-						{renderSample()}
+						{this.renderSample()}
 					</Col>
 					<Col span={12}>
-						{renderTitle()}
-						{renderAnswer()}
+						<ExerciseView exercise={exercise} />
 					</Col>	
 				</Row>
     		</div>
@@ -136,7 +81,10 @@ export default connect(state => {
   	title_img_url: newState.title_img_url,
     title_audio_url: newState.title_audio_url,
   	sample: newState.sample,
+	breakdown: newState.breakdown,
+  	sample_key: newState.sample_key,
   }
-}, action)(ExerciseAnswer);
+}, action)(ExerciseSample);
+
 
 

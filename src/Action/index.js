@@ -1,6 +1,7 @@
 import NetUtil from '../utils/NetUtil'
 import Config from '../utils/Config'
 import {push} from 'react-router-redux'
+import axios from 'axios';
 
 let target = Config.server_url;
 
@@ -18,13 +19,15 @@ export const getCourse = () => {
     return dispatch => {
         dispatch(getDataStart());
         //加载course信息
-        return NetUtil.get(url, {}, json => {
+        return axios.get(url,{})
+        .then(function (response) {
             console.log('course');
-            console.log(json);
-            dispatch(getCourseSuccess(json));
-        }, errors => {
+            console.log(response.data);
+            dispatch(getCourseSuccess(response.data));
+        })
+        .catch(function (error) {
             console.log('course error');
-            console.log(errors);
+            console.log(error);
         });
     }
 }
@@ -58,10 +61,16 @@ export const getExercise = (exercise_id) => {
     return dispatch => {
         dispatch(getDataStart());
         //加载已有题目信息
-        return NetUtil.get(url, {exercise_id}, json => {
-            dispatch(getExerciseSuccess(json));
-        }, errors => {
-            console.log(errors);
+        return axios.get(url,{
+            params:{
+                exercise_id,
+            }
+        })
+        .then(function (response) {
+            dispatch(getExerciseSuccess(response.data));
+        })
+        .catch(function (error) {
+            console.log(error);
         });
     }
 }
@@ -284,13 +293,17 @@ export const uploadBreakdown = (exercise_id, breakdown) => {
             }
         }
         if(!mask){
-            var url = target + "/klmanager/updateBreakdown";
-            return NetUtil.post(url, {exercise_id: exercise_id, breakdown: breakdown}, result => {
+            let url = target + "/klmanager/updateBreakdown";
+
+            return axios.post(url,{exercise_id: exercise_id, breakdown: breakdown})
+            .then(function (response) {
                 alert("更新题目成功！");
-                //dispatch(uploadExerciseSuccess());
-            }, errors => {
-                console.log(errors);
+                // dispatch(getExerciseSuccess(response.data));
+            })
+            .catch(function (error) {
+                console.log(error);
             });
+
         }else{
             if(mask == 1)
                 alert("请先保存题目！");
@@ -309,7 +322,7 @@ export const updateMenu = (menu_state) => {
 //upload Exercise
 export const uploadExercise = () => {
     return (dispatch, getState) => {
-        var {course_id, exercise_id, title, title_img_url, title_audio_url, exercise_rating, exercise_type, blankAnswer, choiceAnswer, choiceImgAnswer, breakdown} = getState().exerciseData.toJS();
+        var {course_id, exercise_id, title, title_img_url, title_audio_url, exercise_rating, exercise_type, blankAnswer, choiceAnswer, choiceImgAnswer, breakdown,sample_exercise} = getState().exerciseData.toJS();
         var mask = 0;
         var answer;
         if(!title || !exercise_rating){
@@ -364,28 +377,51 @@ export const uploadExercise = () => {
                 }
             }
         }
+
         if(!mask){
             dispatch(uploadExerciseStart());
             if(exercise_id > 0){
                 //修改题目
-                var url = target + "/klmanager/updateExercise";
-                var exercise = {exercise_id: exercise_id, title: title, title_img_url: title_img_url, title_audio_url: title_audio_url, answer: answer, exercise_type: exercise_type, exercise_rating: exercise_rating, breakdown: breakdown};
-                return NetUtil.post(url, {exercise: exercise}, result => {
-                    dispatch(uploadExerciseSuccess(result.exercise_id));
+                let url = target + "/klmanager/updateExercise";
+                var exercise = {exercise_id: exercise_id, 
+                                title: title, 
+                                title_img_url: title_img_url, 
+                                title_audio_url: title_audio_url, 
+                                answer: answer, 
+                                exercise_type: exercise_type, 
+                                exercise_rating: exercise_rating, 
+                                breakdown: breakdown,
+                                sample_exercise:sample_exercise};
+                return axios.post(url,{exercise: exercise})
+                .then(function (response) {
+                    dispatch(uploadExerciseSuccess(response.data.exercise_id));
                     alert("更新题目成功！");
-                }, errors => {
-                    console.log(errors);
+                })
+                .catch(function (error) {
+                    console.log(error);
                 });
+
             }else{
                 //新增题目
-                var url = target + "/klmanager/addExercise";
-                var exercise = {title: title, title_img_url: title_img_url, title_audio_url: title_audio_url, answer: answer, exercise_type: exercise_type, exercise_rating: exercise_rating, breakdown: breakdown};
-                return NetUtil.post(url, {exercise: exercise, course_id: course_id}, result => {
-                    dispatch(uploadExerciseSuccess(result.exercise_id));
-                    alert("上传题目成功，题目id为" + result.exercise_id);
-                }, errors => {
-                    console.log(errors);
+                let url = target + "/klmanager/addExercise";
+                var exercise = {title: title, 
+                                title_img_url: title_img_url, 
+                                title_audio_url: title_audio_url, 
+                                answer: answer, 
+                                exercise_type: exercise_type, 
+                                exercise_rating: exercise_rating, 
+                                breakdown: breakdown,
+                                sample_exercise:sample_exercise};
+
+                return axios.post(url,{exercise: exercise, course_id: course_id})
+                .then(function (response) {
+                    dispatch(uploadExerciseSuccess(response.data.exercise_id));
+                    alert("上传题目成功，题目id为" + response.data.exercise_id);
+                })
+                .catch(function (error) {
+                    console.log(error);
                 });
+
             }
         }
         else{

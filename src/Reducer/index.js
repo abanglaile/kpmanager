@@ -1,6 +1,8 @@
 import Immutable from 'immutable';
 
 const breakdown = [{sn: 1, presn: 0, kpid: -1, kpname: '', sn_rating: 500, checked: false, content:''}];
+//sample格式 [{sample:{a:xx,b:xx},sample_index:0},{sample:{a:xx,b:xx},sample_index:1}]
+
 const defaultlState = Immutable.fromJS({
 		title: '',
 		blankAnswer: [{value: ''}],
@@ -22,6 +24,8 @@ const defaultlState = Immutable.fromJS({
 		isLoading: false,
         menu_state: '1',
         course: [],
+        sample: {},
+        sample_key: {},
 	});
 
 //手动获取数据

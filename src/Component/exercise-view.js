@@ -7,20 +7,20 @@ import Tex from './renderer.js';
 import *as action from '../Action/';
 import {connect} from 'react-redux';
 
-class ExercisesView extends React.Component {
+export default class ExercisesView extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state={expand:false, display:'none'};
+		this.state={expand:false};
 	}
 
 	handleShow(){
 		this.setState({expand:!this.state.expand});
-		if(this.state.display === 'none'){
-			this.setState({display:'block'});
-		}
-		else{
-			this.setState({display:'none'});
-		}
+		// if(this.state.display === 'none'){
+		// 	this.setState({display:'block'});
+		// }
+		// else{
+		// 	this.setState({display:'none'});
+		// }
 	}
 
 	render(){
@@ -108,7 +108,7 @@ class ExercisesView extends React.Component {
 						}
 						{answerDom}
 					</div>
-					<div style={{display}} className="kp_step">
+					<div style={expand ? {display: "block"} : {display: "none"}} className="kp_step">
 						<p className="step_annouce">步骤：</p>
 						<div>
 							{steps}
