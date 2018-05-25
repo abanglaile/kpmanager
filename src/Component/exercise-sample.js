@@ -15,6 +15,8 @@ class ExerciseSample extends React.Component {
 	renderSample(){
 		var {sample_list, sample_index} =  this.props;
 
+		sample_index=0;
+		sample_list = [{}]
 		const sample = sample_index && sample_list ? sample_list[sample_index] : {};
 		const sample_key = this.props.sample_key;
 		let sample_rows = [];
