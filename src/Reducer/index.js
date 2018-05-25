@@ -24,7 +24,7 @@ const defaultlState = Immutable.fromJS({
 		isLoading: false,
         menu_state: '1',
         course: [],
-        sample: {},
+        sample_list: {},
         sample_key: {},
 	});
 

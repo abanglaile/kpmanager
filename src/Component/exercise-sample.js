@@ -13,7 +13,9 @@ const Option = Select.Option;
 class ExerciseSample extends React.Component {
 
 	renderSample(){
-		const sample = this.props.sample;
+		var {sample_list, sample_index} =  this.props;
+
+		const sample = sample_index && sample_list ? sample_list[sample_index] : {};
 		const sample_key = this.props.sample_key;
 		let sample_rows = [];
 		for(let key in sample){
@@ -80,7 +82,8 @@ export default connect(state => {
   	title: newState.title,
   	title_img_url: newState.title_img_url,
     title_audio_url: newState.title_audio_url,
-  	sample: newState.sample,
+  	sample_list: newState.sample_list,
+  	sample_index: newState.sample_index,
 	breakdown: newState.breakdown,
   	sample_key: newState.sample_key,
   }
