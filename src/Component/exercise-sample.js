@@ -132,7 +132,6 @@ export default connect(state => {
   	choiceAnswer: newState.choiceAnswer,
   	choiceImgAnswer: newState.choiceImgAnswer,
   	blankAnswer: newState.blankAnswer,
-  	choiceImgAnswer: newState.choiceImgAnswer,
   	title: newState.title,
   	title_img_url: newState.title_img_url,
     title_audio_url: newState.title_audio_url,
