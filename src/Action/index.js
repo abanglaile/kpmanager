@@ -112,7 +112,7 @@ const getSampleKeys = (exercise) => {
     
 }
 
-const getSampleKey = (exercise) => {
+export const getSampleKey = (exercise) => {
     const {title,answer,breakdown} = exercise;
     var longtext = '';
     longtext += title;
