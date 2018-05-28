@@ -85,32 +85,32 @@ function getBreakdownParam(textarray){
 }
 
 
-const getSampleKeys = (exercise) => {
-    const {title,answer,breakdown} = exercise;
-    let sample_key = {};
+// const getSampleKeys = (exercise) => {
+//     const {title,answer,breakdown} = exercise;
+//     let sample_key = {};
 
-    var titlekey_json = {};
-    var title_key = getTitleParam(title);
-    for(let i=0;i<title_key.length;i++){
-        titlekey_json[title_key[i]] = 'title';
-    }
-    console.log("titlekey_json: "+JSON.stringify(titlekey_json));
+//     var titlekey_json = {};
+//     var title_key = getTitleParam(title);
+//     for(let i=0;i<title_key.length;i++){
+//         titlekey_json[title_key[i]] = 'title';
+//     }
+//     console.log("titlekey_json: "+JSON.stringify(titlekey_json));
 
-    var answerkey_json = {};
-    var answer_key = getAnswerParam(answer);
-    for(let i=0;i<answer_key.length;i++){
-        answerkey_json[answer_key[i]] = 'answer';
-    }
-    console.log("answerkey_json: "+JSON.stringify(answerkey_json));
+//     var answerkey_json = {};
+//     var answer_key = getAnswerParam(answer);
+//     for(let i=0;i<answer_key.length;i++){
+//         answerkey_json[answer_key[i]] = 'answer';
+//     }
+//     console.log("answerkey_json: "+JSON.stringify(answerkey_json));
 
-    var breakdownkey_json = {};
-    var breakdown_key = getBreakdownParam(breakdown);
-    for(let i=0;i<breakdown_key.length;i++){
-        breakdownkey_json[breakdown_key[i]] = 'breakdown';
-    }
-    console.log("breakdown_key: "+JSON.stringify(breakdownkey_json));
+//     var breakdownkey_json = {};
+//     var breakdown_key = getBreakdownParam(breakdown);
+//     for(let i=0;i<breakdown_key.length;i++){
+//         breakdownkey_json[breakdown_key[i]] = 'breakdown';
+//     }
+//     console.log("breakdown_key: "+JSON.stringify(breakdownkey_json));
     
-}
+// }
 
 export const getSampleKey = (exercise) => {
     const {title,answer,breakdown} = exercise;
@@ -119,15 +119,15 @@ export const getSampleKey = (exercise) => {
     longtext += answer;
     longtext += JSON.stringify(breakdown);
 
-    var totlekey_json = {};
-    var totle_key = getTitleParam(longtext);
-    for(let i=0;i<totle_key.length;i++){
-        totlekey_json[totle_key[i]] = 'totle';
+    var totalkey_json = {};
+    var total_key = getTitleParam(longtext);
+    for(let i=0;i<total_key.length;i++){
+        totalkey_json[total_key[i]] = 'total';
     }
-    console.log("totlekey_json: "+JSON.stringify(totlekey_json));
+    console.log("totalkey_json: "+JSON.stringify(totalkey_json));
     return {
         type: "GET_SAMPLE_KEY",
-        totlekey_json,
+        totalkey_json,
     }
     
 }
@@ -151,7 +151,7 @@ export const getExercise = (exercise_id) => {
             }
         })
         .then(function (response) {
-            if(response.data.sample_list[0]){//如果有参数组
+            if(response.data.sample_list){//如果有参数组
               dispatch(getSampleKey(response.data));  
             }
             dispatch(getExerciseSuccess(response.data));
