@@ -28,6 +28,16 @@ class ExerciseSample extends React.Component {
 
 				</Row>;
 		}
+		for(let key in sample_key){
+			if(!sample[key]){
+				sample_rows += 
+				<Row>
+					<span>{key}</span>
+		            <Input value={sample_key[key]} onChange={(e) => this.props.sampleInputChange(e.target.value, i)} rows={1} />
+
+				</Row>;
+			}
+		}
 		return sample_rows;
 	}
     
