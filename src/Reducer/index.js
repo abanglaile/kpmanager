@@ -24,8 +24,8 @@ const defaultlState = Immutable.fromJS({
 		isLoading: false,
         menu_state: '1',
         course: [],
-        sample_list:[],
-        sample_key:{},
+        sample_list: {},
+        sample_key: {},
 	});
 
 //手动获取数据
@@ -47,21 +47,26 @@ export const exerciseData = (state = defaultlState, action = {}) => {
             if(action.json.title){
                 var {exercise_type, answer, sample} = action.json;
                 // var newState = Immutable.fromJS();
+                if(sample[0]){
+                    var sample_key = checkparams(sample[0].sample);
+                    console.log("sample_key  :"+ sample_key);
+                }
                 const answerJson = eval(answer);
                 const mergeState = state.mergeDeep(action.json);
                 if(exercise_type == 0){
-                    return mergeState.set('blankAnswer', Immutable.fromJS(answerJson));
+                    return mergeState.set('blankAnswer', Immutable.fromJS(answerJson))
+                                    .set('sample_key',sample_key);
                 }else if(exercise_type == 1){
-                    return mergeState.set('choiceAnswer', Immutable.fromJS(answerJson));
+                    return mergeState.set('choiceAnswer', Immutable.fromJS(answerJson))
+                                    .set('sample_key',sample_key);
                 }else if(exercise_type == 2){
-                    return mergeState.set('choiceImgAnswer', Immutable.fromJS(answerJson));
+                    return mergeState.set('choiceImgAnswer', Immutable.fromJS(answerJson))
+                                    .set('sample_key',sample_key);
                 }
             }else{
                 console.log("没有该exercise_id！");
                 return state.set("exercise_id", action.json.exercise_id);
             }
-        case 'GET_SAMPLE_KEY':
-            return state.set('sample_key', Immutable.fromJS(action.totlekey_json));
         case 'GET_COURSE_SUCCESS':
             return state.set('course', Immutable.fromJS(action.json));
         case 'COURSE_SELECT':

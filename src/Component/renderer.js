@@ -6,7 +6,7 @@ export default class Tex extends React.Component {
   constructor(props) { 
     super(props);
     // console.log('props.content:'+props.content);
-    this.state = {content: props.content};
+    this.state = {content: props.content, sample: props.sample};
     this.onChange = this.onChange.bind(this);
   }
 
@@ -19,9 +19,22 @@ export default class Tex extends React.Component {
     this.setState({content});
   }
 
+  replaceSample(content, sample){
+    var new_content = content;
+    if(sample){
+      new_content = content.replace(/(\@.*?\@)/g, function(word){
+        //去掉首尾两个@
+        word = word.substring(1, word.length - 1);
+        return sample[word];
+      }) 
+    }
+    return new_content;
+  }
+
   render() { 
-    var { style, content } = this.props;
+    var { style, content, sample } = this.props;
     content = content?content:'';
+    content = this.replaceSample(content);
     var htmlContent = content.replace(/(\$.*?\$)/g, function(word){
         //去掉首尾两个$
         word = word.substring(1, word.length - 1);
