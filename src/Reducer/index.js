@@ -26,6 +26,7 @@ const defaultlState = Immutable.fromJS({
         course: [],
         sample_list: [],
         sample_key: {},
+        sample_select: 0,
 	});
 
 //手动获取数据
@@ -65,6 +66,8 @@ export const exerciseData = (state = defaultlState, action = {}) => {
             return state.set('sample_list', Immutable.fromJS(action.json));
         case 'GET_SAMPLE_KEY':
             return state.set('sample_key', Immutable.fromJS(action.totalkey_json));
+        case 'SAMPLE_SELECT':
+            return state.set('sample_select', action.sample_select);
         case 'GET_COURSE_SUCCESS':
             return state.set('course', Immutable.fromJS(action.json));
         case 'COURSE_SELECT':

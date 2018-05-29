@@ -147,6 +147,23 @@ export const courseSelect = (course_id) => {
     }
 }
 
+export const sampleValueChange = (sample_index, sample_key, sample_value) => {
+    return {
+        type: "<SAMPLE_VALUE_></SAMPLE_VALUE_>CHANGE",
+        sample_index,
+        sample_key,
+        sample_value,
+    }
+}
+
+export const sampleSelect = (sample_select) => {
+    return {
+        type: "SAMPLE_SELECT",
+        sample_select,
+    }
+
+}
+
 //获取exercise
 export const getExercise = (exercise_id) => {
     let url = target + '/klmanager/getExercise';
