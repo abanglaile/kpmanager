@@ -482,7 +482,7 @@ export const updateAllSample = (sample_list) => {
 export const uploadExercise = () => {
     return (dispatch, getState) => {
         var {course_id, blankAnswer, choiceAnswer, choiceImgAnswer, exercise} = getState().exerciseData.toJS();
-        var {title, exercise_rating, exercise_type, breakdown} = exercise;
+        var {title, exercise_rating, exercise_type, breakdown, exercise_id} = exercise;
         var mask = 0;
         var answer;
         if(!title || !exercise_rating){
