@@ -27,6 +27,7 @@ export default class ExercisesView extends React.Component {
 		const {expand, display} = this.state;
 		if(this.props.exercise){
 			const {title, type, answer, breakdown, title_img_url, exercise_id, sample} = this.props.exercise;
+			console.log(sample);
 			const isinbasket = this.props.isinbasket;
 			var steps = [];
 			for(var j = 0; j < breakdown.length; j++) {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Row, Col, Input, Button, Select, Checkbox} from 'antd';
+import { Row, Col, Input, Button, Icon, Select, Checkbox} from 'antd';
 import Styles from './exerciseEdit.css';
 import Tex from './renderer.js';
 import ExerciseView from './exercise-view.js'
@@ -11,21 +11,33 @@ import {connect} from 'react-redux';
 const Option = Select.Option;
 
 class ExerciseSample extends React.Component {
+	componentDidMount(){
+    	console.log(this.props.params.exercise_id);
+    	if(this.props.params.exercise_id > 0){
+    		//加载已有题目信息
+    		this.props.getSampleList(this.props.params.exercise_id);
+
+    		if(this.props.exercise){
+    			var exercise = this.props.exercise;
+    			if()
+    		}
+    		this.props.getSampleKey();
+    	}
+    }
 
 	renderSample(){
 		var {sample_list, sample_select} =  this.props;
-		sample_select = 0;
-		console.log(sample_list);
+		
 		if(sample_list && sample_list[sample_select]){
 			let {sample, sample_index} = sample_list[sample_select];
 			const sample_key = this.props.sample_key;
 			let sample_rows = [];
-			sample = JSON.parse(sample);
+			console.log(sample_key);
 			for(let key in sample){
 				console.log(sample[key]);
 				sample_rows.push(
 					<div style={{ marginBottom: 16 }}>
-			            <Input value={sample[key]} addonBefore={key} onChange={(e) => this.props.sampleInputChange(e.target.value, i)} />
+			            <Input value={sample[key]} addonBefore={key} addonAfter={sample_key[key] ? '' : <Icon type="setting" />} onChange={(e) => this.props.sampleInputChange(e.target.value, i)} />
 					</div>
 				)	
 			}
@@ -60,9 +72,10 @@ class ExerciseSample extends React.Component {
 		var {sample_list, sample_select} =  this.props;
 		let sample = {};
 		if(sample_list && sample_list[sample_select]){
-			sample = JSON.parse(sample_list[sample_select].sample);
+			sample = sample_list[sample_select].sample;
 		}
 		
+		console.log(sample_select, sample);
     	var exercise = {
     		exercise_id: this.props.exercise_id,
     		exercise_type: this.props.exercise_type,
@@ -75,7 +88,18 @@ class ExerciseSample extends React.Component {
     	}	
     	return(
     		<div>
-    			<Row style={{marginTop: '10px'}} type = "flex">
+    			<Row style={{marginTop: '18px'}} type = "flex">
+    				<Select defaultValue={0} style={{width: '80'}} onChange={e => this.props.sampleSelect(e)}>
+				      {
+				      	sample_list.map((item, i) => {
+				      		return <Option value={item.sample_index}>{item.sample_index}</Option>
+				      	})
+				      }
+				    </Select>
+				</Row>
+    			<Row style={{marginTop: '18px'}} type = "flex">
+    				<Button>检查参数</Button>
+					<Button>单题保存</Button>
 				</Row>
 				<Row>
 					<Col span={12}>
@@ -93,18 +117,13 @@ class ExerciseSample extends React.Component {
 export default connect(state => {
   var newState = state.exerciseData.toJS();
   return {
-  	exercise_id: newState.exercise_id,
-  	exercise_type: newState.exercise_type,
   	choiceAnswer: newState.choiceAnswer,
   	choiceImgAnswer: newState.choiceImgAnswer,
   	blankAnswer: newState.blankAnswer,
   	choiceImgAnswer: newState.choiceImgAnswer,
-  	title: newState.title,
-  	title_img_url: newState.title_img_url,
-    title_audio_url: newState.title_audio_url,
+  	exercise: newState.exercise,
   	sample_list: newState.sample_list,
   	sample_select: newState.sample_select,
-	breakdown: newState.breakdown,
   	sample_key: newState.sample_key,
   }
 }, action)(ExerciseSample);
