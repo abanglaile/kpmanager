@@ -47,6 +47,14 @@ const getExerciseSuccess = (json) => {
     }
 }
 
+//获取参数组成功
+const getSampleListSuccess = (json) => {
+  return {
+        type: 'GET_SAMPLE_LIST_SUCCESS',
+        json
+    }
+}
+
 function getTitleParam(text){
     var params = [];
     text.replace(/(\@.*?\@)/g, function(word){
@@ -151,9 +159,6 @@ export const getExercise = (exercise_id) => {
             }
         })
         .then(function (response) {
-            if(response.data.sample_list){//如果有参数组
-              dispatch(getSampleKey(response.data));  
-            }
             dispatch(getExerciseSuccess(response.data));
         })
         .catch(function (error) {
@@ -161,6 +166,29 @@ export const getExercise = (exercise_id) => {
         });
     }
 }
+
+//获取sample_list
+export const getSampleList = (exercise_id) => {
+    let url = target + '/klmanager/getSampleList';
+    return dispatch => {
+        dispatch(getDataStart());
+        return axios.get(url,{
+            params:{
+                exercise_id,
+            }
+        })
+        .then(function (response) {
+            dispatch(getSampleListSuccess(response.data));
+            if(response.data){//如果有参数组
+              dispatch(getSampleKey(response.data));  
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+}
+
 
 //改变题目类型
 export const exerciseTypeChange = (exercise_type) => {
@@ -405,6 +433,50 @@ export const updateMenu = (menu_state) => {
         menu_state
     }
 }
+
+
+//添加一组题目参数
+export const addOneSample = (sample, index, exercise_id) => {
+    let url = target + '/klmanager/addOneSample';
+    return dispatch => {
+        return axios.post(url,{sample: sample, sample_index: index, exercise_id: exercise_id})
+        .then(function (response) {
+            // dispatch(addOneSampleSuccess(response.data.exercise_id));
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }     
+}
+
+//更新一组题目参数
+export const updateOneSample = (sample, index, exercise_id) => {
+    let url = target + '/klmanager/updateOneSample';
+    return dispatch => {
+        return axios.post(url,{sample: sample, sample_index: index, exercise_id: exercise_id})
+        .then(function (response) {
+            // dispatch(addOneSampleSuccess(response.data.exercise_id));
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }     
+}
+
+//批量更新所有参数
+export const updateAllSample = (sample_list) => {
+    let url = target + '/klmanager/updateAllSample';
+    return dispatch => {
+        return axios.post(url,{sample_list: sample_list})
+        .then(function (response) {
+            // dispatch(addOneSampleSuccess(response.data.exercise_id));
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }     
+}
+
 
 //upload Exercise
 export const uploadExercise = () => {

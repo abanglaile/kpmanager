@@ -24,7 +24,7 @@ const defaultlState = Immutable.fromJS({
 		isLoading: false,
         menu_state: '1',
         course: [],
-        sample_list: {},
+        sample_list: [],
         sample_key: {},
 	});
 
@@ -60,6 +60,8 @@ export const exerciseData = (state = defaultlState, action = {}) => {
                 console.log("没有该exercise_id！");
                 return state.set("exercise_id", action.json.exercise_id);
             }
+        case 'GET_SAMPLE_LIST_SUCCESS':
+            return state.set('sample_list', Immutable.fromJS(action.json));
         case 'GET_SAMPLE_KEY':
             return state.set('sample_key', Immutable.fromJS(action.totalkey_json));
         case 'GET_COURSE_SUCCESS':
