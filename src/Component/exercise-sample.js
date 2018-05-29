@@ -13,32 +13,34 @@ const Option = Select.Option;
 class ExerciseSample extends React.Component {
 
 	renderSample(){
-		var {sample_list, sample_index} =  this.props;
-
-		sample_index=0;
-		sample_list = [{}]
-		const sample = sample_index && sample_list ? sample_list[sample_index] : {};
-		const sample_key = this.props.sample_key;
-		let sample_rows = [];
-		for(let key in sample){
-			sample_rows += 
-				<Row>
-					<span>{key}</span>
-		            <Input value={sample[key]} onChange={(e) => this.props.sampleInputChange(e.target.value, i)} rows={1} />
-
-				</Row>;
-		}
-		for(let key in sample_key){
-			if(!sample[key]){
-				sample_rows += 
-				<Row>
-					<span>{key}</span>
-		            <Input value={sample_key[key]} onChange={(e) => this.props.sampleInputChange(e.target.value, i)} rows={1} />
-
-				</Row>;
+		var {sample_list, sample_select} =  this.props;
+		sample_select = 0;
+		console.log(sample_list);
+		if(sample_list && sample_list[sample_select]){
+			let {sample, sample_index} = sample_list[sample_select];
+			const sample_key = this.props.sample_key;
+			let sample_rows = [];
+			sample = JSON.parse(sample);
+			for(let key in sample){
+				console.log(sample[key]);
+				sample_rows.push(
+					<div style={{ marginBottom: 16 }}>
+			            <Input value={sample[key]} addonBefore={key} onChange={(e) => this.props.sampleInputChange(e.target.value, i)} />
+					</div>
+				)	
 			}
+			for(let key in sample_key){
+				if(!sample[key]){
+					sample_rows.push(
+						<div style={{ marginBottom: 16 }}>
+			            	<Input value={sample[key]} addonBefore={key} addonAfter={<Icon type="setting" />} onChange={(e) => this.props.sampleInputChange(e.target.value, i)} />
+						</div>
+					)
+				}
+			}
+			return sample_rows;
 		}
-		return sample_rows;
+		
 	}
     
     render(){
@@ -55,6 +57,12 @@ class ExerciseSample extends React.Component {
     			break;
     	}
 
+		var {sample_list, sample_select} =  this.props;
+		let sample = {};
+		if(sample_list && sample_list[sample_select]){
+			sample = JSON.parse(sample_list[sample_select].sample);
+		}
+		
     	var exercise = {
     		exercise_id: this.props.exercise_id,
     		exercise_type: this.props.exercise_type,
@@ -63,7 +71,7 @@ class ExerciseSample extends React.Component {
     		title_audio_url: this.props.title_audio_url,
     		answer: answer,
     		breakdown: this.props.breakdown, 
-    		sample: this.props.sample,
+    		sample: sample,
     	}	
     	return(
     		<div>
@@ -95,7 +103,7 @@ export default connect(state => {
   	title_img_url: newState.title_img_url,
     title_audio_url: newState.title_audio_url,
   	sample_list: newState.sample_list,
-  	sample_index: newState.sample_index,
+  	sample_select: newState.sample_select,
 	breakdown: newState.breakdown,
   	sample_key: newState.sample_key,
   }
