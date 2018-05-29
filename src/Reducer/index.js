@@ -4,7 +4,16 @@ const breakdown = [{sn: 1, presn: 0, kpid: -1, kpname: '', sn_rating: 500, check
 //sample格式 [{sample:{a:xx,b:xx},sample_index:0},{sample:{a:xx,b:xx},sample_index:1}]
 
 const defaultlState = Immutable.fromJS({
-		title: '',
+        exercise : {
+            exercise_id : 0,
+            exercise_type : 1,
+            title : '',
+            title_img_url : '',
+            title_audio_url : '',
+            answer : [],
+            exercise_rating: 500,
+            breakdown: breakdown, 
+        },
 		blankAnswer: [{value: ''}],
 		choiceAnswer: [
 			{value: '', correct: false}, 
@@ -18,9 +27,6 @@ const defaultlState = Immutable.fromJS({
             {url: '', correct: false},
             {url: '', correct: false},
         ],
-		exercise_rating: 500,
-		exercise_type: 1,
-		breakdown: breakdown, 
 		isLoading: false,
         menu_state: '1',
         course: [],
@@ -48,14 +54,17 @@ export const exerciseData = (state = defaultlState, action = {}) => {
                 var {exercise_type, answer} = action.json;
                 // var newState = Immutable.fromJS();
                 const answerJson = eval(answer);
-                console.log(action.json);
-                const mergeState = state.mergeDeep(action.json);
+                console.log("action.json:"+action.json);
+                // const mergeState = state.mergeDeep(action.json);
                 if(exercise_type == 0){
-                    return mergeState.set('blankAnswer', Immutable.fromJS(answerJson));
+                    return state.set('exercise',Immutable.fromJS(action.json))
+                                .set('blankAnswer', Immutable.fromJS(answerJson));  
                 }else if(exercise_type == 1){
-                    return mergeState.set('choiceAnswer', Immutable.fromJS(answerJson));
+                    return state.set('exercise',Immutable.fromJS(action.json))
+                                .set('choiceAnswer', Immutable.fromJS(answerJson));
                 }else if(exercise_type == 2){
-                    return mergeState.set('choiceImgAnswer', Immutable.fromJS(answerJson));
+                    return state.set('exercise',Immutable.fromJS(action.json))
+                                .set('choiceImgAnswer', Immutable.fromJS(answerJson));
                 }
             }else{
                 console.log("没有该exercise_id！");
@@ -70,15 +79,15 @@ export const exerciseData = (state = defaultlState, action = {}) => {
         case 'COURSE_SELECT':
             return state.set('course_id', action.course_id);
     	case 'TITLE_CHANGE':
-    		return state.setIn(['title'], action.title);
+    		return state.setIn(['exercise','title'], action.title);
         case 'CHANGE_TITLE_IMG':
-            return state.set('title_img_url', action.url);
+            return state.setIn(['exercise','title_img_url'], action.url);
         case 'REMOVE_TITLE_IMG':
-            return state.set('title_img_url', '');
+            return state.setIn(['exercise','title_img_url'], '');
         case 'CHANGE_TITLE_AUDIO':
-            return state.set('title_audio_url', action.url);
+            return state.setIn(['exercise','title_audio_url'], action.url);
         case 'REMOVE_TITLE_AUDIO':
-            return state.set('title_audio_url', '');
+            return state.setIn(['exercise','title_audio_url'], '');
         case 'CHANGE_CHOICE_IMG':
             return state.setIn(['choiceImgAnswer', action.i, 'url'], action.url);
         case 'CHANGE_CHOICE_IMG_SELECT':
@@ -86,7 +95,7 @@ export const exerciseData = (state = defaultlState, action = {}) => {
         case 'REMOVE_CHOICE_IMG':
             return state.setIn(['choiceImgAnswer', action.i, 'url'], '');
     	case 'CHANGE_EXERCISE_TYPE':
-    		return state.setIn(['exercise_type'], action.exercise_type);
+            return state.setIn(['exercise','exercise_type'], action.exercise_type);
     	case 'CHANGE_CHOICE_INPUT':
     		return state.setIn(['choiceAnswer', action.i, 'value'], action.value);
     	case 'CHANGE_CHOICE_SELECT':
@@ -110,26 +119,26 @@ export const exerciseData = (state = defaultlState, action = {}) => {
     		}
     		
     	case 'CHANGE_INPUT_BREAKDOWN':
-    		return state.setIn(['breakdown', action.i, 'content'], action.content);
+    		return state.setIn(['exercise','breakdown', action.i, 'content'], action.content);
     	case 'CHANGE_CHECK_BREAKDOWN':
-    		return state.setIn(['breakdown', action.i, 'checked'], action.checked);
+    		return state.setIn(['exercise','breakdown', action.i, 'checked'], action.checked);
     	case 'CHANGE_PRESN_BREAKDOWN':
-    		return state.setIn(['breakdown', action.i, 'presn'], action.presn);
+    		return state.setIn(['exercise','breakdown', action.i, 'presn'], action.presn);
     	case 'SELECT_KP_BREAKDOWN':
-    		return state.setIn(['breakdown', action.i, 'kpid'], action.kpid)
-            .setIn(['breakdown', action.i, 'kpname'], action.kpname);
+    		return state.setIn(['exercise','breakdown', action.i, 'kpid'], action.kpid)
+            .setIn(['exercise','breakdown', action.i, 'kpname'], action.kpname);
     	case 'ADD_BREAKDOWN':
-    		return state.updateIn(['breakdown'], list => list.push(Immutable.fromJS(action.newData)));
+    		return state.updateIn(['exercise','breakdown'], list => list.push(Immutable.fromJS(action.newData)));
     	case 'DEL_BREAKDOWN':
-    		return state.updateIn(['breakdown'], list => list.pop());
+    		return state.updateIn(['exercise','breakdown'], list => list.pop());
     	case 'CHANGE_RATING_BREAKDOWN':
-    		return state.setIn(['breakdown', action.i, 'sn_rating'], action.rating);
+    		return state.setIn(['exercise','breakdown', action.i, 'sn_rating'], action.rating);
     	case 'CHANGE_RATING_EXERCISE':
-    		return state.setIn(['exercise_rating'], action.rating);
+    		return state.setIn(['exercise','exercise_rating'], action.rating);
     	case 'UPLOAD_EXERCISE_START':
     		return state.setIn(['isLoading'], true);
     	case 'UPLOAD_EXERCISE_SUCCESS':
-    		return state.set('exercise_id', action.exercise_id);
+    		return state.setIn(['exercise','exercise_id'], action.exercise_id);
         case 'UPDATE_MENU':
             return state.setIn(['menu_state'], action.menu_state);
         default:

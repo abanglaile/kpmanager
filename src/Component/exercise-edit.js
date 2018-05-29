@@ -83,7 +83,7 @@ class ExerciseEditView extends React.Component {
 export default connect(state => {
   var newState = state.exerciseData.toJS();
   return {
-    exercise_id: newState.exercise_id, 
+    exercise_id: newState.exercise.exercise_id, 
     isLoading: newState.isLoading, 
     menu_state: newState.menu_state,
   }

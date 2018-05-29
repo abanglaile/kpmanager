@@ -231,10 +231,10 @@ export default connect(state => {
   var newState = state.exerciseData.toJS();
   console.log(newState);
   return {
-  	breakdown: newState.breakdown,
+  	breakdown: newState.exercise.breakdown,
   	course: newState.course,
   	course_id: newState.course_id,
-    exercise_id: newState.exercise_id, 
+    exercise_id: newState.exercise.exercise_id, 
     isLoading: newState.isLoading, 
   }
 }, action)(ExerciseEditBreakdown);

@@ -13,7 +13,8 @@ const Option = Select.Option;
 
 class ExerciseAnswer extends React.Component {
     render(){
-    	const { choiceAnswer, blankAnswer, choiceImgAnswer, exercise_id, exercise_type } = this.props;
+    	const { choiceAnswer, blankAnswer, choiceImgAnswer, exercise} = this.props;
+    	const {exercise_id, exercise_type} = exercise;
 		var answerRow = [];
 		var isDisabled = false;
 		switch(exercise_type){
@@ -92,12 +93,12 @@ class ExerciseAnswer extends React.Component {
 export default connect(state => {
   var newState = state.exerciseData.toJS();
   return {
-  	exercise_id: newState.exercise_id,
-  	exercise_type: newState.exercise_type,
+  	exercise : newState.exercise,
+  	// exercise_id: newState.exercise_id,
+  	// exercise_type: newState.exercise_type,
   	choiceAnswer: newState.choiceAnswer,
   	choiceImgAnswer: newState.choiceImgAnswer,
   	blankAnswer: newState.blankAnswer,
-  	choiceImgAnswer: newState.choiceImgAnswer,
   }
 }, action)(ExerciseAnswer);
 

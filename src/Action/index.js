@@ -481,7 +481,8 @@ export const updateAllSample = (sample_list) => {
 //upload Exercise
 export const uploadExercise = () => {
     return (dispatch, getState) => {
-        var {course_id, exercise_id, title, title_img_url, title_audio_url, exercise_rating, exercise_type, blankAnswer, choiceAnswer, choiceImgAnswer, breakdown,sample_exercise} = getState().exerciseData.toJS();
+        var {course_id, blankAnswer, choiceAnswer, choiceImgAnswer, exercise} = getState().exerciseData.toJS();
+        var {title, exercise_rating, exercise_type, breakdown} = exercise;
         var mask = 0;
         var answer;
         if(!title || !exercise_rating){
@@ -537,20 +538,21 @@ export const uploadExercise = () => {
             }
         }
 
+        exercise.answer = answer;
+
         if(!mask){
             dispatch(uploadExerciseStart());
             if(exercise_id > 0){
                 //修改题目
                 let url = target + "/klmanager/updateExercise";
-                var exercise = {exercise_id: exercise_id, 
-                                title: title, 
-                                title_img_url: title_img_url, 
-                                title_audio_url: title_audio_url, 
-                                answer: answer, 
-                                exercise_type: exercise_type, 
-                                exercise_rating: exercise_rating, 
-                                breakdown: breakdown,
-                                sample_exercise:sample_exercise};
+                // var exercise = {exercise_id: exercise_id, 
+                //                 title: title, 
+                //                 title_img_url: title_img_url, 
+                //                 title_audio_url: title_audio_url, 
+                //                 answer: answer, 
+                //                 exercise_type: exercise_type, 
+                //                 exercise_rating: exercise_rating, 
+                //                 breakdown: breakdown};
                 return axios.post(url,{exercise: exercise})
                 .then(function (response) {
                     dispatch(uploadExerciseSuccess(response.data.exercise_id));
@@ -563,14 +565,13 @@ export const uploadExercise = () => {
             }else{
                 //新增题目
                 let url = target + "/klmanager/addExercise";
-                var exercise = {title: title, 
-                                title_img_url: title_img_url, 
-                                title_audio_url: title_audio_url, 
-                                answer: answer, 
-                                exercise_type: exercise_type, 
-                                exercise_rating: exercise_rating, 
-                                breakdown: breakdown,
-                                sample_exercise:sample_exercise};
+                // var exercise = {title: title, 
+                //                 title_img_url: title_img_url, 
+                //                 title_audio_url: title_audio_url, 
+                //                 answer: answer, 
+                //                 exercise_type: exercise_type, 
+                //                 exercise_rating: exercise_rating, 
+                //                 breakdown: breakdown};
 
                 return axios.post(url,{exercise: exercise, course_id: course_id})
                 .then(function (response) {
