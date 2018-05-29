@@ -19,7 +19,8 @@ const server_url = "http://127.0.0.1:3000";
 class ExerciseTitle extends React.Component {
 
     render(){
-    	var { title, title_img_url, title_audio_url, exercise_id } = this.props;
+    	var { exercise } = this.props;
+      var { title, title_img_url, title_audio_url, exercise_id } = exercise;
   		title = title ? title :'';
       return(
       		<div>
@@ -61,10 +62,7 @@ class ExerciseTitle extends React.Component {
 export default connect(state => {
   var newState = state.exerciseData.toJS();
   return {
-  	title: newState.title,
-  	title_img_url: newState.title_img_url,
-    title_audio_url: newState.title_audio_url,
-    exercise_id: newState.exercise_id, 
+    exercise : newState.exercise,
     isLoading: newState.isLoading,
   }
 }, action)(ExerciseTitle);
