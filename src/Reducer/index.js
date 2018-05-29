@@ -48,6 +48,7 @@ export const exerciseData = (state = defaultlState, action = {}) => {
                 var {exercise_type, answer} = action.json;
                 // var newState = Immutable.fromJS();
                 const answerJson = eval(answer);
+                console.log(action.json);
                 const mergeState = state.mergeDeep(action.json);
                 if(exercise_type == 0){
                     return mergeState.set('blankAnswer', Immutable.fromJS(answerJson));

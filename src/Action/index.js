@@ -137,8 +137,8 @@ export const getSampleKey = (exercise) => {
         type: "GET_SAMPLE_KEY",
         totalkey_json,
     }
-    
 }
+
 //选取course
 export const courseSelect = (course_id) => {
     return {
