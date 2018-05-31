@@ -59,7 +59,6 @@ class ExerciseMain extends React.Component {
 
 export default connect(state => {
   var newState = state.exerciseData.toJS();
-  console.log("newState:::::"+JSON.stringify(newState));
   return {
     exercise_id: newState.exercise.exercise_id, 
     exercise_rating: newState.exercise.exercise_rating,
