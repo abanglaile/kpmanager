@@ -17,11 +17,28 @@ class ExerciseSample extends React.Component {
     		//加载已有题目信息
     		this.props.getSampleList(this.props.params.exercise_id);
 
-    		if(this.props.exercise){
-    			var exercise = this.props.exercise;
-    		}
-    		this.props.getSampleKey();
+    		this.refreshSampleKey();
     	}
+    }
+
+    refreshSampleKey(){
+    	if(this.props.exercise){
+			var exercise = this.props.exercise;
+			switch(exercise.exercise_type){
+				case 0: 
+					exercise.answer = this.props.blankAnswer;
+					break;
+				case 1:
+					exercise.answer = this.props.choiceAnswer;
+					break;
+				case 2:
+					exercise.answer = this.props.choiceImageAnswer;
+					break;	
+			}
+
+			console.log('exercise', exercise);
+			this.props.getSampleKey(exercise);
+		}
     }
 
 	renderSample(){
@@ -36,7 +53,7 @@ class ExerciseSample extends React.Component {
 				console.log(sample[key]);
 				sample_rows.push(
 					<div style={{ marginBottom: 16 }}>
-			            <Input value={sample[key]} addonBefore={key} addonAfter={sample_key[key] ? '' : <Icon type="setting" />} onChange={(e) => this.props.sampleInputChange(e.target.value, i)} />
+			            <Input value={sample[key]} addonBefore={key} addonAfter={sample_key[key] ? '' : <Icon type="minus" />} onChange={(e) => this.props.sampleInputChange(e.target.value, i)} />
 					</div>
 				)	
 			}
@@ -44,7 +61,7 @@ class ExerciseSample extends React.Component {
 				if(!sample[key]){
 					sample_rows.push(
 						<div style={{ marginBottom: 16 }}>
-			            	<Input value={sample[key]} addonBefore={key} addonAfter={<Icon type="setting" />} onChange={(e) => this.props.sampleInputChange(e.target.value, i)} />
+			            	<Input value={sample[key]} addonBefore={key} addonAfter={<Icon type="plus" />} onChange={(e) => this.props.sampleInputChange(e.target.value, i)} />
 						</div>
 					)
 				}
@@ -73,18 +90,9 @@ class ExerciseSample extends React.Component {
 		if(sample_list && sample_list[sample_select]){
 			sample = sample_list[sample_select].sample;
 		}
-		
-		console.log(sample_select, sample);
-    	var exercise = {
-    		exercise_id: this.props.exercise_id,
-    		exercise_type: this.props.exercise_type,
-    		title: this.props.title,
-			title_img_url: this.props.title_img_url,
-    		title_audio_url: this.props.title_audio_url,
-    		answer: answer,
-    		breakdown: this.props.breakdown, 
-    		sample: sample,
-    	}	
+		let exercise = this.props.exercise;
+		exercise.answer = answer;
+
     	return(
     		<div>
     			<Row style={{marginTop: '18px'}} type = "flex">
@@ -97,7 +105,7 @@ class ExerciseSample extends React.Component {
 				    </Select>
 				</Row>
     			<Row style={{marginTop: '18px'}} type = "flex">
-    				<Button>检查参数</Button>
+    				<Button onClick={() => this.refreshSampleKey}>检查参数</Button>
 					<Button>单题保存</Button>
 				</Row>
 				<Row>
@@ -105,7 +113,7 @@ class ExerciseSample extends React.Component {
 						{this.renderSample()}
 					</Col>
 					<Col span={12}>
-						<ExerciseView exercise={exercise} />
+						<ExerciseView exercise={exercise} sample={sample}/>
 					</Col>	
 				</Row>
     		</div>
@@ -119,7 +127,6 @@ export default connect(state => {
   	choiceAnswer: newState.choiceAnswer,
   	choiceImgAnswer: newState.choiceImgAnswer,
   	blankAnswer: newState.blankAnswer,
-  	choiceImgAnswer: newState.choiceImgAnswer,
   	exercise: newState.exercise,
   	sample_list: newState.sample_list,
   	sample_select: newState.sample_select,

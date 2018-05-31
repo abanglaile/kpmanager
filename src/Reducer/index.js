@@ -12,7 +12,7 @@ const defaultlState = Immutable.fromJS({
             title_audio_url : '',
             answer : [],
             exercise_rating: 500,
-            breakdown: breakdown, 
+            breakdown: [], 
         },
 		blankAnswer: [{value: ''}],
 		choiceAnswer: [

@@ -121,7 +121,7 @@ function getBreakdownParam(textarray){
 // }
 
 export const getSampleKey = (exercise) => {
-    const {title,answer,breakdown} = exercise;
+    const {title, answer, breakdown} = exercise;
     var longtext = '';
     longtext += title;
     longtext += answer;
@@ -196,9 +196,6 @@ export const getSampleList = (exercise_id) => {
         })
         .then(function (response) {
             dispatch(getSampleListSuccess(response.data));
-            if(response.data){//如果有参数组
-              dispatch(getSampleKey(response.data));  
-            }
         })
         .catch(function (error) {
             console.log(error);
