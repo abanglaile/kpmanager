@@ -10,25 +10,21 @@ import {connect} from 'react-redux';
 export default class ExercisesView extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state={expand:false};
+		this.state = {expand:false};
 	}
 
 	handleShow(){
 		this.setState({expand:!this.state.expand});
-		// if(this.state.display === 'none'){
-		// 	this.setState({display:'block'});
-		// }
-		// else{
-		// 	this.setState({display:'none'});
-		// }
+
 	}
 
 	render(){
 		const {expand, display} = this.state;
 		if(this.props.exercise){
-			const {title, type, answer, breakdown, title_img_url, exercise_id, sample} = this.props.exercise;
+			const {title, type, answer, breakdown, title_img_url, exercise_id} = this.props.exercise;
+			const sample = this.props.sample;
 			console.log(sample);
-			const isinbasket = this.props.isinbasket;
+
 			var steps = [];
 			for(var j = 0; j < breakdown.length; j++) {
             	steps.push(
