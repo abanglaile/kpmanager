@@ -19,7 +19,6 @@ class ExerciseSample extends React.Component {
 
     		if(this.props.exercise){
     			var exercise = this.props.exercise;
-    			if()
     		}
     		this.props.getSampleKey();
     	}
