@@ -124,7 +124,7 @@ export const getSampleKey = (exercise) => {
     const {title, answer, breakdown} = exercise;
     var longtext = '';
     longtext += title;
-    longtext += answer;
+    longtext += JSON.stringify(answer);
     longtext += JSON.stringify(breakdown);
 
     var totalkey_json = {};

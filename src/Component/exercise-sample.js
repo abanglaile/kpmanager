@@ -16,7 +16,6 @@ class ExerciseSample extends React.Component {
     	if(this.props.params.exercise_id > 0){
     		//加载已有题目信息
     		this.props.getSampleList(this.props.params.exercise_id);
-
     		this.refreshSampleKey();
     	}
     }

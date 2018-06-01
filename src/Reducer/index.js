@@ -2,6 +2,12 @@ import Immutable from 'immutable';
 
 const breakdown = [{sn: 1, presn: 0, kpid: -1, kpname: '', sn_rating: 500, checked: false, content:''}];
 //sample格式 [{sample:{a:xx,b:xx},sample_index:0},{sample:{a:xx,b:xx},sample_index:1}]
+const sample_list = [{sample : {a:1,b:2}, 
+                     sample_index : 1, 
+                     answer : [{value:1,correct:true}], 
+                     title_img_url : '', 
+                     title_audio_url : ''}];
+
 
 const defaultlState = Immutable.fromJS({
         exercise : {
