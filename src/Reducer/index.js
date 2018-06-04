@@ -20,7 +20,7 @@ var choiceImgAnswer = [
             {url: '', correct: false},
             {url: '', correct: false},
         ];
-
+        
 const defaultlState = Immutable.fromJS({
         exercise : {
             exercise_id : 0,

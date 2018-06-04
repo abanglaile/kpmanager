@@ -14,6 +14,7 @@ export default (
 			<Route path="breakdown/:exercise_id" component={ExerciseEditBreakdown} />
 			<Route path="sample/:exercise_id" component={ExerciseEditSample} />
 			<Route path="exerciseViewByKp" component={ExercisesView} />
+			<Route path="image_manager" component={ExercisesView} />
     	</Route>
     	
     </Route>
