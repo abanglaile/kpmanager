@@ -507,8 +507,8 @@ export const updateAllSample = (sample_list) => {
 //upload Exercise
 export const uploadExercise = () => {
     return (dispatch, getState) => {
-        var {course_id, blankAnswer, choiceAnswer, choiceImgAnswer, exercise} = getState().exerciseData.toJS();
-        var {title, exercise_rating, exercise_type, breakdown, exercise_id} = exercise;
+        var {course_id, exercise} = getState().exerciseData.toJS();
+        var {title, exercise_rating, exercise_type, answer, breakdown, exercise_id} = exercise;
         var mask = 0;
         var answer;
         if(!title || !exercise_rating){
@@ -517,37 +517,33 @@ export const uploadExercise = () => {
         console.log(mask);
         switch(exercise_type){
             case 0:
-                if(!mask && blankAnswer){
-                    for(var i = 0; i < blankAnswer.length; i++){
-                        if(!blankAnswer[i].value){
+                if(!mask && answer){
+                    for(var i = 0; i < answer.length; i++){
+                        if(!answer[i].value){
                             mask = 2;
                             break;
                         }
                     }
-                    answer = blankAnswer;
                 }
                 break;
             case 1:
-                if(!mask && choiceAnswer){
-                    for(var i = 0; i < choiceAnswer.length; i++){
-                        if(!choiceAnswer[i].value){
+                if(!mask && answer){
+                    for(var i = 0; i < answer.length; i++){
+                        if(!answer[i].value){
                             mask = 2;
                             break;
                         }
                     }
-                    answer = choiceAnswer;
                 }
                 break;
             case 2:
-                if(!mask && choiceImgAnswer){
-                    for(var i = 0; i < choiceImgAnswer.length; i++){
-                        if(!choiceImgAnswer[i].url){
+                if(!mask && answer){
+                    for(var i = 0; i < answer.length; i++){
+                        if(!answer[i].url){
                             mask = 2;
                             break;
                         }
                     }
-                    console.log("choiceImgAnswer");
-                    answer = choiceImgAnswer;
                 }
                 break;
             default: 
@@ -563,8 +559,6 @@ export const uploadExercise = () => {
                 }
             }
         }
-
-        exercise.answer = answer;
 
         if(!mask){
             dispatch(uploadExerciseStart());

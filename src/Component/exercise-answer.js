@@ -13,15 +13,15 @@ const Option = Select.Option;
 
 class ExerciseAnswer extends React.Component {
     render(){
-    	const { choiceAnswer, blankAnswer, choiceImgAnswer, exercise} = this.props;
-    	const {exercise_id, exercise_type} = exercise;
+    	const {exercise} = this.props;
+    	const {exercise_id, exercise_type, answer} = exercise;
 		var answerRow = [];
 		var isDisabled = false;
 		switch(exercise_type){
 			//填空题
 		    case 0:
-		    	isDisabled = blankAnswer.length <= 1 ? true : false;
-		    	answerRow = blankAnswer.map((item, i) => {
+		    	isDisabled = answer.length <= 1 ? true : false;
+		    	answerRow = answer.map((item, i) => {
 					return(
 						<Row className="choice_row" gutter={16} type="flex" justify="space-between">
 		                    <Col span={12}>
@@ -36,8 +36,8 @@ class ExerciseAnswer extends React.Component {
 		    	break;
 			//文字选择题
 			case 1:
-				isDisabled = choiceAnswer.length <=2 ? true : false;
-				answerRow = choiceAnswer.map((item, i) => {
+				isDisabled = answer.length <=2 ? true : false;
+				answerRow = answer.map((item, i) => {
 		            return(
 		                <Row className="choice_row" gutter={16} type="flex" justify="space-between">
 		                    <Col span={12}>
@@ -54,7 +54,7 @@ class ExerciseAnswer extends React.Component {
 		        break;
 		    case 2:
 		    	//图片选择题
-				answerRow = choiceImgAnswer.map((item, i) => {
+				answerRow = answer.map((item, i) => {
 		            return(
 		                <Row gutter={16} type="flex" justify="space-between">
 		                    <Col span={12}>
@@ -94,11 +94,6 @@ export default connect(state => {
   var newState = state.exerciseData.toJS();
   return {
   	exercise : newState.exercise,
-  	// exercise_id: newState.exercise_id,
-  	// exercise_type: newState.exercise_type,
-  	choiceAnswer: newState.choiceAnswer,
-  	choiceImgAnswer: newState.choiceImgAnswer,
-  	blankAnswer: newState.blankAnswer,
   }
 }, action)(ExerciseAnswer);
 

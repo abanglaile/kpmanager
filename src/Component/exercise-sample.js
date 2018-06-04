@@ -151,7 +151,7 @@ class ExerciseSample extends React.Component {
 				</Row>
 				<Modal title="添加样本"
 		          visible={this.props.modalVisible}
-		          onOk={this.props.modalCancel}
+		          onOk={this.props.addOneSample}
 		          confirmLoading={this.props.isLoading}
 		          onCancel={this.props.modalCancel}
 		        >

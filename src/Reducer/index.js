@@ -1,9 +1,26 @@
 import Immutable from 'immutable';
 
 const breakdown = [{sn: 1, presn: 0, kpid: -1, kpname: '', sn_rating: 500, checked: false, content:''}];
-//sample格式 [{sample:{a:xx,b:xx},sample_index:0},{sample:{a:xx,b:xx},sample_index:1}]
 
-
+const sample_list = [{sample : {a:1,b:2}, 
+                     sample_index : 1, 
+                     answer : [{value:1,correct:true}], 
+                     title_img_url : '', 
+                     title_audio_url : ''}];
+var blankAnswer = [{value: ''}];
+var choiceAnswer = [
+            {value: '', correct: false}, 
+            {value: '', correct: false},
+            {value: '', correct: false},
+            {value: '', correct: false}
+        ];
+var choiceImgAnswer = [
+            {url: '', correct: false},
+            {url: '', correct: false},
+            {url: '', correct: false},
+            {url: '', correct: false},
+        ];
+>>>>>>> origin/master
 const defaultlState = Immutable.fromJS({
         exercise : {
             exercise_id : 0,
@@ -15,19 +32,7 @@ const defaultlState = Immutable.fromJS({
             exercise_rating: 500,
             breakdown: [], 
         },
-		blankAnswer: [{value: ''}],
-		choiceAnswer: [
-			{value: '', correct: false}, 
-			{value: '', correct: false},
-			{value: '', correct: false},
-			{value: '', correct: false}
-		],
-        choiceImgAnswer: [
-            {url: '', correct: false},
-            {url: '', correct: false},
-            {url: '', correct: false},
-            {url: '', correct: false},
-        ],
+
         modalViisble: false,
 		isLoading: false,
         menu_state: '1',
@@ -54,21 +59,10 @@ export const exerciseData = (state = defaultlState, action = {}) => {
     		return state.set('isLoading', true);
     	case 'GET_EXERCISE_SUCCESS': 
             if(action.json.title){
-                var {exercise_type, answer} = action.json;
-                // var newState = Immutable.fromJS();
+                var {answer} = action.json;
                 const answerJson = eval(answer);
-                console.log("action.json:"+action.json);
-                // const mergeState = state.mergeDeep(action.json);
-                if(exercise_type == 0){
-                    return state.set('exercise',Immutable.fromJS(action.json))
-                                .set('blankAnswer', Immutable.fromJS(answerJson));  
-                }else if(exercise_type == 1){
-                    return state.set('exercise',Immutable.fromJS(action.json))
-                                .set('choiceAnswer', Immutable.fromJS(answerJson));
-                }else if(exercise_type == 2){
-                    return state.set('exercise',Immutable.fromJS(action.json))
-                                .set('choiceImgAnswer', Immutable.fromJS(answerJson));
-                }
+                return state.set('exercise',Immutable.fromJS(action.json))
+                            .setIn(['exercise','answer'],Immutable.fromJS(answerJson));
             }else{
                 console.log("没有该exercise_id！");
                 return state.set("exercise_id", action.json.exercise_id);
@@ -94,35 +88,38 @@ export const exerciseData = (state = defaultlState, action = {}) => {
         case 'REMOVE_TITLE_AUDIO':
             return state.setIn(['exercise','title_audio_url'], '');
         case 'CHANGE_CHOICE_IMG':
-            return state.setIn(['choiceImgAnswer', action.i, 'url'], action.url);
+            return state.setIn(['exercise','answer', action.i, 'url'], action.url);
         case 'CHANGE_CHOICE_IMG_SELECT':
-            return state.updateIn(['choiceImgAnswer', action.i, 'correct'], correct => !correct);
+            return state.updateIn(['exercise','answer', action.i, 'correct'], correct => !correct);
         case 'REMOVE_CHOICE_IMG':
-            return state.setIn(['choiceImgAnswer', action.i, 'url'], '');
+            return state.setIn(['exercise','answer', action.i, 'url'], '');
     	case 'CHANGE_EXERCISE_TYPE':
-            return state.setIn(['exercise','exercise_type'], action.exercise_type);
+            if(action.exercise_type == 0){
+                return state.setIn(['exercise','exercise_type'], action.exercise_type)
+                            .setIn(['exercise','answer'],Immutable.fromJS(blankAnswer));
+            }else if(action.exercise_type == 1){
+                return state.setIn(['exercise','exercise_type'], action.exercise_type)
+                            .setIn(['exercise','answer'],Immutable.fromJS(choiceAnswer));
+            }else if(action.exercise_type == 2){
+                return state.setIn(['exercise','exercise_type'], action.exercise_type)
+                            .setIn(['exercise','answer'],Immutable.fromJS(choiceImgAnswer));
+            }
     	case 'CHANGE_CHOICE_INPUT':
-    		return state.setIn(['choiceAnswer', action.i, 'value'], action.value);
+    		return state.setIn(['exercise','answer', action.i, 'value'], action.value);
     	case 'CHANGE_CHOICE_SELECT':
-    		return state.updateIn(['choiceAnswer', action.i, 'correct'], correct => !correct);
+    		return state.updateIn(['exercise','answer', action.i, 'correct'], correct => !correct);
     	case 'CHANGE_BLANK_INPUT':
-    	 	return state.setIn(['blankAnswer', action.i, 'value'], action.value);
+    	 	return state.setIn(['exercise','answer', action.i, 'value'], action.value);
     	case 'ADD_ANSWER':
     		//选择题
     		if(action.exercise_type == 1){
-    			return state.updateIn(['choiceAnswer'], list =>	list.push({value: '', correct: false}));
+    			return state.updateIn(['exercise','answer'], list =>list.push({value: '', correct: false}));
     		}else if(action.exercise_type == 0){
     			//填空题
-    			return state.updateIn(['blankAnswer'], list => list.push({value: ''}));
+    			return state.updateIn(['exercise','answer'], list => list.push({value: ''}));
     		}
     	case 'DEL_ANSWER':
-    		if(action.exercise_type){
-    			return state.updateIn(['choiceAnswer'], list => list.pop());
-    		}else{
-    			//填空题
-    			return state.updateIn(['blankAnswer'], list => list.pop());	
-    		}
-    		
+    			return state.updateIn(['exercise','answer'], list => list.pop());	
     	case 'CHANGE_INPUT_BREAKDOWN':
     		return state.setIn(['exercise','breakdown', action.i, 'content'], action.content);
     	case 'CHANGE_CHECK_BREAKDOWN':
