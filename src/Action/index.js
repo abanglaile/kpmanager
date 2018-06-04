@@ -126,6 +126,7 @@ export const getSampleKey = (exercise) => {
     longtext += title;
     longtext += JSON.stringify(answer);
     longtext += JSON.stringify(breakdown);
+    console.log(longtext);
 
     var totalkey_json = {};
     var total_key = getTitleParam(longtext);
@@ -177,6 +178,7 @@ export const getExercise = (exercise_id) => {
         })
         .then(function (response) {
             dispatch(getExerciseSuccess(response.data));
+            dispatch(getSampleKey(response.data));
         })
         .catch(function (error) {
             console.log(error);
@@ -462,10 +464,10 @@ export const modalOpen = () => {
 
 
 //添加一组题目参数
-export const addOneSample = (sample, index, exercise_id) => {
+export const addOneSample = (exercise_sample) => {
     let url = target + '/klmanager/addOneSample';
     return dispatch => {
-        return axios.post(url,{sample: sample, sample_index: index, exercise_id: exercise_id})
+        return axios.post(url,{exercise_sample: exercise_sample})
         .then(function (response) {
             // dispatch(addOneSampleSuccess(response.data.exercise_id));
         })

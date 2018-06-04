@@ -17,34 +17,14 @@ class ExerciseSample extends React.Component {
 	    // console.log('props.content:'+props.content);
 	    this.state = {sample: {}};
   	}
-	componentDidMount(){
-    	console.log(this.props.params.exercise_id);
-    	if(this.props.params.exercise_id > 0){
-    		//加载已有题目信息
-    		this.props.getSampleList(this.props.params.exercise_id);
-    		this.refreshSampleKey();
-    	}
-    }
-
-    refreshSampleKey(){
-    	if(this.props.exercise){
-			var exercise = this.props.exercise;
-			switch(exercise.exercise_type){
-				case 0: 
-					exercise.answer = this.props.blankAnswer;
-					break;
-				case 1:
-					exercise.answer = this.props.choiceAnswer;
-					break;
-				case 2:
-					exercise.answer = this.props.choiceImageAnswer;
-					break;	
-			}
-
-			console.log('exercise', exercise);
-			this.props.getSampleKey(exercise);
-		}
-    }
+	// componentDidMount(){
+ //    	console.log(this.props.params.exercise_id);
+ //    	if(this.props.params.exercise_id > 0){
+ //    		//加载已有题目信息
+ //    		this.props.getSampleList(this.props.params.exercise_id);
+ //    		this.props.getSampleKey(this.props.exercise);
+ //    	}
+ //    }
 
 	renderSample(){
 		var {sample_list, sample_select} =  this.props;
@@ -103,26 +83,14 @@ class ExerciseSample extends React.Component {
     
     render(){
     	var answer = this.props.choiceAnswer;
-    	switch(this.props.exercise_type){
-    		case 0:
-    			answer = this.props.blankAnswer;
-    			break;
-    		case 1:
-    			answer = this.props.choiceAnswer;
-    			break;
-    		case 2:
-    			answer = this.props.choiceImgAnswer;
-    			break;
-    	}
 
 		var {sample_list, sample_select} =  this.props;
 		let sample = {}, exercise_sample;
 		if(sample_list && sample_list[sample_select]){
 			exercise_sample = sample_list[sample_select];
-			sample = sample_list[sample_select].sample;
+			sample = exercise_sample.sample;
 		}
 		let exercise = this.props.exercise;
-		exercise.answer = answer;
 	
 		console.log(this.props.modalVisible);
     	return(
@@ -139,7 +107,7 @@ class ExerciseSample extends React.Component {
 				</Row>
     			<Row style={{marginTop: '18px'}} type = "flex">
     				<Button onClick={this.refreshSampleKey}>检查参数</Button>
-					<Button onClick={this.props.updateOneSample(exercise_sample)}>保存</Button>
+					<Button onClick={() => this.props.updateOneSample(exercise_sample)}>保存</Button>
 				</Row>
 				<Row>
 					<Col span={12}>
@@ -151,7 +119,7 @@ class ExerciseSample extends React.Component {
 				</Row>
 				<Modal title="添加样本"
 		          visible={this.props.modalVisible}
-		          onOk={this.props.addOneSample}
+		          onOk={() => this.props.addOneSample(exercise_sample)}
 		          confirmLoading={this.props.isLoading}
 		          onCancel={this.props.modalCancel}
 		        >

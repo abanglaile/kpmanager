@@ -20,7 +20,7 @@ var choiceImgAnswer = [
             {url: '', correct: false},
             {url: '', correct: false},
         ];
->>>>>>> origin/master
+
 const defaultlState = Immutable.fromJS({
         exercise : {
             exercise_id : 0,
@@ -61,6 +61,8 @@ export const exerciseData = (state = defaultlState, action = {}) => {
             if(action.json.title){
                 var {answer} = action.json;
                 const answerJson = eval(answer);
+                console.log('answerJson',  answerJson);
+                
                 return state.set('exercise',Immutable.fromJS(action.json))
                             .setIn(['exercise','answer'],Immutable.fromJS(answerJson));
             }else{
