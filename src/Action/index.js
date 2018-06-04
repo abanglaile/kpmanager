@@ -448,6 +448,18 @@ export const updateMenu = (menu_state) => {
     }
 }
 
+export const modalCancel = () => {
+    return {
+        type: 'MODAL_CANCEL',
+    }
+}
+
+export const modalOpen = () => {
+    return {
+        type: 'MODAL_OPEN',
+    }
+}
+
 
 //添加一组题目参数
 export const addOneSample = (sample, index, exercise_id) => {
@@ -464,10 +476,10 @@ export const addOneSample = (sample, index, exercise_id) => {
 }
 
 //更新一组题目参数
-export const updateOneSample = (sample, index, exercise_id) => {
+export const updateOneSample = (exercise_sample) => {
     let url = target + '/klmanager/updateOneSample';
     return dispatch => {
-        return axios.post(url,{sample: sample, sample_index: index, exercise_id: exercise_id})
+        return axios.post(url,{exercise_sample})
         .then(function (response) {
             // dispatch(addOneSampleSuccess(response.data.exercise_id));
         })

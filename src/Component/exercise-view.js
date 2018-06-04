@@ -23,7 +23,6 @@ export default class ExercisesView extends React.Component {
 		if(this.props.exercise){
 			const {title, type, answer, breakdown, title_img_url, exercise_id} = this.props.exercise;
 			const sample = this.props.sample;
-			console.log(sample);
 
 			var steps = [];
 			for(var j = 0; j < breakdown.length; j++) {

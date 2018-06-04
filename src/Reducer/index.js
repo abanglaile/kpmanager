@@ -2,11 +2,6 @@ import Immutable from 'immutable';
 
 const breakdown = [{sn: 1, presn: 0, kpid: -1, kpname: '', sn_rating: 500, checked: false, content:''}];
 //sample格式 [{sample:{a:xx,b:xx},sample_index:0},{sample:{a:xx,b:xx},sample_index:1}]
-const sample_list = [{sample : {a:1,b:2}, 
-                     sample_index : 1, 
-                     answer : [{value:1,correct:true}], 
-                     title_img_url : '', 
-                     title_audio_url : ''}];
 
 
 const defaultlState = Immutable.fromJS({
@@ -33,6 +28,7 @@ const defaultlState = Immutable.fromJS({
             {url: '', correct: false},
             {url: '', correct: false},
         ],
+        modalViisble: false,
 		isLoading: false,
         menu_state: '1',
         course: [],
@@ -150,6 +146,10 @@ export const exerciseData = (state = defaultlState, action = {}) => {
     		return state.setIn(['exercise','exercise_id'], action.exercise_id);
         case 'UPDATE_MENU':
             return state.setIn(['menu_state'], action.menu_state);
+        case 'MODAL_CANCEL':
+            return state.set('modalVisible', false);
+        case 'MODAL_OPEN':
+            return state.set('modalVisible', true); 
         default:
             return state;
     }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Row, Col, Input, Button, Icon, Select, Checkbox} from 'antd';
+import { Row, Col, Input, Button, Icon, Select, Modal, Checkbox} from 'antd';
 import Styles from './exerciseEdit.css';
 import Tex from './renderer.js';
 import ExerciseView from './exercise-view.js'
@@ -11,6 +11,12 @@ import {connect} from 'react-redux';
 const Option = Select.Option;
 
 class ExerciseSample extends React.Component {
+
+	constructor(props) { 
+	    super(props);
+	    // console.log('props.content:'+props.content);
+	    this.state = {sample: {}};
+  	}
 	componentDidMount(){
     	console.log(this.props.params.exercise_id);
     	if(this.props.params.exercise_id > 0){
@@ -52,7 +58,10 @@ class ExerciseSample extends React.Component {
 				console.log(sample[key]);
 				sample_rows.push(
 					<div style={{ marginBottom: 16 }}>
-			            <Input value={sample[key]} addonBefore={key} addonAfter={sample_key[key] ? '' : <Icon type="minus" />} onChange={(e) => this.props.sampleInputChange(e.target.value, i)} />
+			            <Input value={sample[key]} 
+			            addonBefore={key} 
+			            addonAfter={sample_key[key] ? '' : <Icon type="minus" onClick={(e) => this.props.deleteSampleField(key, sample_select)} />} 
+			            onChange={(e) => this.props.sampleInputChange(e.target.value, key, sample_select)} />
 					</div>
 				)	
 			}
@@ -60,7 +69,9 @@ class ExerciseSample extends React.Component {
 				if(!sample[key]){
 					sample_rows.push(
 						<div style={{ marginBottom: 16 }}>
-			            	<Input value={sample[key]} addonBefore={key} addonAfter={<Icon type="plus" />} onChange={(e) => this.props.sampleInputChange(e.target.value, i)} />
+				            <Input value={sample[key]} 
+				            addonBefore={key}
+				            onChange={(e) => this.props.sampleInputChange(e.target.value, key, sample_select)} />
 						</div>
 					)
 				}
@@ -69,6 +80,26 @@ class ExerciseSample extends React.Component {
 		}
 		
 	}
+
+	renderNewSample(){
+		const sample_key = this.props.sample_key;
+		let sample_rows = [];
+		for(let key in sample_key){
+			sample_rows.push(
+				<div style={{ marginBottom: 16 }}>
+		            <Input value={this.state.sample[key] ? this.state.sample[key] : ''} 
+			            addonBefore={key}
+			            onChange={(e) => {
+			            	this.state.sample[key] = e.target.value;
+			            	this.setState({samlpe: this.state.sample});
+			            }}
+		            />
+				</div>
+			);
+		}
+		return sample_rows;
+	}
+
     
     render(){
     	var answer = this.props.choiceAnswer;
@@ -85,13 +116,15 @@ class ExerciseSample extends React.Component {
     	}
 
 		var {sample_list, sample_select} =  this.props;
-		let sample = {};
+		let sample = {}, exercise_sample;
 		if(sample_list && sample_list[sample_select]){
+			exercise_sample = sample_list[sample_select];
 			sample = sample_list[sample_select].sample;
 		}
 		let exercise = this.props.exercise;
 		exercise.answer = answer;
-
+	
+		console.log(this.props.modalVisible);
     	return(
     		<div>
     			<Row style={{marginTop: '18px'}} type = "flex">
@@ -102,10 +135,11 @@ class ExerciseSample extends React.Component {
 				      	})
 				      }
 				    </Select>
+				    <Button onClick={this.props.modalOpen}>添加样本</Button>
 				</Row>
     			<Row style={{marginTop: '18px'}} type = "flex">
-    				<Button onClick={() => this.refreshSampleKey}>检查参数</Button>
-					<Button>单题保存</Button>
+    				<Button onClick={this.refreshSampleKey}>检查参数</Button>
+					<Button onClick={this.props.updateOneSample(exercise_sample)}>保存</Button>
 				</Row>
 				<Row>
 					<Col span={12}>
@@ -115,6 +149,14 @@ class ExerciseSample extends React.Component {
 						<ExerciseView exercise={exercise} sample={sample}/>
 					</Col>	
 				</Row>
+				<Modal title="添加样本"
+		          visible={this.props.modalVisible}
+		          onOk={this.props.modalCancel}
+		          confirmLoading={this.props.isLoading}
+		          onCancel={this.props.modalCancel}
+		        >
+		          {this.renderNewSample()}
+		        </Modal>
     		</div>
     	);
     }
@@ -130,6 +172,7 @@ export default connect(state => {
   	sample_list: newState.sample_list,
   	sample_select: newState.sample_select,
   	sample_key: newState.sample_key,
+  	modalVisible: newState.modalVisible
   }
 }, action)(ExerciseSample);
 

@@ -20,7 +20,6 @@ export default class Tex extends React.Component {
   }
 
   replaceSample(content, sample){
-    console.log(sample);
     var new_content = content;
     if(sample){
       new_content = content.replace(/(\@.*?\@)/g, function(word){
