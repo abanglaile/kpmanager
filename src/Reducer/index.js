@@ -20,7 +20,6 @@ var choiceImgAnswer = [
             {url: '', correct: false},
             {url: '', correct: false},
         ];
->>>>>>> origin/master
 const defaultlState = Immutable.fromJS({
         exercise : {
             exercise_id : 0,
