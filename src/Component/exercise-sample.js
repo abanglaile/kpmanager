@@ -80,6 +80,71 @@ class ExerciseSample extends React.Component {
 		return sample_rows;
 	}
 
+	renderAnswerSample(){
+		var {sample_list, sample_select} =  this.props;
+		console.log("sample_list[sample_select]:"+ JSON.stringify(sample_list));
+		const { exercise_type } = this.props.exercise;
+		var {answer} = sample_list[sample_select];
+		var answerRow = [];
+		var isDisabled = false;
+		switch(exercise_type){
+			//填空题
+		    case 0:
+		    	isDisabled = answer.length <= 1 ? true : false;
+		    	answerRow = answer.map((item, i) => {
+					return(
+						<Row className="choice_row" gutter={16} type="flex" justify="space-between">
+		                    <Col span={12}>
+		                        <Input className="edit_choice_input" value={item.value} onChange={(e) => this.props.blankInputChange(e.target.value, i)} rows={1} />
+		                    </Col>
+		                    <Col span={12}>
+		                        <Tex content={item.value} />
+		                    </Col>
+		                </Row>
+					);
+		    	});
+		    	break;
+			//文字选择题
+			case 1:
+				isDisabled = answer.length <=2 ? true : false;
+				answerRow = answer.map((item, i) => {
+		            return(
+		                <Row className="choice_row" gutter={16} type="flex" justify="space-between">
+		                    <Col span={12}>
+		                        <Checkbox className="edit_choice_select" checked={item.correct} onChange={(e) => this.props.choiceSelectChange(i)} />
+		                        <Input className="edit_choice_input" value={item.value} onChange={(e) => this.props.choiceInputChange(e.target.value, i)} rows={1} />
+		                    </Col>
+		                    <Col span={12}>
+		                        <Checkbox className="edit_choice_select" checked={item.correct} />
+		                        <Tex content={item.value} />
+		                    </Col>
+		                </Row>
+		            );
+		        });
+		        break;
+		    case 2:
+		    	//图片选择题
+				answerRow = answer.map((item, i) => {
+		            return(
+		                <Row gutter={16} type="flex" justify="space-between">
+		                    <Col span={12}>
+		                        <Checkbox className="edit_choice_select" checked={item.correct} onChange={(e) => this.props.choiceImgSelectChange(i)} />
+		                        <ImgUpload button="Option_Img" onRemove={() => this.props.choiceImgRemove(i)} onChange={file => this.props.answerImgChange(i, file.url)} />
+		                    </Col>
+		                    <Col span={12}>
+		                        <Checkbox className="edit_choice_select" checked={item.correct} />
+		                        <img src={item.url} height='100' />
+		                    </Col>
+		                </Row>
+		                );
+		        });
+		        break;
+		    default:
+		    	break;
+		}
+		return answerRow;
+	}
+
     
     render(){
     	var answer = this.props.choiceAnswer;
@@ -90,7 +155,7 @@ class ExerciseSample extends React.Component {
 			exercise_sample = sample_list[sample_select];
 			sample = exercise_sample.sample;
 		}
-		let exercise = this.props.exercise;
+		let exercise = this.props.exercise;		
 	
 		console.log(this.props.modalVisible);
     	return(
@@ -109,6 +174,7 @@ class ExerciseSample extends React.Component {
     				<Button onClick={this.refreshSampleKey}>检查参数</Button>
 					<Button onClick={() => this.props.updateOneSample(exercise_sample)}>保存</Button>
 				</Row>
+				{this.renderAnswerSample()}
 				<Row>
 					<Col span={12}>
 						{this.renderSample()}
