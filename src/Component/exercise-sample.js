@@ -15,7 +15,7 @@ class ExerciseSample extends React.Component {
 	constructor(props) { 
 	    super(props);
 	    // console.log('props.content:'+props.content);
-	    this.state = {sample: {}};
+	    this.state = {exercise_sample: {}};
   	}
 	// componentDidMount(){
  //    	console.log(this.props.params.exercise_id);
@@ -70,7 +70,7 @@ class ExerciseSample extends React.Component {
 		            <Input value={this.state.sample[key] ? this.state.sample[key] : ''} 
 			            addonBefore={key}
 			            onChange={(e) => {
-			            	this.state.sample[key] = e.target.value;
+			            	this.state.exercise_sample.sample[key] = e.target.value;
 			            	this.setState({samlpe: this.state.sample});
 			            }}
 		            />
@@ -78,6 +78,13 @@ class ExerciseSample extends React.Component {
 			);
 		}
 		return sample_rows;
+	}
+
+	addSample(){
+		var {sample_list} =  this.props;
+		let exercise_sample = this.state.exercise_sample;
+		exercise_sample.sample_index = sample_list.length;
+		this.props.addOneSample(exercise_sample);
 	}
 
     

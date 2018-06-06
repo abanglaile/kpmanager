@@ -33,6 +33,7 @@ class ExerciseEditView extends React.Component {
     	const link2 = "/kpmanager/breakdown/" + this.props.params.exercise_id;
       const link3 = "/kpmanager/sample/" + this.props.params.exercise_id;
       const link4 = "/kpmanager/exerciseViewByKp";
+      const link5 = "/kpmanager/image_manager";
       const {exercise_id, menu_state} = this.props;
     	var selectKeys = [menu_state];
       console.log(selectKeys);
