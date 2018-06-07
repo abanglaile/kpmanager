@@ -214,12 +214,32 @@ export const exerciseTypeChange = (exercise_type) => {
     }
 }
 
-//更新题目选择输入
-export const choiceInputChange = (value, i) => {
+//更新题目答案输入包括选择和填空
+export const answerInputChange = (value, i) => {
     return {
-        type: 'CHANGE_CHOICE_INPUT',
+        type: 'CHANGE_ANSWER_INPUT',
         value,
         i,
+    }
+}
+
+//更新SAMPLE中参数值
+export const sampleInputChange = (value, key, sample_select) => {
+    return {
+        type: 'CHANGE_SAMPLE_INPUT',
+        value,
+        key,
+        sample_select,
+    }
+}
+
+//更新参数题目答案
+export const sampleAnswerChange = (value, i, sample_select) => {
+    return {
+        type: 'CHANGE_SAMPLE_ANSWER',
+        value,
+        i,
+        sample_select,
     }
 }
 
@@ -231,11 +251,11 @@ export const choiceSelectChange = (i) => {
     }
 }
 
-//更新填空答案
-export const blankInputChange = (value, i) => {
+//更新参数题目选项答案
+export const choiceSampleSelectChange = (i,sample_select) => {
     return {
-        type: 'CHANGE_BLANK_INPUT',
-        value,
+        type: 'CHANGE_CHOICE_SAMPLE_SELECT',
+        sample_select,
         i,
     }
 }
@@ -248,11 +268,29 @@ export const addAnswer = (exercise_type) => {
     }
 }
 
+//增加参数题答案
+export const addSampleAnswer = (exercise_type,sample_select) => {
+    return {
+        type: 'ADD_SAMPLE_ANSWER',
+        exercise_type: exercise_type,
+        sample_select : sample_select,
+    }
+}
+
 //删除答案
 export const delAnswer = (exercise_type) => {
     return {
         type: 'DEL_ANSWER',
         exercise_type: exercise_type,
+    }
+}
+
+//删除参数题答案
+export const delSampleAnswer = (exercise_type,sample_select) => {
+    return {
+        type: 'DEL_SAMPLE_ANSWER',
+        exercise_type: exercise_type,
+        sample_select : sample_select,
     }
 }
 
@@ -266,10 +304,14 @@ export const answerImgChange = (i, url) => {
     }
 }
 
-export const choiceImgSelectChange = (i) => {
+//更新参数答案图片url
+export const answerSampleImgChange = (i, sample_select, url) => {
+    console.log(url);
     return {
-        type: 'CHANGE_CHOICE_IMG_SELECT',
+        type: 'CHANGE_CHOICE_SAMPLE_IMG',
         i,
+        sample_select,
+        url,
     }
 }
 
@@ -277,6 +319,14 @@ export const choiceImgRemove = (i) => {
     return {
         type: 'REMOVE_CHOICE_IMG',
         i,
+    }
+}
+//删除图片答案选项
+export const choiceSampleImgRemove = (i, sample_select) => {
+    return {
+        type: 'REMOVE_CHOICE_SAMPLE_IMG',
+        i,
+        sample_select,
     }
 }
 
@@ -400,10 +450,18 @@ const uploadExerciseStart = () => {
 }
 
 //获取题目成功
-const uploadExerciseSuccess = (exercise_id) => {
+ const uploadExerciseSuccess = (exercise_id) => {
   return {
         type: 'UPLOAD_EXERCISE_SUCCESS',
         exercise_id,
+    }
+}
+
+//新增exercise_sample 到 list 中
+export const addInSampleList = (exercise_sample) => {
+  return {
+        type: 'ADD_IN_SAMPLE_LIST',
+        exercise_sample,
     }
 }
 
@@ -469,7 +527,7 @@ export const addOneSample = (exercise_sample) => {
     return dispatch => {
         return axios.post(url,{exercise_sample: exercise_sample})
         .then(function (response) {
-            // dispatch(addOneSampleSuccess(response.data.exercise_id));
+            dispatch(getSampleList(exercise_sample.exercise_id));
         })
         .catch(function (error) {
             console.log(error);
@@ -479,10 +537,14 @@ export const addOneSample = (exercise_sample) => {
 
 //更新一组题目参数
 export const updateOneSample = (exercise_sample) => {
+    console.log("updateOneSample exercise_sample ",JSON.stringify(exercise_sample));
     let url = target + '/klmanager/updateOneSample';
+    exercise_sample.sample = JSON.stringify(exercise_sample.sample);
+    exercise_sample.answer = JSON.stringify(exercise_sample.answer);
     return dispatch => {
         return axios.post(url,{exercise_sample})
         .then(function (response) {
+            alert("保存成功！");
             // dispatch(addOneSampleSuccess(response.data.exercise_id));
         })
         .catch(function (error) {
@@ -497,7 +559,7 @@ export const updateAllSample = (sample_list) => {
     return dispatch => {
         return axios.post(url,{sample_list: sample_list})
         .then(function (response) {
-            // dispatch(addOneSampleSuccess(response.data.exercise_id));
+            dispatch(getSampleList(sample_list[0].exercise_id));
         })
         .catch(function (error) {
             console.log(error);
@@ -505,6 +567,22 @@ export const updateAllSample = (sample_list) => {
     }     
 }
 
+export const deleteSampleField = (key, sample_select) => {
+    return (dispatch, getState) =>{
+        alert("将删除所有样本的"+key+"项！");
+        var {sample_list} = getState().exerciseData.toJS();
+        console.log("sample_list before",JSON.stringify(sample_list));
+        for(var i=0;i<sample_list.length;i++){
+            delete sample_list[i].sample[key];
+            sample_list[i].sample = JSON.stringify(sample_list[i].sample);
+            sample_list[i].answer = JSON.stringify(sample_list[i].answer);
+        }
+        console.log("sample_list after",JSON.stringify(sample_list));
+        dispatch(updateAllSample(sample_list));
+        
+    }
+       
+}
 
 //upload Exercise
 export const uploadExercise = () => {

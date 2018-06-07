@@ -3,6 +3,8 @@ import Immutable from 'immutable';
 const breakdown = [{sn: 1, presn: 0, kpid: -1, kpname: '', sn_rating: 500, checked: false, content:''}];
 
 const sample_list = [{sample : {a:1,b:2}, 
+                     exercise_id : 1,
+                     exercise_type : 1,
                      sample_index : 1, 
                      answer : [{value:1,correct:true}], 
                      title_img_url : '', 
@@ -28,12 +30,11 @@ const defaultlState = Immutable.fromJS({
             title : '',
             title_img_url : '',
             title_audio_url : '',
-            answer : [],
+            answer : choiceAnswer,
             exercise_rating: 500,
             breakdown: [], 
         },
 
-        modalViisble: false,
 		isLoading: false,
         menu_state: '1',
         course: [],
@@ -75,6 +76,8 @@ export const exerciseData = (state = defaultlState, action = {}) => {
             return state.set('sample_key', Immutable.fromJS(action.totalkey_json));
         case 'SAMPLE_SELECT':
             return state.set('sample_select', action.sample_select);
+        case 'ADD_IN_SAMPLE_LIST':
+            return state.update('sample_list', list =>list.push(Immutable.fromJS(action.exercise_sample)));
         case 'GET_COURSE_SUCCESS':
             return state.set('course', Immutable.fromJS(action.json));
         case 'COURSE_SELECT':
@@ -91,10 +94,12 @@ export const exerciseData = (state = defaultlState, action = {}) => {
             return state.setIn(['exercise','title_audio_url'], '');
         case 'CHANGE_CHOICE_IMG':
             return state.setIn(['exercise','answer', action.i, 'url'], action.url);
-        case 'CHANGE_CHOICE_IMG_SELECT':
-            return state.updateIn(['exercise','answer', action.i, 'correct'], correct => !correct);
+        case 'CHANGE_CHOICE_SAMPLE_IMG':
+            return state.setIn(['sample_list',action.sample_select, 'answer', action.i, 'url'], action.url);
         case 'REMOVE_CHOICE_IMG':
             return state.setIn(['exercise','answer', action.i, 'url'], '');
+        case 'REMOVE_CHOICE_SAMPLE_IMG':
+            return state.setIn(['sample_list',action.sample_select, 'answer', action.i, 'url'], '');
     	case 'CHANGE_EXERCISE_TYPE':
             if(action.exercise_type == 0){
                 return state.setIn(['exercise','exercise_type'], action.exercise_type)
@@ -106,22 +111,37 @@ export const exerciseData = (state = defaultlState, action = {}) => {
                 return state.setIn(['exercise','exercise_type'], action.exercise_type)
                             .setIn(['exercise','answer'],Immutable.fromJS(choiceImgAnswer));
             }
-    	case 'CHANGE_CHOICE_INPUT':
+    	case 'CHANGE_ANSWER_INPUT':
     		return state.setIn(['exercise','answer', action.i, 'value'], action.value);
+        case 'CHANGE_SAMPLE_ANSWER':
+            return state.setIn(['sample_list', action.sample_select, 'answer', action.i, 'value'], action.value);
     	case 'CHANGE_CHOICE_SELECT':
     		return state.updateIn(['exercise','answer', action.i, 'correct'], correct => !correct);
-    	case 'CHANGE_BLANK_INPUT':
-    	 	return state.setIn(['exercise','answer', action.i, 'value'], action.value);
-    	case 'ADD_ANSWER':
+    	case 'CHANGE_CHOICE_SAMPLE_SELECT':
+            return state.updateIn(['sample_list',action.sample_select, 'answer', action.i, 'correct'], correct => !correct);
+    	case 'CHANGE_SAMPLE_INPUT':
+            // console.log("sample_list.sample :",state.getIn(['sample_list',action.sample_select,'sample',action.key]));
+            return state.setIn(['sample_list',action.sample_select, 'sample', action.key], action.value);
+        case 'ADD_ANSWER':
     		//选择题
     		if(action.exercise_type == 1){
-    			return state.updateIn(['exercise','answer'], list =>list.push({value: '', correct: false}));
+    			return state.updateIn(['exercise','answer'], list =>list.push(Immutable.fromJS({value: '', correct: false})));
     		}else if(action.exercise_type == 0){
     			//填空题
-    			return state.updateIn(['exercise','answer'], list => list.push({value: ''}));
+    			return state.updateIn(['exercise','answer'], list => list.push(Immutable.fromJS({value: ''})));
     		}
+        case 'ADD_SAMPLE_ANSWER':
+            //选择题
+            if(action.exercise_type == 1 || action.exercise_type == 2){
+                return state.updateIn(['sample_list',action.sample_select, 'answer'], list =>list.push(Immutable.fromJS({value: '', correct: false})));
+            }else if(action.exercise_type == 0){
+                //填空题
+                return state.updateIn(['sample_list',action.sample_select, 'answer'], list => list.push(Immutable.fromJS({value: ''})));
+            }
     	case 'DEL_ANSWER':
-    			return state.updateIn(['exercise','answer'], list => list.pop());	
+    		return state.updateIn(['exercise','answer'], list => list.pop());
+        case 'DEL_SAMPLE_ANSWER':
+            return state.updateIn(['sample_list',action.sample_select, 'answer'], list => list.pop());
     	case 'CHANGE_INPUT_BREAKDOWN':
     		return state.setIn(['exercise','breakdown', action.i, 'content'], action.content);
     	case 'CHANGE_CHECK_BREAKDOWN':

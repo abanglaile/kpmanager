@@ -25,7 +25,7 @@ class ExerciseAnswer extends React.Component {
 					return(
 						<Row className="choice_row" gutter={16} type="flex" justify="space-between">
 		                    <Col span={12}>
-		                        <Input className="edit_choice_input" value={item.value} onChange={(e) => this.props.blankInputChange(e.target.value, i)} rows={1} />
+		                        <Input className="edit_choice_input" value={item.value} onChange={(e) => this.props.answerInputChange(e.target.value, i)} rows={1} />
 		                    </Col>
 		                    <Col span={12}>
 		                        <Tex content={item.value} />
@@ -42,7 +42,7 @@ class ExerciseAnswer extends React.Component {
 		                <Row className="choice_row" gutter={16} type="flex" justify="space-between">
 		                    <Col span={12}>
 		                        <Checkbox className="edit_choice_select" checked={item.correct} onChange={(e) => this.props.choiceSelectChange(i)} />
-		                        <Input className="edit_choice_input" value={item.value} onChange={(e) => this.props.choiceInputChange(e.target.value, i)} rows={1} />
+		                        <Input className="edit_choice_input" value={item.value} onChange={(e) => this.props.answerInputChange(e.target.value, i)} rows={1} />
 		                    </Col>
 		                    <Col span={12}>
 		                        <Checkbox className="edit_choice_select" checked={item.correct} />
@@ -58,7 +58,7 @@ class ExerciseAnswer extends React.Component {
 		            return(
 		                <Row gutter={16} type="flex" justify="space-between">
 		                    <Col span={12}>
-		                        <Checkbox className="edit_choice_select" checked={item.correct} onChange={(e) => this.props.choiceImgSelectChange(i)} />
+		                        <Checkbox className="edit_choice_select" checked={item.correct} onChange={(e) => this.props.choiceSelectChange(i)} />
 		                        <ImgUpload button="Option_Img" onRemove={() => this.props.choiceImgRemove(i)} onChange={file => this.props.answerImgChange(i, file.url)} />
 		                    </Col>
 		                    <Col span={12}>
