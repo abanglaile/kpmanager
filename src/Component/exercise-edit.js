@@ -68,13 +68,13 @@ class ExerciseEditView extends React.Component {
                   <Menu.Item key="4">
                     <Link to={ link4 } >
                     <Icon type="mail" />
-                      图片管理
+                      录题情况
                     </Link>
                   </Menu.Item>
-                  <Menu.Item key="4">
-                    <Link to={ link4 } >
+                  <Menu.Item key="5">
+                    <Link to={ link5 } >
                     <Icon type="mail" />
-                      录题情况
+                      图片管理
                     </Link>
                   </Menu.Item>
        				</Menu>
