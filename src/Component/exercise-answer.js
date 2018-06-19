@@ -56,10 +56,10 @@ class ExerciseAnswer extends React.Component {
 		    	//图片选择题
 				answerRow = answer.map((item, i) => {
 		            return(
-		                <Row gutter={16} type="flex" justify="space-between">
+		                <Row className="choice_row" gutter={16} type="flex" justify="space-between">
 		                    <Col span={12}>
 		                        <Checkbox className="edit_choice_select" checked={item.correct} onChange={(e) => this.props.choiceSelectChange(i)} />
-		                        <ImgUpload button="Option_Img" onRemove={() => this.props.choiceImgRemove(i)} onChange={file => this.props.answerImgChange(i, file.url)} />
+		                        <Input className="edit_choice_input" value={item.url} onChange={(e) => this.props.answerImgChange( i, e.target.value )} rows={1} />
 		                    </Col>
 		                    <Col span={12}>
 		                        <Checkbox className="edit_choice_select" checked={item.correct} />
@@ -75,7 +75,7 @@ class ExerciseAnswer extends React.Component {
 
     	return(
     		<div>
-    			<Row style={{marginTop: '10px'}} type = "flex">
+    			<Row style={{marginTop: '10px',marginBottom:"10px"}} type = "flex">
     				<Select value={exercise_type.toString()} style={{ width: '120px' }} onChange={e => this.props.exerciseTypeChange(e)}>
 						<Option value="0">填空题</Option>
 						<Option value="1">文字选择题</Option>
@@ -92,6 +92,7 @@ class ExerciseAnswer extends React.Component {
 
 export default connect(state => {
   var newState = state.exerciseData.toJS();
+  console.log("newState:",newState);
   return {
   	exercise : newState.exercise,
   }

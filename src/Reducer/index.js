@@ -2,13 +2,6 @@ import Immutable from 'immutable';
 
 const breakdown = [{sn: 1, presn: 0, kpid: -1, kpname: '', sn_rating: 500, checked: false, content:''}];
 
-const sample_list = [{sample : {a:1,b:2}, 
-                     exercise_id : 1,
-                     exercise_type : 1,
-                     sample_index : 1, 
-                     answer : [{value:1,correct:true}], 
-                     title_img_url : '', 
-                     title_audio_url : ''}];
 var blankAnswer = [{value: ''}];
 var choiceAnswer = [
             {value: '', correct: false}, 
@@ -22,7 +15,14 @@ var choiceImgAnswer = [
             {url: '', correct: false},
             {url: '', correct: false},
         ];
-        
+var sample_list = [{sample : {}, 
+                     exercise_id : 0,
+                     exercise_type : 1,
+                     sample_index : 0, 
+                     answer : choiceAnswer, 
+                     title_img_url : '', 
+                     title_audio_url : ''}];
+
 const defaultlState = Immutable.fromJS({
         exercise : {
             exercise_id : 0,
@@ -32,7 +32,7 @@ const defaultlState = Immutable.fromJS({
             title_audio_url : '',
             answer : choiceAnswer,
             exercise_rating: 500,
-            breakdown: [], 
+            breakdown: breakdown, 
         },
 
 		isLoading: false,
@@ -40,7 +40,7 @@ const defaultlState = Immutable.fromJS({
         course: [],
         sample_list: [],
         sample_key: {},
-        sample_select: 0,
+        sample_select: null,
 	});
 
 //手动获取数据
@@ -86,20 +86,12 @@ export const exerciseData = (state = defaultlState, action = {}) => {
     		return state.setIn(['exercise','title'], action.title);
         case 'CHANGE_TITLE_IMG':
             return state.setIn(['exercise','title_img_url'], action.url);
-        case 'REMOVE_TITLE_IMG':
-            return state.setIn(['exercise','title_img_url'], '');
         case 'CHANGE_TITLE_AUDIO':
             return state.setIn(['exercise','title_audio_url'], action.url);
-        case 'REMOVE_TITLE_AUDIO':
-            return state.setIn(['exercise','title_audio_url'], '');
         case 'CHANGE_CHOICE_IMG':
             return state.setIn(['exercise','answer', action.i, 'url'], action.url);
         case 'CHANGE_CHOICE_SAMPLE_IMG':
             return state.setIn(['sample_list',action.sample_select, 'answer', action.i, 'url'], action.url);
-        case 'REMOVE_CHOICE_IMG':
-            return state.setIn(['exercise','answer', action.i, 'url'], '');
-        case 'REMOVE_CHOICE_SAMPLE_IMG':
-            return state.setIn(['sample_list',action.sample_select, 'answer', action.i, 'url'], '');
     	case 'CHANGE_EXERCISE_TYPE':
             if(action.exercise_type == 0){
                 return state.setIn(['exercise','exercise_type'], action.exercise_type)
@@ -113,6 +105,10 @@ export const exerciseData = (state = defaultlState, action = {}) => {
             }
     	case 'CHANGE_ANSWER_INPUT':
     		return state.setIn(['exercise','answer', action.i, 'value'], action.value);
+        case 'CHANGE_SAMPLE_IMG':
+            return state.setIn(['sample_list', action.sample_select, 'title_img_url'], action.value);
+        case 'CHANGE_SAMPLE_AUDIO':
+            return state.setIn(['sample_list', action.sample_select, 'title_audio_url'], action.value); 
         case 'CHANGE_SAMPLE_ANSWER':
             return state.setIn(['sample_list', action.sample_select, 'answer', action.i, 'value'], action.value);
     	case 'CHANGE_CHOICE_SELECT':

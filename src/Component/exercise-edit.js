@@ -42,7 +42,6 @@ class ExerciseEditView extends React.Component {
     			<Sider width={200} style={{ background: '#fff' }}>
 			        <Menu
 			          mode="inline"
-			          defaultSelectedKeys={['1']}
                 selectedKeys={selectKeys}
 			          style={{ height: '100%' }}
 			        >
@@ -71,7 +70,7 @@ class ExerciseEditView extends React.Component {
                       图片管理
                     </Link>
                   </Menu.Item>
-                  <Menu.Item key="4">
+                  <Menu.Item key="5">
                     <Link to={ link4 } >
                     <Icon type="mail" />
                       录题情况

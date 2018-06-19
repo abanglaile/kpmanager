@@ -6,10 +6,10 @@ import Tex from './renderer.js';
 import QueueAnim from 'rc-queue-anim';
 import NetUtil from '../utils/NetUtil';
 import Config from '../utils/Config';
-
 import *as action from '../Action/';
 import {connect} from 'react-redux';
 
+const { TextArea } = Input;
 const Option = Select.Option;
 
 let target = Config.server_url;
@@ -156,11 +156,11 @@ class ExerciseEditBreakdown extends React.Component {
     				</Row>
     				<Row type="flex" gutter={16} justify="space-between">
 		    			<Col span={12}>
-		    				<Input 
+		    				<TextArea 
+		    					autosize={{ minRows: 15}} 
 		    					style = {{font: "14px/1.4 proxima-nova, Helvetica Neue, Arial, Helvetica, sans-serif" }}
 					        	type="textarea" 
 					        	onChange={(e)=>this.props.inputChangeBreakdown(e.target.value, i)} 
-					        	rows={20}
 								value={item.content}
 					    	/>
 					    	<div className="chose_kp">
@@ -191,7 +191,7 @@ class ExerciseEditBreakdown extends React.Component {
 						    
 		    			</Col>
 						<Col span={12}>
-							<div style = {{ height: '380px', padding: '5px', border: '1px solid #d9d9d9', background: '#fff'}}>
+							<div style = {{ height: '295px', padding: '5px', border: '1px solid #d9d9d9', background: '#fff'}}>
 								<Tex content={item.content} />
 							</div>
 							<div style = {{ width: '250px', marginTop: '5px', padding: '5px', border: '1px solid #d9d9d9', background: '#fff'}}>
@@ -219,7 +219,7 @@ class ExerciseEditBreakdown extends React.Component {
 					<Button disabled = {isDisabled} onClick={e => this.props.uploadBreakdown(exercise_id, breakdown)}>更新答案</Button>
 					{this.renderCourseSelect()}
 				</div>
-				<QueueAnim component="ul" type={['right', 'left']} leaveReverse>
+				<QueueAnim type={['right', 'left']} leaveReverse>
 	            	{editunit}
 	            </QueueAnim>
 			</div>	

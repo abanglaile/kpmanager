@@ -12,11 +12,32 @@ const Option = Select.Option;
 
 class ExerciseSample extends React.Component {
 
-	constructor(props) { 
-	    super(props);
-	    // console.log('props.content:'+props.content);
-	    
-  	}
+  	constructor(props) { 
+      super(props);
+      this.state = {
+        title_img_width: "auto",
+        title_img_height: "3rem",
+        answer_img_width: "auto",
+      	answer_img_height: "3rem",
+      };
+    }
+
+    componentDidMount(){
+    	this.props.updateMenu('3');
+    }
+
+    titleImageLoaded(){
+      console.log(this.title_img.width, window.innerWidth);
+      if(this.title_img.width > window.innerWidth){
+        this.setState({title_img_width: "90%", title_img_height: "auto"})
+      }
+    }
+
+    answerImageLoaded(){
+	    if(this.answer_img.width > window.innerWidth){
+	      this.setState({answer_img_width: "90%", answer_img_height: "auto"})
+	    }
+	}
 	// componentDidMount(){
  //    	console.log(this.props.params.exercise_id);
  //    	if(this.props.params.exercise_id > 0){
@@ -62,17 +83,61 @@ class ExerciseSample extends React.Component {
 		}
 		
 	}
-
+	
+	renderMediaTitleSample(){
+		var {sample_list, sample_select} =  this.props;
+		const {title_img_width, title_img_height} = this.state;
+		if(sample_list && sample_list[sample_select]){
+			var media_title = [];
+			var {title_img_url, title_audio_url} = sample_list[sample_select];
+			media_title.push(
+			  <div>	
+				<Row gutter={16} style={{marginTop:"15px",marginBottom:"15px"}}>
+					<Col span={12}>
+					  <Input 
+		                  addonBefore="Title_Img"
+		                  value={title_img_url} 
+		                  onChange={(e) => this.props.titleSampleImgChange( e.target.value , sample_select)}
+		                />  
+		              </Col>
+					<Col span={12}>
+				    	<img src={title_img_url} height="100px"
+		                  ref={element => {this.title_img = element;}}
+		                  onLoad = {() => this.titleImageLoaded()} 
+		                  style={{width: title_img_width, height: title_img_height}}
+		                />
+          			</Col>
+				</Row>
+	            <Row gutter={16}>
+	              <Col span={12}>
+	                <Input 
+	                  addonBefore="Title_Audio"
+	                  value={title_audio_url}
+	                  onChange={(e) => this.props.titleSampleAudioChange( e.target.value , sample_select)}
+	                />               
+	              </Col>
+	              <Col span={12}>
+	                <audio src={title_audio_url} controls="controls">
+	                    Your browser does not support the audio element.
+	                </audio>
+	              </Col>
+	            </Row>
+	          </div>	  
+			);
+			return media_title;
+		}
+	}
 
 
 	renderAnswerSample(){
 		var {sample_list, sample_select} =  this.props;
+		const {answer_img_width, answer_img_height} = this.state;
 		console.log("sample_list[sample_select]:"+ JSON.stringify(sample_list));
 		if(sample_list && sample_list[sample_select]){
 			var {answer, exercise_type} = sample_list[sample_select];
 			var answerRow = [];
 			answerRow.push(
-				<Row style={{marginTop: '18px'}} type = "flex">
+				<Row style={{marginTop: '18px',marginBottom: '10px'}} type = "flex">
 					<Button icon="plus" onClick={()=>this.props.addSampleAnswer(exercise_type,sample_select)}></Button>
 					<Button icon="minus" onClick={()=>this.props.delSampleAnswer(exercise_type,sample_select)}></Button>
 				</Row>);
@@ -116,11 +181,14 @@ class ExerciseSample extends React.Component {
 			                <Row gutter={16} type="flex" justify="space-between">
 			                    <Col span={12}>
 			                        <Checkbox className="edit_choice_select" checked={item.correct} onChange={(e) => this.props.choiceSampleSelectChange(i,sample_select)} />
-			                        <ImgUpload button="Option_Img" onRemove={() => this.props.choiceSampleImgRemove(i,sample_select)} onChange={file => this.props.answerSampleImgChange(i,sample_select,file.url)} />
+			                        <Input className="edit_choice_input" value={item.value} onChange={(e) => this.props.sampleAnswerChange(e.target.value, i, sample_select)} rows={1} />
 			                    </Col>
 			                    <Col span={12}>
 			                        <Checkbox className="edit_choice_select" checked={item.correct} />
-			                        <img src={item.value} height='100' />
+			                        <img src={item.value} ref={element => {this.answer_img = element;}} 
+                    					onLoad = {() => this.answerImageLoaded()} 
+                    					style={{height: answer_img_height, width: answer_img_width}}
+                    				/>
 			                    </Col>
 			                </Row>
 			                );
@@ -160,6 +228,8 @@ class ExerciseSample extends React.Component {
 				            {value: '', correct: false},
 				            {value: '', correct: false}
 				        ]),
+				        title_img_url : '',
+						title_audio_url : '',
 					}
 				}else if(exercise_type == 0){
 					exercise_sample = {
@@ -168,6 +238,8 @@ class ExerciseSample extends React.Component {
 						sample_index : sample_list.length ,
 						exercise_type : exercise_type,
 						answer : JSON.stringify([{value: ''}]),
+						title_img_url : '',
+						title_audio_url : '',
 					}
 				}
 				// console.log("exercise_sample :",JSON.stringify(exercise_sample));
@@ -187,6 +259,8 @@ class ExerciseSample extends React.Component {
     render(){
 		var {sample_list, sample_select} =  this.props;
 		let sample = {}, exercise_sample;
+		console.log("sample_list:   ",sample_list);
+		console.log("sample_list.length:   ",sample_list.length);
 		if(sample_list && sample_list[sample_select]){
 			exercise_sample = sample_list[sample_select];
 			sample = exercise_sample.sample;
@@ -210,8 +284,9 @@ class ExerciseSample extends React.Component {
     				<Button onClick={() => this.props.getSampleKey(exercise)}>检查参数</Button>
 					<Button onClick={() => this.props.updateOneSample(exercise_sample)}>保存</Button>
 				</Row>
+				{this.renderMediaTitleSample()}
 				{this.renderAnswerSample()}
-				<Row>
+				<Row gutter={16} style={{marginTop:"20px"}} >
 					<Col span={12}>
 						{this.renderSample()}
 					</Col>
@@ -219,10 +294,8 @@ class ExerciseSample extends React.Component {
 						<ExerciseView exercise={exercise} sample={sample}/>
 					</Col>	
 				</Row>
-
 				<Modal>
 		        </Modal>
-
     		</div>
     	);
     }

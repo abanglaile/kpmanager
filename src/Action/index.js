@@ -233,6 +233,24 @@ export const sampleInputChange = (value, key, sample_select) => {
     }
 }
 
+//更新参数题图（img）
+export const titleSampleImgChange = (value, sample_select) => {
+    return {
+        type: 'CHANGE_SAMPLE_IMG',
+        value,
+        sample_select,
+    }
+}
+
+//更新参数题图（audio）
+export const titleSampleAudioChange = (value, sample_select) => {
+    return {
+        type: 'CHANGE_SAMPLE_AUDIO',
+        value,
+        sample_select,
+    }
+}
+
 //更新参数题目答案
 export const sampleAnswerChange = (value, i, sample_select) => {
     return {
@@ -296,7 +314,6 @@ export const delSampleAnswer = (exercise_type,sample_select) => {
 
 //更新答案图片url
 export const answerImgChange = (i, url) => {
-    console.log(url);
     return {
         type: 'CHANGE_CHOICE_IMG',
         i,
@@ -315,20 +332,6 @@ export const answerSampleImgChange = (i, sample_select, url) => {
     }
 }
 
-export const choiceImgRemove = (i) => {
-    return {
-        type: 'REMOVE_CHOICE_IMG',
-        i,
-    }
-}
-//删除图片答案选项
-export const choiceSampleImgRemove = (i, sample_select) => {
-    return {
-        type: 'REMOVE_CHOICE_SAMPLE_IMG',
-        i,
-        sample_select,
-    }
-}
 
 //更新题目标题
 export const titleChange = (title) => {
@@ -346,12 +349,6 @@ export const titleImgChange = (url) => {
     }
 }
 
-//删除题目图片url
-export const titleImgRemove = () => {
-    return {
-        type: 'REMOVE_TITLE_IMG',
-    }
-}
 
 //更新题目audio url
 export const titleAudioChange = (url) => {
@@ -361,12 +358,6 @@ export const titleAudioChange = (url) => {
     }
 }
 
-//删除题目音频url
-export const titleAudioRemove = () => {
-    return {
-        type: 'REMOVE_TITLE_AUDIO',
-    }
-}
 
 //更新breakdown_input
 export const inputChangeBreakdown = (content, i) => {
@@ -537,20 +528,27 @@ export const addOneSample = (exercise_sample) => {
 
 //更新一组题目参数
 export const updateOneSample = (exercise_sample) => {
-    console.log("updateOneSample exercise_sample ",JSON.stringify(exercise_sample));
-    let url = target + '/klmanager/updateOneSample';
-    exercise_sample.sample = JSON.stringify(exercise_sample.sample);
-    exercise_sample.answer = JSON.stringify(exercise_sample.answer);
-    return dispatch => {
-        return axios.post(url,{exercise_sample})
-        .then(function (response) {
-            alert("保存成功！");
-            // dispatch(addOneSampleSuccess(response.data.exercise_id));
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    }     
+    if(exercise_sample){
+        console.log("updateOneSample exercise_sample ",JSON.stringify(exercise_sample));
+        let url = target + '/klmanager/updateOneSample';
+        exercise_sample.sample = JSON.stringify(exercise_sample.sample);
+        exercise_sample.answer = JSON.stringify(exercise_sample.answer);
+        return dispatch => {
+            return axios.post(url,{exercise_sample})
+            .then(function (response) {
+                alert("保存成功！");
+                // dispatch(addOneSampleSuccess(response.data.exercise_id));
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        }
+    }else{
+        return dispatch => {
+            alert("请先添加样本!"); 
+        }
+    }
+
 }
 
 //批量更新所有参数
@@ -595,40 +593,40 @@ export const uploadExercise = () => {
             mask = 1;
         }
         console.log(mask);
-        switch(exercise_type){
-            case 0:
-                if(!mask && answer){
-                    for(var i = 0; i < answer.length; i++){
-                        if(!answer[i].value){
-                            mask = 2;
-                            break;
-                        }
-                    }
-                }
-                break;
-            case 1:
-                if(!mask && answer){
-                    for(var i = 0; i < answer.length; i++){
-                        if(!answer[i].value){
-                            mask = 2;
-                            break;
-                        }
-                    }
-                }
-                break;
-            case 2:
-                if(!mask && answer){
-                    for(var i = 0; i < answer.length; i++){
-                        if(!answer[i].url){
-                            mask = 2;
-                            break;
-                        }
-                    }
-                }
-                break;
-            default: 
-                break;
-        }
+        // switch(exercise_type){
+        //     case 0:
+        //         if(!mask && answer){
+        //             for(var i = 0; i < answer.length; i++){
+        //                 if(!answer[i].value){
+        //                     mask = 2;
+        //                     break;
+        //                 }
+        //             }
+        //         }
+        //         break;
+        //     case 1:
+        //         if(!mask && answer){
+        //             for(var i = 0; i < answer.length; i++){
+        //                 if(!answer[i].value){
+        //                     mask = 2;
+        //                     break;
+        //                 }
+        //             }
+        //         }
+        //         break;
+        //     case 2:
+        //         if(!mask && answer){
+        //             for(var i = 0; i < answer.length; i++){
+        //                 if(!answer[i].url){
+        //                     mask = 2;
+        //                     break;
+        //                 }
+        //             }
+        //         }
+        //         break;
+        //     default: 
+        //         break;
+        // }
 
         if(!mask && breakdown){
             for(var i = 0; i < breakdown.length; i++){

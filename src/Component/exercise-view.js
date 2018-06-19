@@ -10,7 +10,7 @@ import {connect} from 'react-redux';
 export default class ExercisesView extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {expand:false};
+		this.state = {expand:true};
 	}
 
 	handleShow(){
@@ -88,7 +88,8 @@ export default class ExercisesView extends React.Component {
         	}
         		
         	return(
-				<div className="exercise_frame">
+				<div style={{padding: "10px",
+							border: "1px solid #e9e9e9"}}>
 					<div className="exercise_id_div">
 						{exercise_id}
 					</div>
