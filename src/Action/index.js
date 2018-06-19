@@ -32,6 +32,21 @@ export const getCourse = () => {
     }
 }
 
+export const codeChange = (code) => {
+    return {
+        type: 'CODE_CHANGE',
+        code,
+    }
+}
+
+const codeRenderSuccess = (data) => {
+    return {
+        type: 'CODE_RENDER',
+        url: data.url,
+        log: data.log,
+    }
+}
+
 //开始题目数据
 const getDataStart = () => {
   return {
@@ -53,6 +68,37 @@ const getSampleListSuccess = (json) => {
         type: 'GET_SAMPLE_LIST_SUCCESS',
         json
     }
+}
+
+//获取图片成功
+const getMediaListSuccess = (json) => {
+  return {
+        type: 'GET_MEDIA_LIST_SUCCESS',
+        json
+    }
+}
+
+//获取图片成功
+const searchMediaSuccess = (media_res) => {
+  return {
+        type: 'SEARCH_MEDIA_SUCCESS',
+        media_res,
+    }
+}
+
+//搜索url
+export const searchMedia = (media_url) => {
+    let url = target + '/klmanager/searchMedia';
+    console.log(media_url);
+    return dispatch => {
+        return axios.post(url, {media_url})
+        .then(function (response) {
+            dispatch(searchMediaSuccess(response.data));
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }     
 }
 
 function getTitleParam(text){
@@ -150,7 +196,7 @@ export const courseSelect = (course_id) => {
 
 export const sampleValueChange = (sample_index, sample_key, sample_value) => {
     return {
-        type: "<SAMPLE_VALUE_></SAMPLE_VALUE_>CHANGE",
+        type: "SAMPLE_VALUE_CHANGE",
         sample_index,
         sample_key,
         sample_value,
@@ -524,6 +570,77 @@ export const addOneSample = (exercise_sample) => {
             console.log(error);
         });
     }     
+}
+
+export const codeRender = (code) => {
+    let url = target + '/klmanager/renderly';
+    return dispatch => {
+        return axios.post(url, {code: code})
+        .then(function (response) {
+            console.log(response.data);
+            dispatch(codeRenderSuccess(response.data));
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+}
+
+export const getMediaList = () => {
+    let url = target + '/klmanager/queryMediaList';
+    return dispatch => {
+        return axios.post(url, {})
+        .then(function (response) {
+            dispatch(getMediaListSuccess(response.data));
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+}
+
+export const saveTestMedia = (save_url) => {
+    let url = target + '/klmanager/saveTestMedia';
+    console.log(save_url);
+    return dispatch => {
+        return axios.post(url, {save_url})
+        .then(function (response) {
+            console.log(response.data);
+            dispatch(saveTestMediaSuccess(response.data));
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+}
+
+export const saveUrlChange = (save_url) => {
+    return{
+        type: 'SAVE_URL_CHANGE',
+        save_url,
+    }
+}
+
+export const saveModalOpen = () => {
+    let save_url = "http://opgtvzbwx.bkt.clouddn.com/" + new Date().getTime().toString() + ".png";
+    return{
+        type: 'SAVE_MODAL_OPEN',
+        save_url: save_url,
+    }
+}
+
+export const saveModalCancel = () => {
+    return{
+        type: 'SAVE_MODAL_CANCEL',
+    }
+}
+
+const saveTestMediaSuccess = (media_res) => {
+    console.log(media_res);
+    return {
+        type: 'SAVE_TEST_MEDIA',
+        media_res,
+    }
 }
 
 //更新一组题目参数
