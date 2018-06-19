@@ -42,7 +42,6 @@ class ExerciseEditView extends React.Component {
     			<Sider width={200} style={{ background: '#fff' }}>
 			        <Menu
 			          mode="inline"
-			          defaultSelectedKeys={['1']}
                 selectedKeys={selectKeys}
 			          style={{ height: '100%' }}
 			        >
