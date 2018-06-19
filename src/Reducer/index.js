@@ -43,6 +43,11 @@ const defaultlState = Immutable.fromJS({
         sample_select: null,
 	});
 
+const defaultlImageState = Immutable.fromJS({
+        test_url: "http://localhost/kpmanager/img/test.svg",
+        media_list: [],
+    });
+
 //手动获取数据
 function checkparams(sample){
     let keys = [];
@@ -168,4 +173,31 @@ export const exerciseData = (state = defaultlState, action = {}) => {
         default:
             return state;
     }
+}
+
+export const imageData = (state = defaultlImageState, action = {}) => {
+    switch(action.type){
+        case 'CODE_CHANGE':
+            return state.set('test_code', action.code);
+        case 'CODE_RENDER':
+            return state.set('test_url', action.url)
+                .set('render_log', action.log);
+        case 'SAVE_URL_CHANGE':
+            return state.set('save_url', action.save_url);
+        case 'SAVE_TEST_MEDIA':
+            return state.set('save_url', action.media_res.url)
+                .set('test_code', action.media_res.code);
+        case 'GET_MEDIA_LIST_SUCCESS':
+            return state.set('media_list', Immutable.fromJS(action.json));
+        case 'SEARCH_MEDIA_SUCCESS':
+            console.log(action.media_res);
+            return state.set('test_url', action.media_res.url).set('code', action.media_res.code);
+        case 'SAVE_MODAL_OPEN':
+            return state.set('modal_open', true).set('save_url', action.save_url);
+        case 'SAVE_MODAL_CANCEL':
+            return state.set('modal_open', false);
+        default:
+            return state;
+    }
+
 }
