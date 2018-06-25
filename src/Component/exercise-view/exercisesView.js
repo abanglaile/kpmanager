@@ -3,18 +3,20 @@ import ReactDOM from 'react-dom';
 import { Layout, Icon, Row, Col, Menu, Select,Modal,Button,Badge,Dropdown,Popconfirm,Checkbox,Form,Input} from 'antd';
 import NetUtil from '../utils/NetUtil';
 import Styles from '../styles/KpExerciseView.css';
+import ExerciseView from './exercise-view.js'
 import Tex from './renderer.js';
 import *as action from '../actions/';
 import {connect} from 'react-redux';
 import Zq_Header from '../containers/ZQ_Header';
-
+import ExerciseView from './exercise-view.js';
+import Config from '../utils/Config';
 
 const { Header, Footer, Sider, Content } = Layout;
 const { SubMenu } = Menu;
 const Option = Select.Option;
 const FormItem = Form.Item;
 
-var urlip = 'http://39.108.85.119:3000/klmanager/';
+var urlip = Config.server_url + '/klmanager/';
 
 class OneExercise extends React.Component {
 	constructor(props) {

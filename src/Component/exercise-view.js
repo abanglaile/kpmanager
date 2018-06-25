@@ -10,21 +10,96 @@ import {connect} from 'react-redux';
 export default class ExercisesView extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {expand:true};
+		this.state = {
+        	title_img_width: "auto",
+	        title_img_height: "3rem",
+	        expand:props.expand ? false : true,
+	    };
 	}
 
 	handleShow(){
 		this.setState({expand:!this.state.expand});
-
 	}
 
-	render(){
-		const {expand, display} = this.state;
-		if(this.props.exercise){
-			const {title, type, answer, breakdown, title_img_url, exercise_id} = this.props.exercise;
-			const sample = this.props.sample;
+	titleImageLoaded(){
+      console.log(this.title_img.width, window.innerWidth);
+      if(this.title_img.width > window.innerWidth){
+        this.setState({title_img_width: "90%", title_img_height: "auto"})
+      }
+    }
 
-			var steps = [];
+	render(){
+		const {expand, display, title_img_width, title_img_height} = this.state;
+		if(this.props.exercise){
+			console.log("this.props.exercise: ",this.props.exercise);
+			console.log("this.props.exercise_sample: ",this.props.exercise_sample);
+			var {title, exercise_type, answer, breakdown, title_img_url, title_audio_url, exercise_id} = this.props.exercise;
+			const exercise_sample = this.props.exercise_sample;
+			var sample;
+
+			
+        	var answerDom = [];
+        	if(exercise_sample){
+        		answer = exercise_sample.answer ? exercise_sample.answer : answer;
+        		sample = exercise_sample.sample;
+        		title_img_url = exercise_sample.title_img_url ? exercise_sample.title_img_url : title_img_url;
+        		title_audio_url = exercise_sample.title_audio_url ? exercise_sample.title_audio_url : title_audio_url;
+				
+        	}
+        	console.log("answer: ",answer);
+        	console.log("sample: ",sample);
+        	switch(exercise_type){
+	        		case 0:  
+	        			answerDom = (  //填空题答案
+							<div className="step_answer">
+								<p className="step_index">答案：&nbsp;</p>
+								{answer.map((item, i) => {
+			        				return(
+			            				<div>
+											<Tex className="step_content" content={item.value} sample={sample}/>
+			            				</div>
+			            			);
+								})}
+							</div>
+	        			);
+	        			break;
+	        		case 1:
+	        			answerDom = (  //选择题选项和答案
+							answer.map((item, i) => {
+		        				return(
+		            				<Row className="row_answer" type="flex" justify="start" align="middle">
+		            					<Col span={1}>
+											<p><Checkbox checked={expand? item.correct:0} disabled ></Checkbox></p>
+										</Col>
+		            					<Col span={18}>
+											<Tex content={item.value} sample={sample} />
+										</Col>
+		            				</Row>
+		            			);
+							})
+	        			);
+	        			break;
+	        		case 2:
+						answerDom = (  //选择题 图片选项和答案
+							answer.map((item, i) => {
+		        				return(
+		            				<Row className="row_answer" type="flex" justify="start" align="middle">
+		            					<Col span={1}>
+											<p><Checkbox checked={expand? item.correct:0} disabled ></Checkbox></p>
+										</Col>
+		            					<Col span={18}>
+											<div style={{width:130,height:60}}>
+												<img className="answer_img" src={item.url}/>
+											</div>
+										</Col>
+		            				</Row>
+		            			);
+							})
+						);
+						break;
+	        }
+
+        	var steps = [];
 			for(var j = 0; j < breakdown.length; j++) {
             	steps.push(
             	<div key={j} className="step_frame">
@@ -34,58 +109,7 @@ export default class ExercisesView extends React.Component {
             	</div>
             	);
         	}
-        	var choice = eval(answer);
-        	var answerDom = [];
-        	switch(type){
-        		case 0:  
-        			answerDom = (  //填空题答案
-						<div className="step_answer">
-							<p className="step_index">答案：&nbsp;</p>
-							{choice.map((item, i) => {
-		        				return(
-		            				<div>
-										<Tex className="step_content" content={item.value} sample={sample}/>
-		            				</div>
-		            			);
-							})}
-						</div>
-        			);
-        			break;
-        		case 1:
-        			answerDom = (  //选择题选项和答案
-						choice.map((item, i) => {
-	        				return(
-	            				<Row className="row_answer" type="flex" justify="start" align="middle">
-	            					<Col span={1}>
-										<p><Checkbox checked={expand? item.correct:0} disabled ></Checkbox></p>
-									</Col>
-	            					<Col span={18}>
-										<Tex content={item.value} sample={sample} />
-									</Col>
-	            				</Row>
-	            			);
-						})
-        			);
-        			break;
-        		case 2:
-					answerDom = (  //选择题 图片选项和答案
-						choice.map((item, i) => {
-	        				return(
-	            				<Row className="row_answer" type="flex" justify="start" align="middle">
-	            					<Col span={1}>
-										<p><Checkbox checked={expand? item.correct:0} disabled ></Checkbox></p>
-									</Col>
-	            					<Col span={18}>
-										<div style={{width:130,height:60}}>
-											<img className="answer_img" src={item.url}/>
-										</div>
-									</Col>
-	            				</Row>
-	            			);
-						})
-					);
-					break;
-        	}
+        	
         		
         	return(
 				<div style={{padding: "10px",
@@ -98,7 +122,21 @@ export default class ExercisesView extends React.Component {
 						{
 							title_img_url? 
 							<div style={{width:680,height:60}}>
-								<img className="answer_img" src={title_img_url}/>
+								<img src={title_img_url} height="100px"
+				                  ref={element => {this.title_img = element;}}
+				                  onLoad = {() => this.titleImageLoaded()} 
+				                  style={{width: title_img_width, height: title_img_height}}
+				                />
+							</div> 
+							:
+							null
+						}
+						{
+							title_audio_url? 
+							<div style={{width:680,height:60}}>
+								<audio src={title_audio_url} controls="controls">
+				                    Your browser does not support the audio element.
+				                </audio>
 							</div> 
 							:
 							null

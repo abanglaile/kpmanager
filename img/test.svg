@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.2" width="48.00mm" height="12.00mm" viewBox="0 0 27.3146 6.8287">
+<!-- Page: 1/1 -->
+<text transform="translate(1.1381, 0.0000)" font-family="Century Schoolbook L" font-size="2.2001" text-anchor="start" fill="currentColor">
+<tspan>
+ </tspan>
+</text>
+<line transform="translate(2.8453, 6.0000)" stroke-linejoin="round" stroke-linecap="round" stroke-width="0.1000" stroke="currentColor" x1="0.0500" y1="0.0000" x2="23.2813" y2="0.0000"/>
+<line transform="translate(2.8453, 5.0000)" stroke-linejoin="round" stroke-linecap="round" stroke-width="0.1000" stroke="currentColor" x1="0.0500" y1="0.0000" x2="23.2813" y2="0.0000"/>
+<line transform="translate(2.8453, 4.0000)" stroke-linejoin="round" stroke-linecap="round" stroke-width="0.1000" stroke="currentColor" x1="0.0500" y1="0.0000" x2="23.2813" y2="0.0000"/>
+<line transform="translate(2.8453, 3.0000)" stroke-linejoin="round" stroke-linecap="round" stroke-width="0.1000" stroke="currentColor" x1="0.0500" y1="0.0000" x2="23.2813" y2="0.0000"/>
+<line transform="translate(2.8453, 2.0000)" stroke-linejoin="round" stroke-linecap="round" stroke-width="0.1000" stroke="currentColor" x1="0.0500" y1="0.0000" x2="23.2813" y2="0.0000"/>
+<rect transform="translate(19.7535, 4.0000)" x="0.0000" y="-2.0000" width="0.1900" height="4.0000" ry="0.0000" fill="currentColor"/>
+<a style="color:inherit;" xlink:href="textedit://D:/server/egg_server/test.ly:15:6:14">
+<path transform="translate(17.2208, 2.5000) scale(0.0040, -0.0040)" d="M220 138c56 0 109 -29 109 -91c0 -72 -56 -121 -103 -149c-36 -21 -76 -36 -117 -36c-56 0 -109 29 -109 91c0 72 56 121 103 149c36 21 76 36 117 36z" fill="currentColor"/>
+</a>
+<rect transform="translate(17.2858, 4.0000)" x="-0.0650" y="-1.3122" width="0.1300" height="3.3122" ry="0.0400" fill="currentColor"/>
+<a style="color:inherit;" xlink:href="textedit://D:/server/egg_server/test.ly:15:8:16">
+<path transform="translate(20.8857, 2.5000) scale(0.0040, -0.0040)" d="M220 138c56 0 109 -29 109 -91c0 -72 -56 -121 -103 -149c-36 -21 -76 -36 -117 -36c-56 0 -109 29 -109 91c0 72 56 121 103 149c36 21 76 36 117 36z" fill="currentColor"/>
+</a>
+<rect transform="translate(20.9507, 4.0000)" x="-0.0650" y="-1.3122" width="0.1300" height="3.3122" ry="0.0400" fill="currentColor"/>
+<a style="color:inherit;" xlink:href="textedit://D:/server/egg_server/test.ly:15:10:18">
+<path transform="translate(23.6550, 2.0000) scale(0.0040, -0.0040)" d="M220 138c56 0 109 -29 109 -91c0 -72 -56 -121 -103 -149c-36 -21 -76 -36 -117 -36c-56 0 -109 29 -109 91c0 72 56 121 103 149c36 21 76 36 117 36z" fill="currentColor"/>
+</a>
+<rect transform="translate(23.7200, 4.0000)" x="-0.0650" y="-1.8122" width="0.1300" height="3.3122" ry="0.0400" fill="currentColor"/>
+<a style="color:inherit;" xlink:href="textedit://D:/server/egg_server/test.ly:15:1:9">
+<path transform="translate(11.4500, 4.5000) scale(0.0040, -0.0040)" d="M220 138c56 0 109 -29 109 -91c0 -72 -56 -121 -103 -149c-36 -21 -76 -36 -117 -36c-56 0 -109 29 -109 91c0 72 56 121 103 149c36 21 76 36 117 36z" fill="currentColor"/>
+</a>
+<path transform="translate(3.6453, 3.0000) scale(0.0040, -0.0040)" d="M557 -125c0 28 23 51 51 51s51 -23 51 -51s-23 -51 -51 -51s-51 23 -51 51zM557 125c0 28 23 51 51 51s51 -23 51 -51s-23 -51 -51 -51s-51 23 -51 51zM232 263c172 0 293 -88 293 -251c0 -263 -263 -414 -516 -521c-3 -3 -6 -4 -9 -4c-7 0 -13 6 -13 13c0 3 1 6 4 9
+c202 118 412 265 412 493c0 120 -63 235 -171 235c-74 0 -129 -54 -154 -126c11 5 22 8 34 8c55 0 100 -45 100 -100c0 -58 -44 -106 -100 -106c-60 0 -112 47 -112 106c0 133 102 244 232 244z" fill="currentColor"/>
+<path transform="translate(7.8453, 6.0145) scale(0.0040, -0.0040)" d="M204 307c22 14 44 29 60 50c11 15 19 33 27 50c2 4 5 6 9 6c6 0 13 -5 13 -14v-245h72c10 0 15 -7 15 -14s-5 -15 -15 -15h-72v-8c0 -48 27 -94 72 -94c8 0 12 -5 12 -11s-4 -12 -12 -12c-44 0 -87 13 -131 13s-87 -13 -131 -13c-8 0 -12 6 -12 12s4 11 12 11
+c45 0 73 46 73 94v8h-167c-23 0 -31 14 -31 23c0 3 1 5 2 6c80 93 138 207 138 330c0 9 6 16 13 16h3c23 -7 47 -13 71 -13s48 6 71 13c2 1 3 1 5 1c11 0 18 -10 12 -17l-284 -330h167v131c0 8 1 17 8 22z" fill="currentColor"/>
+<path transform="translate(7.9818, 4.0000) scale(0.0040, -0.0040)" d="M150 477c-29 0 -59 -8 -59 -33c0 -22 36 -25 36 -47c0 -32 -26 -58 -58 -58s-57 26 -57 58c0 65 67 103 138 103c91 0 169 -33 169 -114c0 -43 -4 -82 -42 -100c-9 -4 -14 -12 -14 -21s5 -18 14 -22c41 -19 56 -57 56 -103c0 -92 -79 -140 -179 -140
+c-79 0 -154 42 -154 113c0 36 30 66 66 66s65 -30 65 -66c0 -25 -40 -28 -40 -53c0 -27 32 -37 63 -37c49 0 63 61 63 117v16c0 54 -2 94 -50 94h-80c-10 0 -14 8 -14 15s4 14 14 14h80c49 0 50 43 50 99v8c0 54 -18 91 -67 91z" fill="currentColor"/>
+<rect transform="translate(12.7012, 4.0000)" x="-0.0650" y="-3.0000" width="0.1300" height="3.3122" ry="0.0400" fill="currentColor"/>
+<a style="color:inherit;" xlink:href="textedit://D:/server/egg_server/test.ly:15:4:12">
+<path transform="translate(14.2194, 4.5000) scale(0.0040, -0.0040)" d="M220 138c56 0 109 -29 109 -91c0 -72 -56 -121 -103 -149c-36 -21 -76 -36 -117 -36c-56 0 -109 29 -109 91c0 72 56 121 103 149c36 21 76 36 117 36z" fill="currentColor"/>
+</a>
+<rect transform="translate(15.4705, 4.0000)" x="-0.0650" y="-3.0000" width="0.1300" height="3.3122" ry="0.0400" fill="currentColor"/>
+<text transform="translate(13.6573, 6.8287)" font-family="Century Schoolbook L" font-size="2.2001" text-anchor="start" fill="currentColor">
+<tspan/>
+</text>
+</svg>

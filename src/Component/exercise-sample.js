@@ -271,7 +271,11 @@ class ExerciseSample extends React.Component {
     	return(
     		<div>
     			<Row style={{marginTop: '18px'}} type = "flex">
-    				<Select value={sample_select} style={{width: '80'}} onChange={e => this.sampleOnChange(e)}>
+    				<Select 
+    					value={sample_list[sample_select] ? sample_list[sample_select].sample_index : ''} 
+    					style={{width: '80'}} 
+    					onChange={e => this.sampleOnChange(e)}
+    				>
 				      {
 				      	sample_list.map((item, i) => {
 				      		return <Option value={item.sample_index}>{item.sample_index}</Option>
@@ -291,7 +295,7 @@ class ExerciseSample extends React.Component {
 						{this.renderSample()}
 					</Col>
 					<Col span={12}>
-						<ExerciseView exercise={exercise} sample={sample}/>
+						<ExerciseView exercise={exercise} exercise_sample={exercise_sample}/>
 					</Col>	
 				</Row>
 				<Modal>

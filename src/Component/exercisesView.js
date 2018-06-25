@@ -4,8 +4,10 @@ import { Layout, Icon, Row, Col, Menu, Select,Modal,Button,Badge,Dropdown,Popcon
 import NetUtil from '../utils/NetUtil';
 import Styles from './KpExerciseView.css';
 import Tex from './renderer.js';
+import ExerciseView from './exercise-view.js';
 import *as action from '../Action/';
 import {connect} from 'react-redux';
+import Config from '../utils/Config';
 
 
 const { Header, Footer, Sider, Content } = Layout;
@@ -13,121 +15,8 @@ const { SubMenu } = Menu;
 const Option = Select.Option;
 const FormItem = Form.Item;
 
-var urlip = 'http://39.108.85.119:3000/klmanager/';
+var urlip = Config.server_url + '/klmanager/';
 
-class OneExercise extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state={expand:false,display:'none'};
-	}
-	handleShow(){
-		this.setState({expand:!this.state.expand});
-		if(this.state.display === 'none'){
-			this.setState({display:'block'});
-		}
-		else{
-			this.setState({display:'none'});
-		}
-	}
-
-	render(){
-		const {expand,display} = this.state;
-		if(this.props.exercise){
-			const {title ,type, answer, breakdown,title_img_url,exercise_id} = this.props.exercise;
-			const isinbasket = this.props.isinbasket;
-			var steps = [];
-			for(var j = 0; j < breakdown.length; j++) {
-            	steps.push(
-            	<div key={j} className="step_frame">
-            		<p className="step_index">（{(j+1).toString()}）&nbsp;</p><Tex className="step_content" content={breakdown[j].content}/>
-            		<div className="step_kpname"><a>{breakdown[j].kpname}</a></div>
-            	</div>
-            	);
-        	}
-        	var choice = eval(answer);
-        	var answerDom = [];
-        	switch(type){
-        		case 0:  
-        			answerDom = (  //填空题答案
-						<div className="step_answer">
-							<p className="step_index">答案：&nbsp;</p>
-							{choice.map((item, i) => {
-		        				return(
-		            				<div>
-										<Tex className="step_content" content={item.value} />
-		            				</div>
-		            			);
-							})}
-						</div>
-        			);
-        			break;
-        		case 1:
-        			answerDom = (  //选择题选项和答案
-						choice.map((item, i) => {
-	        				return(
-	            				<Row className="row_answer" type="flex" justify="start" align="middle">
-	            					<Col span={1}>
-										<p><Checkbox checked={expand? item.correct:0} disabled ></Checkbox></p>
-									</Col>
-	            					<Col span={18}>
-										<Tex content={item.value} />
-									</Col>
-	            				</Row>
-	            			);
-						})
-        			);
-        			break;
-        		case 2:
-					answerDom = (  //选择题 图片选项和答案
-						choice.map((item, i) => {
-	        				return(
-	            				<Row className="row_answer" type="flex" justify="start" align="middle">
-	            					<Col span={1}>
-										<p><Checkbox checked={expand? item.correct:0} disabled ></Checkbox></p>
-									</Col>
-	            					<Col span={18}>
-										<div style={{width:130,height:60}}>
-											<img className="answer_img" src={item.url}/>
-										</div>
-									</Col>
-	            				</Row>
-	            			);
-						})
-					);
-					break;
-        	}
-        		
-        	return(
-				<div className="exercise_frame">
-					<div className="exercise_id_div">
-						{exercise_id}
-					</div>
-					<div className="exercise_body_frame">
-						<Tex content={title} />
-						{
-							title_img_url? 
-							<div style={{width:680,height:60}}>
-								<img className="answer_img" src={title_img_url}/>
-							</div> 
-							:
-							null
-						}
-						{answerDom}
-					</div>
-					<div style={{display}} className="kp_step">
-						<p className="step_annouce">步骤：</p>
-						<div>
-							{steps}
-						</div>
-					</div>
-					<div className="button_frame">
-						<Button onClick={()=>this.handleShow()}>{!expand? "解题详情" : "收起详情"}</Button>
-					</div>
-				</div>
-			);
-		}
-	}
-}
 
 class ExercisesView extends React.Component {
 	constructor(props) {
@@ -137,6 +26,7 @@ class ExercisesView extends React.Component {
 
 	componentDidMount(){
         this.props.getCourse();
+    	this.props.updateMenu('4');
     }
 
     handleChange(value){
@@ -217,8 +107,12 @@ class ExercisesView extends React.Component {
         var exerDatas = [];//展示选中知识点关联的题目
 		for(var j = 0; j < exer_data.length; j++) {
             exerDatas.push(
-            	<div key={exer_data[j].exercise_id}>
-            		<OneExercise exercise={exer_data[j]}/>
+            	<div style={{marginBottom : "10px"}} key={exer_data[j].exercise.exercise_id}>
+            		<ExerciseView 
+            			exercise={exer_data[j].exercise} 
+            			exercise_sample={exer_data[j].exercise_sample}
+            			expand={"false"}
+            		/>
             	</div>
             );
         }

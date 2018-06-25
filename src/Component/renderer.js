@@ -24,8 +24,8 @@ export default class Tex extends React.Component {
     if(sample){
       new_content = content.replace(/(\@.*?\@)/g, function(word){
         //去掉首尾两个@
-        word = word.substring(1, word.length - 1);
-        return sample[word];
+        const newword = word.substring(1, word.length - 1);
+        return sample[newword] ? sample[newword] : word;
       }) 
     }
     return new_content;

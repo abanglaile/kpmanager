@@ -11,13 +11,13 @@ const { Header, Footer, Sider, Content, } = Layout;
 const { SubMenu } = Menu;
 const Option = Select.Option;
 
-const server_url = "http://127.0.0.1:3000";
 
 class ImageManager extends React.Component {
 
     componentDidMount(){
       console.log(this.props.params.exercise_id);
       this.props.getMediaList();
+      this.props.updateMenu('5');
     }
 
     renderMediaList(){

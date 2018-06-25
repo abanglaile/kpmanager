@@ -40,11 +40,11 @@ const defaultlState = Immutable.fromJS({
         course: [],
         sample_list: [],
         sample_key: {},
-        sample_select: null,
+        sample_select: 0,
 	});
 
 const defaultlImageState = Immutable.fromJS({
-        test_url: "http://localhost/kpmanager/img/test.svg",
+        test_url: "http://localhost/kpmanager/img/test.png",
         media_list: [],
     });
 
@@ -191,7 +191,7 @@ export const imageData = (state = defaultlImageState, action = {}) => {
             return state.set('media_list', Immutable.fromJS(action.json));
         case 'SEARCH_MEDIA_SUCCESS':
             console.log(action.media_res);
-            return state.set('test_url', action.media_res.url).set('code', action.media_res.code);
+            return state.set('test_url', action.media_res.url).set('test_code', action.media_res.code);
         case 'SAVE_MODAL_OPEN':
             return state.set('modal_open', true).set('save_url', action.save_url);
         case 'SAVE_MODAL_CANCEL':
