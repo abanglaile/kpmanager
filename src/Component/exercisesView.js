@@ -15,7 +15,7 @@ const { SubMenu } = Menu;
 const Option = Select.Option;
 const FormItem = Form.Item;
 
-var urlip = Config.server_url + '/klmanager/';
+var urlip = Config.server_url;
 
 
 class ExercisesView extends React.Component {
@@ -33,7 +33,7 @@ class ExercisesView extends React.Component {
 		const {exer_data , kpid} = this.state;//kpid为当前选中的知识点的id，exer_data是对应知识点的题目
         this.setState({ kpid: value },()=>{
             var data = [];
-            var url = urlip+'getExerciseByKp';
+            var url = urlip+'/getExerciseByKp';
             NetUtil.get(url, {kpid : value}, (results) => {
                 data = results;
                 console.log("data:"+JSON.stringify(data));
@@ -45,7 +45,7 @@ class ExercisesView extends React.Component {
     }
 
 	handleClick(e){
-		var url = urlip+'getChapterKp';
+		var url = urlip+'/getChapterKp';
     	NetUtil.get(url, {chapter_id:e.key}, (results) => {
             this.setState({selmenu : results});
         }, errors => {
@@ -54,7 +54,7 @@ class ExercisesView extends React.Component {
 	}
 
 	handleCourseSelect(value){
-		var url = urlip+'getBookChapter';
+		var url = urlip+'/getBookChapter';
         NetUtil.get(url, {course_id:value}, (results) => {
             this.setState({menu_data : results});
         }, errors => {

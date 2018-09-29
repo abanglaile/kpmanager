@@ -15,7 +15,7 @@ const { SubMenu } = Menu;
 const { TextArea } = Input;
 const Option = Select.Option;
 
-const server_url = "http://127.0.0.1:3000";
+// const server_url = "http://127.0.0.1:3000";
 
 class ExerciseTitle extends React.Component {
 

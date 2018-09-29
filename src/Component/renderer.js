@@ -38,7 +38,13 @@ export default class Tex extends React.Component {
     var htmlContent = content.replace(/(\$.*?\$)/g, function(word){
         //去掉首尾两个$
         word = word.substring(1, word.length - 1);
-        return katex.renderToString(word);
+        try{
+          var res = katex.renderToString(word);
+        }catch(e){
+          // return ('请查看两个$符号间是不是漏了啥，点确定后继续修改:\n'+e);
+          return e;
+        }
+        return res;
       }
     );
     //htmlContent = htmlContent.replace(/\r\n/g,"<br/>");

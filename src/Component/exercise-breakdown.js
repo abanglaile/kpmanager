@@ -47,7 +47,7 @@ class ExerciseEditBreakdown extends React.Component {
     }
 
     loadKpOptions(selectedOptions){
-    	var url = target + "/klmanager/getChapterKp";
+    	var url = target + "/getChapterKp";
     	const targetOption = selectedOptions[selectedOptions.length - 1];
     	targetOption.loading = true;
 		// load options lazily
@@ -65,7 +65,7 @@ class ExerciseEditBreakdown extends React.Component {
   	}
 
     loadChapterOptions(course_id){
-    	var url = target + "/klmanager/getBookChapter";    	
+    	var url = target + "/getBookChapter";    	
 		NetUtil.get(url, {course_id: course_id}, (results) => {
 			for(var i = 0; i < results.length; i++){
 				results[i].value = results[i].bookid;
@@ -216,7 +216,7 @@ class ExerciseEditBreakdown extends React.Component {
 						icon="minus"  
 						onClick={()=>this.props.delBreakdown()}
 					>删除</Button>
-					<Button disabled = {isDisabled} onClick={e => this.props.uploadBreakdown(exercise_id, breakdown)}>更新答案</Button>
+					<Button disabled = {isDisabled} onClick={e => this.props.uploadBreakdown(exercise_id, breakdown)}>更新分解</Button>
 					{this.renderCourseSelect()}
 				</div>
 				<QueueAnim type={['right', 'left']} leaveReverse>

@@ -15,7 +15,7 @@ const getCourseSuccess = (json) => {
 
 //获取course
 export const getCourse = () => {
-    let url = target + '/klmanager/getCourse';
+    let url = target + '/getCourse';
     return dispatch => {
         dispatch(getDataStart());
         //加载course信息
@@ -88,7 +88,7 @@ const searchMediaSuccess = (media_res) => {
 
 //搜索url
 export const searchMedia = (media_url) => {
-    let url = target + '/klmanager/searchMedia';
+    let url = target + '/searchMedia';
     console.log(media_url);
     return dispatch => {
         return axios.post(url, {media_url})
@@ -213,7 +213,7 @@ export const sampleSelect = (sample_select) => {
 
 //获取exercise
 export const getExercise = (exercise_id) => {
-    let url = target + '/klmanager/getExercise';
+    let url = target + '/getExercise';
     return dispatch => {
         dispatch(getDataStart());
         //加载已有题目信息
@@ -234,7 +234,7 @@ export const getExercise = (exercise_id) => {
 
 //获取sample_list
 export const getSampleList = (exercise_id) => {
-    let url = target + '/klmanager/getSampleList';
+    let url = target + '/getSampleList';
     return dispatch => {
         dispatch(getDataStart());
         return axios.get(url,{
@@ -359,11 +359,11 @@ export const delSampleAnswer = (exercise_type,sample_select) => {
 }
 
 //更新答案图片url
-export const answerImgChange = (i, url) => {
+export const answerImgChange = (i, value) => {
     return {
         type: 'CHANGE_CHOICE_IMG',
         i,
-        url,
+        value,
     }
 }
 
@@ -519,7 +519,7 @@ export const uploadBreakdown = (exercise_id, breakdown) => {
             }
         }
         if(!mask){
-            let url = target + "/klmanager/updateBreakdown";
+            let url = target + "/updateBreakdown";
 
             return axios.post(url,{exercise_id: exercise_id, breakdown: breakdown})
             .then(function (response) {
@@ -560,7 +560,7 @@ export const modalOpen = () => {
 
 //添加一组题目参数
 export const addOneSample = (exercise_sample) => {
-    let url = target + '/klmanager/addOneSample';
+    let url = target + '/addOneSample';
     return dispatch => {
         return axios.post(url,{exercise_sample: exercise_sample})
         .then(function (response) {
@@ -573,7 +573,7 @@ export const addOneSample = (exercise_sample) => {
 }
 
 export const codeRender = (code) => {
-    let url = target + '/klmanager/renderly';
+    let url = target + '/renderly';
     return dispatch => {
         return axios.post(url, {code: code})
         .then(function (response) {
@@ -587,7 +587,7 @@ export const codeRender = (code) => {
 }
 
 export const getMediaList = () => {
-    let url = target + '/klmanager/queryMediaList';
+    let url = target + '/queryMediaList';
     return dispatch => {
         return axios.post(url, {})
         .then(function (response) {
@@ -600,7 +600,7 @@ export const getMediaList = () => {
 }
 
 export const saveTestMedia = (save_url) => {
-    let url = target + '/klmanager/saveTestMedia';
+    let url = target + '/saveTestMedia';
     console.log(save_url);
     return dispatch => {
         return axios.post(url, {save_url})
@@ -647,7 +647,7 @@ const saveTestMediaSuccess = (media_res) => {
 export const updateOneSample = (exercise_sample) => {
     if(exercise_sample){
         console.log("updateOneSample exercise_sample ",JSON.stringify(exercise_sample));
-        let url = target + '/klmanager/updateOneSample';
+        let url = target + '/updateOneSample';
         exercise_sample.sample = JSON.stringify(exercise_sample.sample);
         exercise_sample.answer = JSON.stringify(exercise_sample.answer);
         return dispatch => {
@@ -670,7 +670,7 @@ export const updateOneSample = (exercise_sample) => {
 
 //批量更新所有参数
 export const updateAllSample = (sample_list) => {
-    let url = target + '/klmanager/updateAllSample';
+    let url = target + '/updateAllSample';
     return dispatch => {
         return axios.post(url,{sample_list: sample_list})
         .then(function (response) {
@@ -748,7 +748,7 @@ export const uploadExercise = () => {
         if(!mask && breakdown){
             for(var i = 0; i < breakdown.length; i++){
                 const b = breakdown[i];
-                if(!b.content || !b.kpid){
+                if(!b.content || (b.kpid == -1)){
                     mask = 3;
                     break;
                 }
@@ -759,7 +759,7 @@ export const uploadExercise = () => {
             dispatch(uploadExerciseStart());
             if(exercise_id > 0){
                 //修改题目
-                let url = target + "/klmanager/updateExercise";
+                let url = target + "/updateExercise";
                 // var exercise = {exercise_id: exercise_id, 
                 //                 title: title, 
                 //                 title_img_url: title_img_url, 
@@ -779,7 +779,7 @@ export const uploadExercise = () => {
 
             }else{
                 //新增题目
-                let url = target + "/klmanager/addExercise";
+                let url = target + "/addExercise";
                 // var exercise = {title: title, 
                 //                 title_img_url: title_img_url, 
                 //                 title_audio_url: title_audio_url, 

@@ -132,7 +132,8 @@ class ExerciseSample extends React.Component {
 	renderAnswerSample(){
 		var {sample_list, sample_select} =  this.props;
 		const {answer_img_width, answer_img_height} = this.state;
-		console.log("sample_list[sample_select]:"+ JSON.stringify(sample_list));
+		console.log("sample_list:"+ JSON.stringify(sample_list));
+		console.log("sample_select:"+ sample_select);
 		if(sample_list && sample_list[sample_select]){
 			var {answer, exercise_type} = sample_list[sample_select];
 			var answerRow = [];

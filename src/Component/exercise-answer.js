@@ -59,11 +59,11 @@ class ExerciseAnswer extends React.Component {
 		                <Row className="choice_row" gutter={16} type="flex" justify="space-between">
 		                    <Col span={12}>
 		                        <Checkbox className="edit_choice_select" checked={item.correct} onChange={(e) => this.props.choiceSelectChange(i)} />
-		                        <Input className="edit_choice_input" value={item.url} onChange={(e) => this.props.answerImgChange( i, e.target.value )} rows={1} />
+		                        <Input className="edit_choice_input" value={item.value} onChange={(e) => this.props.answerImgChange( i, e.target.value )} rows={1} />
 		                    </Col>
 		                    <Col span={12}>
 		                        <Checkbox className="edit_choice_select" checked={item.correct} />
-		                        <img src={item.url} height='100' />
+		                        <img src={item.value} height='100' />
 		                    </Col>
 		                </Row>
 		                );

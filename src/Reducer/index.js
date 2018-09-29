@@ -9,12 +9,12 @@ var choiceAnswer = [
             {value: '', correct: false},
             {value: '', correct: false}
         ];
-var choiceImgAnswer = [
-            {url: '', correct: false},
-            {url: '', correct: false},
-            {url: '', correct: false},
-            {url: '', correct: false},
-        ];
+// var choiceImgAnswer = [
+//             {url: '', correct: false},
+//             {url: '', correct: false},
+//             {url: '', correct: false},
+//             {url: '', correct: false},
+//         ];
 var sample_list = [{sample : {}, 
                      exercise_id : 0,
                      exercise_type : 1,
@@ -94,19 +94,14 @@ export const exerciseData = (state = defaultlState, action = {}) => {
         case 'CHANGE_TITLE_AUDIO':
             return state.setIn(['exercise','title_audio_url'], action.url);
         case 'CHANGE_CHOICE_IMG':
-            return state.setIn(['exercise','answer', action.i, 'url'], action.url);
-        case 'CHANGE_CHOICE_SAMPLE_IMG':
-            return state.setIn(['sample_list',action.sample_select, 'answer', action.i, 'url'], action.url);
+            return state.setIn(['exercise','answer', action.i, 'value'], action.value);
     	case 'CHANGE_EXERCISE_TYPE':
             if(action.exercise_type == 0){
                 return state.setIn(['exercise','exercise_type'], action.exercise_type)
                             .setIn(['exercise','answer'],Immutable.fromJS(blankAnswer));
-            }else if(action.exercise_type == 1){
+            }else{
                 return state.setIn(['exercise','exercise_type'], action.exercise_type)
                             .setIn(['exercise','answer'],Immutable.fromJS(choiceAnswer));
-            }else if(action.exercise_type == 2){
-                return state.setIn(['exercise','exercise_type'], action.exercise_type)
-                            .setIn(['exercise','answer'],Immutable.fromJS(choiceImgAnswer));
             }
     	case 'CHANGE_ANSWER_INPUT':
     		return state.setIn(['exercise','answer', action.i, 'value'], action.value);

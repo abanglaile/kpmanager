@@ -89,7 +89,7 @@ export default class ExercisesView extends React.Component {
 										</Col>
 		            					<Col span={18}>
 											<div style={{width:130,height:60}}>
-												<img className="answer_img" src={item.url}/>
+												<img className="answer_img" src={item.value}/>
 											</div>
 										</Col>
 		            				</Row>
