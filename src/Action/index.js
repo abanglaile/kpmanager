@@ -622,7 +622,7 @@ export const saveUrlChange = (save_url) => {
 }
 
 export const saveModalOpen = () => {
-    let save_url = "http://opgtvzbwx.bkt.clouddn.com/" + new Date().getTime().toString() + ".png";
+    let save_url = "http://cdn.zhiqiu.pro/" + new Date().getTime().toString() + ".png";
     return{
         type: 'SAVE_MODAL_OPEN',
         save_url: save_url,

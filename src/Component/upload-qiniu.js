@@ -7,7 +7,7 @@ import 'whatwg-fetch';
 import 'es6-promise';
 
 var server_url = Config.server_pic_url;
-var pic_domain = "http://opgtvzbwx.bkt.clouddn.com/";
+var pic_domain = "http://cdn.zhiqiu.pro/";
 export default class ExerciseImgUpload extends React.Component {
   constructor(props) {
     super(props);

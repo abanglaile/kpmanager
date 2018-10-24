@@ -37,7 +37,6 @@ export default class ExercisesView extends React.Component {
 			const exercise_sample = this.props.exercise_sample;
 			var sample;
 
-			
         	var answerDom = [];
         	if(exercise_sample){
         		answer = exercise_sample.answer ? exercise_sample.answer : answer;
@@ -103,9 +102,15 @@ export default class ExercisesView extends React.Component {
 			for(var j = 0; j < breakdown.length; j++) {
             	steps.push(
             	<div key={j} className="step_frame">
-            		<p className="step_index">（{(j+1).toString()}）&nbsp;</p>
-            		<Tex className="step_content" content={breakdown[j].content} sample={sample}/>
-            		<div className="step_kpname"><a>{breakdown[j].kpname}</a></div>
+					<Row type="flex" justify="start">
+						<Col span={1}>
+							<p>{(j+1).toString()}.</p>
+						</Col>
+						<Col span={23}>
+							<Tex content={breakdown[j].content} sample={sample}/>
+            				<div><a>{breakdown[j].kpname}</a></div>
+						</Col>
+					</Row>
             	</div>
             	);
         	}
