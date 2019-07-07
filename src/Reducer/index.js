@@ -38,6 +38,7 @@ const defaultlState = Immutable.fromJS({
 		isLoading: false,
         menu_state: '1',
         course: [],
+        course_id : null,
         sample_list: [],
         sample_key: {},
         sample_select: 0,
@@ -45,7 +46,10 @@ const defaultlState = Immutable.fromJS({
 
 const defaultlImageState = Immutable.fromJS({
         test_url: "http://localhost/kpmanager/img/test.png",
+        wavUrl: '',
         media_list: [],
+        tab_state: '1',
+        radio_state: null,
     });
 
 //手动获取数据
@@ -65,11 +69,12 @@ export const exerciseData = (state = defaultlState, action = {}) => {
     		return state.set('isLoading', true);
     	case 'GET_EXERCISE_SUCCESS': 
             if(action.json.title){
-                var {answer} = action.json;
+                var {answer,course_id} = action.json;
                 const answerJson = eval(answer);
                 console.log('answerJson',  answerJson);
                 
                 return state.set('exercise',Immutable.fromJS(action.json))
+                            .set('course_id', course_id)
                             .setIn(['exercise','answer'],Immutable.fromJS(answerJson));
             }else{
                 console.log("没有该exercise_id！");
@@ -176,21 +181,43 @@ export const imageData = (state = defaultlImageState, action = {}) => {
             return state.set('test_code', action.code);
         case 'CODE_RENDER':
             return state.set('test_url', action.url)
+                .set('wav_url', action.wavUrl)
                 .set('render_log', action.log);
         case 'SAVE_URL_CHANGE':
             return state.set('save_url', action.save_url);
+        case 'SAVE_WAV_URL_CHANGE':
+            return state.set('save_wav_url', action.save_wav_url);
         case 'SAVE_TEST_MEDIA':
             return state.set('save_url', action.media_res.url)
-                .set('test_code', action.media_res.code);
+                .set('test_code', action.media_res.code)
+                .set('save_wav_url', action.media_res.wav_url);
         case 'GET_MEDIA_LIST_SUCCESS':
             return state.set('media_list', Immutable.fromJS(action.json));
         case 'SEARCH_MEDIA_SUCCESS':
             console.log(action.media_res);
-            return state.set('test_url', action.media_res.url).set('test_code', action.media_res.code);
+            if(action.media_res.wav_url){
+                return state.set('test_url', action.media_res.url + "?t=" + new Date().getTime())
+                        .set('wav_url', action.media_res.wav_url + "?t=" + new Date().getTime())
+                        .set('save_wav_url',action.media_res.wav_url)
+                        .set('test_code', action.media_res.code);
+            }else{
+                return state.set('test_url', action.media_res.url + "?t=" + new Date().getTime()).set('test_code', action.media_res.code);
+            }
         case 'SAVE_MODAL_OPEN':
-            return state.set('modal_open', true).set('save_url', action.save_url);
+            return state.set('modal_open', true).set('save_url', action.save_url)
+                    .set('save_wav_url', action.save_wav_url);
         case 'SAVE_MODAL_CANCEL':
             return state.set('modal_open', false);
+        case 'GET_QINIU_TOKEN':
+            return state.set('uptoken', action.uptoken);
+        case 'SAVE_UPLOAD_URL':
+            console.log("action.json:",JSON.stringify(action.json));
+            return state.set('upload_url', action.upload_url)
+                .update('media_list',list => Immutable.fromJS([Immutable.fromJS(action.json),...list]));
+        case 'UPDATE_TAB':
+            return state.set('tab_state', action.tab_state);
+        case 'UPDATE_RADIO':
+            return state.set('radio_state', action.radio_state);
         default:
             return state;
     }

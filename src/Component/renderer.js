@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import katex from 'katex';
+// import {InlineMath,BlockMath} from 'react-katex';
 
 export default class Tex extends React.Component {
   constructor(props) { 
@@ -33,24 +34,32 @@ export default class Tex extends React.Component {
 
   render() { 
     var { style, content, sample } = this.props;
-    content = content?content:'';
+    // content = content ? content.toString() : '';
     content = this.replaceSample(content, sample);
+    content = content.replace(/\n/g,"<br/>");
     var htmlContent = content.replace(/(\$.*?\$)/g, function(word){
         //去掉首尾两个$
         word = word.substring(1, word.length - 1);
-        try{
-          var res = katex.renderToString(word);
-        }catch(e){
-          // return ('请查看两个$符号间是不是漏了啥，点确定后继续修改:\n'+e);
-          return e;
-        }
+        // try{
+        // return  <InlineMath math={word} />; 
+        var res = katex.renderToString(word, {
+            throwOnError: false
+        });
+        // }catch(e){
+        //   // return ('请查看两个$符号间是不是漏了啥，点确定后继续修改:\n'+e);
+        //   return e;
+        // }
         return res;
+        // return word;
       }
     );
-    //htmlContent = htmlContent.replace(/\r\n/g,"<br/>");
-    htmlContent = htmlContent.replace(/\n/g,"<br/>");
 
+
+    // htmlContent = htmlContent.replace(/\r\n/g,"<br/>");
+    // htmlContent = htmlContent.replace(/\n/g,"<br/>");
+    // console.log("after replace",htmlContent);
     return (
+        // <Component  html={htmlContent} />
       <div style={{font: "18px/1.4 proxima-nova, Helvetica Neue, Arial, Helvetica, sans-serif" }} dangerouslySetInnerHTML={{__html: htmlContent}} />
       );
   }

@@ -23,9 +23,9 @@ class ExerciseMain extends React.Component {
     }
     renderCourseSelect(){
       const {course, course_id} = this.props;
-      
+      console.log("course_id:",course_id);
       return (
-        <Select value={course_id ? course_id.toString() : ''} style={{ paddingLeft: '10px', width: 150 }} onChange={(value) => this.props.courseSelect(value)}>
+        <Select placeholder="请先选择科目"  value={course_id ? course_id.toString() : undefined} style={{ paddingLeft: '10px', width: 150 }} onChange={(value) => this.props.courseSelect(value)}>
           {course.map((item,index) => (
                   <Option value={item.course_id.toString()}>{item.course_name}</Option>
               ))
@@ -65,5 +65,6 @@ export default connect(state => {
     course: newState.course,
     course_id: newState.course_id,
     isLoading: newState.isLoading, 
+
   }
 }, action)(ExerciseMain);

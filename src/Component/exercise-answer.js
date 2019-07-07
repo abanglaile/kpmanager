@@ -4,10 +4,13 @@ import { Row, Col, Input, Button, Select, Checkbox} from 'antd';
 import NetUtil from '../utils/NetUtil';
 import Styles from './exerciseEdit.css';
 import Tex from './renderer.js';
+// import Tex from './tex.js';
 
 import ImgUpload from './upload-qiniu.js';
 import *as action from '../Action/';
 import {connect} from 'react-redux';
+// import {InlineMath,BlockMath} from 'react-katex';
+
 
 const Option = Select.Option;
 
@@ -28,7 +31,7 @@ class ExerciseAnswer extends React.Component {
 		                        <Input className="edit_choice_input" value={item.value} onChange={(e) => this.props.answerInputChange(e.target.value, i)} rows={1} />
 		                    </Col>
 		                    <Col span={12}>
-		                        <Tex content={item.value} />
+								<Tex content={item.value} />
 		                    </Col>
 		                </Row>
 					);
@@ -38,6 +41,7 @@ class ExerciseAnswer extends React.Component {
 			case 1:
 				isDisabled = answer.length <=2 ? true : false;
 				answerRow = answer.map((item, i) => {
+					console.log("item.value",item.value);
 		            return(
 		                <Row className="choice_row" gutter={16} type="flex" justify="space-between">
 		                    <Col span={12}>

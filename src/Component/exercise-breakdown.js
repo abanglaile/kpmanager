@@ -37,8 +37,8 @@ class ExerciseEditBreakdown extends React.Component {
       const {course, course_id} = this.props;
       
       return (
-        <Select value={course_id ? course_id.toString() : ''} style={{ paddingLeft: '10px', width: 150 }} onChange={(value) => this.props.courseSelect(value)}>
-          {course.map((item,index) => (
+        <Select placeholder="请先选择科目" value={course_id ? course_id.toString() : undefined}  style={{ paddingLeft: '10px', width: 150 }} onChange={(value) => this.props.courseSelect(value)}> 
+		  {course.map((item,index) => (
                   <Option value={item.course_id.toString()}>{item.course_name}</Option>
               ))
           }      
@@ -232,7 +232,7 @@ export default connect(state => {
   console.log(newState);
   return {
   	breakdown: newState.exercise.breakdown,
-  	course: newState.course,
+	course: newState.course,
   	course_id: newState.course_id,
     exercise_id: newState.exercise.exercise_id, 
     isLoading: newState.isLoading, 

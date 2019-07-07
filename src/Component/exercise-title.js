@@ -4,6 +4,7 @@ import { Layout, Icon, Row, Col, Menu, Select, Button, Popconfirm, Input ,Cascad
 import NetUtil from '../utils/NetUtil';
 import Styles from './exerciseEdit.css';
 import Tex from './renderer.js';
+// import katex from 'katex';
 import QueueAnim from 'rc-queue-anim';
 
 import *as action from '../Action/';
@@ -39,9 +40,14 @@ class ExerciseTitle extends React.Component {
     	var { exercise } = this.props;
       var { title, title_img_url, title_audio_url, exercise_id } = exercise;
       const {title_img_width, title_img_height} = this.state;
-  		title = title ? title :'';
+      title = title ? title :'';
+      // var html = katex.renderToString("c=\\pm\\sqrt{a^2 + b^2}", {
+      //   throwOnError:false
+      // });
       return(
       		<div>
+            {/* <div dangerouslySetInnerHTML={{__html : html}}/> */}
+            {/* <Tex content="$c=\sqrt{a^2 + b^2}$" /> */}
   	    		<Row className="choice_row" gutter={16} type="flex" justify="space-between">
   	    			<Col span={12}>
       					<TextArea

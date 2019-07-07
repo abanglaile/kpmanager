@@ -44,6 +44,7 @@ const codeRenderSuccess = (data) => {
         type: 'CODE_RENDER',
         url: data.url,
         log: data.log,
+        wavUrl: data.wavUrl,
     }
 }
 
@@ -545,6 +546,20 @@ export const updateMenu = (menu_state) => {
     }
 }
 
+export const updateTabKey = (tab_state) => {
+    return{
+        type: 'UPDATE_TAB',
+        tab_state
+    }
+}
+
+export const updateRadioKey = (radio_state) => {
+    return{
+        type: 'UPDATE_RADIO',
+        radio_state
+    }
+}
+
 export const modalCancel = () => {
     return {
         type: 'MODAL_CANCEL',
@@ -586,10 +601,10 @@ export const codeRender = (code) => {
     }
 }
 
-export const getMediaList = () => {
+export const getMediaList = (tag) => {
     let url = target + '/queryMediaList';
     return dispatch => {
-        return axios.post(url, {})
+        return axios.post(url, {tag})
         .then(function (response) {
             dispatch(getMediaListSuccess(response.data));
         })
@@ -599,7 +614,39 @@ export const getMediaList = () => {
     }
 }
 
-export const saveTestMedia = (save_url) => {
+export const getQiniuToken = () => {
+    let url = target + '/getQiniuToken';
+    return dispatch => {
+        return  axios.get(url,{})
+        .then(function (response) {
+            dispatch({
+                type: 'GET_QINIU_TOKEN',
+                uptoken: response.data,
+            });
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+}
+
+export const saveTestMedia = (save_url,save_wav_url) => {
+    let url = target + '/saveTestMedia';
+    // console.log('saveTestMedia save_url:',save_url);
+    // console.log('saveTestMedia save_wav_url:',save_wav_url);
+    return dispatch => {
+        return axios.post(url, {save_url,save_wav_url})
+        .then(function (response) {
+            console.log(response.data);
+            dispatch(saveTestMediaSuccess(response.data));
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+}
+
+export const uploadimg = () => {
     let url = target + '/saveTestMedia';
     console.log(save_url);
     return dispatch => {
@@ -621,11 +668,57 @@ export const saveUrlChange = (save_url) => {
     }
 }
 
-export const saveModalOpen = () => {
+export const saveWavUrlChange = (save_wav_url) => {
+    return{
+        type: 'SAVE_WAV_URL_CHANGE',
+        save_wav_url,
+    }
+}
+
+export const saveModalOpen = (wav_url) => {
     let save_url = "http://cdn.zhiqiu.pro/" + new Date().getTime().toString() + ".png";
+    var save_wav_url = '';
+    console.log("saveModalOpen wav_url:",wav_url);
+    if(wav_url){
+        save_wav_url = "http://cdn.zhiqiu.pro/" + new Date().getTime().toString() + "midi.wav";
+    }
     return{
         type: 'SAVE_MODAL_OPEN',
         save_url: save_url,
+        save_wav_url: save_wav_url
+    }
+}
+
+export const saveUploadUrl = (upload_url,courseid) => {
+    let url = target + '/saveUploadUrl';
+    return dispatch => {
+        return axios.post(url, {upload_url,courseid})
+        .then(function (response) {
+            dispatch({
+                type: 'SAVE_UPLOAD_URL',
+                upload_url: upload_url,
+                json: response.data,
+            });
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+}
+
+export const delSelectedFile = (keys,tag) => {
+    let url = target + '/deleteSelectedFile';
+    return dispatch => {
+        return axios.post(url, {keys})
+        .then(function (response) {
+            dispatch(getMediaList(tag));
+            // dispatch({
+            //     type: 'DELETE_SELECTED_FILE',
+            // });
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
     }
 }
 
@@ -746,12 +839,19 @@ export const uploadExercise = () => {
         // }
 
         if(!mask && breakdown){
+            var flagc = 0;
             for(var i = 0; i < breakdown.length; i++){
-                const b = breakdown[i];
-                if(!b.content || (b.kpid == -1)){
+                var b = breakdown[i];
+                if(!b.content || !b.kpid){
                     mask = 3;
                     break;
                 }
+                if(b.checked){
+                    flagc = flagc + 1;
+                }
+            }
+            if(flagc == 0){
+                mask = 4;
             }
         }
 
@@ -790,8 +890,13 @@ export const uploadExercise = () => {
 
                 return axios.post(url,{exercise: exercise, course_id: course_id})
                 .then(function (response) {
-                    dispatch(uploadExerciseSuccess(response.data.exercise_id));
-                    alert("上传题目成功，题目id为" + response.data.exercise_id);
+                    if(response.data.exercise_id){
+                        dispatch(uploadExerciseSuccess(response.data.exercise_id));
+                        alert("上传题目成功，题目id为" + response.data.exercise_id);
+                    }else{
+                        alert("上传题目失败，请重新上传!");
+                    }
+                    
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -809,6 +914,9 @@ export const uploadExercise = () => {
                     break;
                 case 3:
                     alert("知识分解未填写完整");
+                    break;
+                case 4:
+                    alert("请选择知识点分解的主测点");
                     break;
             }
         }
