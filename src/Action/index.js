@@ -405,6 +405,13 @@ export const titleAudioChange = (url) => {
     }
 }
 
+//更新answer_assist_img 答案辅助图
+export const assistImgChange = (content) => {
+    return {
+        type: 'CHANGE_ASSIST_IMG',
+        content,
+    }
+}
 
 //更新breakdown_input
 export const inputChangeBreakdown = (content, i) => {
@@ -417,10 +424,12 @@ export const inputChangeBreakdown = (content, i) => {
 
 //更新breakdown_presn
 export const presnChangeBreakdown = (presn, i) => {
+    console.log("presn:",presn);
+    console.log("i:",i);
     return {
         type: 'CHANGE_PRESN_BREAKDOWN',
         i,
-        content,
+        presn,
     }
 }
 
@@ -504,7 +513,8 @@ export const addInSampleList = (exercise_sample) => {
 }
 
 //upload Breakdown
-export const uploadBreakdown = (exercise_id, breakdown) => {
+export const uploadBreakdown = (exercise_id, breakdown, answer_assist_url) => {
+    console.log("answer_assist_url:",answer_assist_url);
     return (dispatch) => {
         var mask = 0;
         if(exercise_id == 0){
@@ -522,7 +532,7 @@ export const uploadBreakdown = (exercise_id, breakdown) => {
         if(!mask){
             let url = target + "/updateBreakdown";
 
-            return axios.post(url,{exercise_id: exercise_id, breakdown: breakdown})
+            return axios.post(url,{exercise_id: exercise_id, breakdown: breakdown, answer_assist_url: answer_assist_url})
             .then(function (response) {
                 alert("更新题目成功！");
                 // dispatch(getExerciseSuccess(response.data));

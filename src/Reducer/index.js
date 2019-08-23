@@ -31,6 +31,7 @@ const defaultlState = Immutable.fromJS({
             title_img_url : '',
             title_audio_url : '',
             answer : choiceAnswer,
+            answer_assist_url : '',
             exercise_rating: 500,
             breakdown: breakdown, 
         },
@@ -143,6 +144,8 @@ export const exerciseData = (state = defaultlState, action = {}) => {
     		return state.updateIn(['exercise','answer'], list => list.pop());
         case 'DEL_SAMPLE_ANSWER':
             return state.updateIn(['sample_list',action.sample_select, 'answer'], list => list.pop());
+        case 'CHANGE_ASSIST_IMG':
+            return state.setIn(['exercise','answer_assist_url'], action.content);
     	case 'CHANGE_INPUT_BREAKDOWN':
     		return state.setIn(['exercise','breakdown', action.i, 'content'], action.content);
     	case 'CHANGE_CHECK_BREAKDOWN':

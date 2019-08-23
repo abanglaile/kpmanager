@@ -137,11 +137,13 @@ class ExerciseEditBreakdown extends React.Component {
 	//TODO:解决breakdown初始化问题
     render() {
     	var {kp_options} = this.state;
-    	var {breakdown, exercise_id, course_id} = this.props;
+		var {breakdown, exercise_id, course_id, answer_assist_url} = this.props;
+		console.log("breakdown$$$",JSON.stringify(breakdown))
     	breakdown = breakdown ? breakdown : [{sn: 1, presn: 0, kpid: -1, kpname: '', checked: false, content:''}];
     	var preoptions = [];
         for(var j = 0; j < breakdown.length; j++) {
-            preoptions.push(<Option key={j*breakdown.length+j} value={breakdown[j].presn.toString}>{breakdown[j].presn}</Option>);
+			// console.log('breakdown[j].presn:',breakdown[j].presn);
+            preoptions.push(<Option key={j*breakdown.length+j} value={breakdown[j].sn-1}>{breakdown[j].sn-1}</Option>);
         }
 		
     	var editunit = breakdown.map((item,i) => {
@@ -181,7 +183,7 @@ class ExerciseEditBreakdown extends React.Component {
 							<div style={{ float: 'right', display: 'inline'}}>
 								<InputNumber value={item.sn_rating} style={{ width: 100 }} onChange={value => this.props.changeRatingBreakdown(value, i)} placeholder="填写步骤难度" />
 							</div>
-							<Tooltip placement="topRight" title="请选择前置知识点">
+							<Tooltip placement="left" title="请选择前置知识点">
 								<div style={{ float: 'right', display: 'inline'}}>
 							      <Select value={item.presn.toString()} style={{ width: 40 }} onChange={(value)=>this.props.presnChangeBreakdown(value,i)}>
 								  	{preoptions}
@@ -216,8 +218,25 @@ class ExerciseEditBreakdown extends React.Component {
 						icon="minus"  
 						onClick={()=>this.props.delBreakdown()}
 					>删除</Button>
-					<Button disabled = {isDisabled} onClick={e => this.props.uploadBreakdown(exercise_id, breakdown)}>更新分解</Button>
+					<Button disabled = {isDisabled} onClick={e => this.props.uploadBreakdown(exercise_id, breakdown, answer_assist_url)}>更新分解</Button>
 					{this.renderCourseSelect()}
+				</div>
+				<div style={{ marginBottom: 16 ,marginTop: 16}}>
+					<Row type="flex" gutter={16} justify="space-between">
+    					<Col span={12}>
+							<Input  
+								addonBefore="辅助图"  
+								value = {answer_assist_url} 
+								onChange={(e) => this.props.assistImgChange( e.target.value )}
+							/>
+    					</Col>
+						<Col span={12}>
+							{answer_assist_url ? 
+								<img src={answer_assist_url} height='100' />
+								:''
+							}
+						</Col>
+    				</Row>
 				</div>
 				<QueueAnim type={['right', 'left']} leaveReverse>
 	            	{editunit}
@@ -229,9 +248,10 @@ class ExerciseEditBreakdown extends React.Component {
 
 export default connect(state => {
   var newState = state.exerciseData.toJS();
-  console.log(newState);
+  console.log("exercise:",JSON.stringify(newState.exercise));
   return {
-  	breakdown: newState.exercise.breakdown,
+	breakdown: newState.exercise.breakdown,
+	answer_assist_url: newState.exercise.answer_assist_url,
 	course: newState.course,
   	course_id: newState.course_id,
     exercise_id: newState.exercise.exercise_id, 
