@@ -48,6 +48,8 @@ const defaultlState = Immutable.fromJS({
 const defaultlImageState = Immutable.fromJS({
         test_url: "http://localhost/kpmanager/img/test.png",
         wavUrl: '',
+        save_url: '',
+        save_wav_url: '',
         media_list: [],
         tab_state: '1',
         radio_state: null,
@@ -126,7 +128,7 @@ export const exerciseData = (state = defaultlState, action = {}) => {
             return state.setIn(['sample_list',action.sample_select, 'sample', action.key], action.value);
         case 'ADD_ANSWER':
     		//选择题
-    		if(action.exercise_type == 1){
+    		if(action.exercise_type > 0){
     			return state.updateIn(['exercise','answer'], list =>list.push(Immutable.fromJS({value: '', correct: false})));
     		}else if(action.exercise_type == 0){
     			//填空题

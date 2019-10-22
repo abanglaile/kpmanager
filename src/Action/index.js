@@ -641,6 +641,7 @@ export const getQiniuToken = () => {
 }
 
 export const saveTestMedia = (save_url,save_wav_url) => {
+    //上传已命名的图片及音频url
     let url = target + '/saveTestMedia';
     // console.log('saveTestMedia save_url:',save_url);
     // console.log('saveTestMedia save_wav_url:',save_wav_url);
@@ -649,6 +650,8 @@ export const saveTestMedia = (save_url,save_wav_url) => {
         .then(function (response) {
             console.log(response.data);
             dispatch(saveTestMediaSuccess(response.data));
+            dispatch(getMediaList('2'));
+            alert('保存成功!');
         })
         .catch(function (error) {
             console.log(error);
@@ -694,8 +697,8 @@ export const saveModalOpen = (wav_url) => {
     }
     return{
         type: 'SAVE_MODAL_OPEN',
-        save_url: save_url,
-        save_wav_url: save_wav_url
+        save_url: save_url,//图片上传的url地址
+        save_wav_url: save_wav_url //音频上传的url地址，没有的话为空
     }
 }
 

@@ -75,13 +75,13 @@ class ImageManager extends React.Component {
               <div style={{border:'dashed', borderWidth:'1px', borderColor:'#bfbfbf'}}>
                 <div>
                   <Input value={item.url} />
-                  <img style={{marginBottom:'3px',marginTop:'3px'}} src={item.url} />
+                  <img style={{marginBottom:'3px',marginTop:'3px'}} src={item.url+'?t='+new Date().getTime()} />
                 </div>
                 {item.wav_url?
                   <div>
                     <div><Input  value={item.wav_url} /></div>
                     <div style={{marginTop:'3px'}}>
-                      <audio ref="audio" src={item.wav_url} preload="metadata" controls />
+                      <audio ref="audio" src={item.wav_url+'?t='+new Date().getTime()} preload="metadata" controls />
                     </div>
                   </div>
                   :''
@@ -213,6 +213,7 @@ class ImageManager extends React.Component {
 
     saveMedia(){
       const { save_url, wav_url, save_wav_url} = this.props;
+      //save_url 为input框内的url，war_url为服务器保存的临时音频url，save_wav_url为上传到七牛服务器的音频url
       if(wav_url){
         if(save_wav_url){
           this.props.saveTestMedia(save_url, save_wav_url);
@@ -239,8 +240,8 @@ class ImageManager extends React.Component {
 
     render(){
       console.log('save_url:',this.props.save_url);
-      const {upload_url, tab_state, radio_state, wav_url, save_wav_url} = this.props;
-      console.log("radio_state:",radio_state);
+      const {upload_url, tab_state, radio_state, wav_url, save_wav_url, test_url} = this.props;
+      console.log("test_url:",test_url);
       // console.log("upload_url",upload_url);
       return(
         <Tabs type="card" defaultActiveKey={tab_state} onChange={(key)=>this.onTabChange(key)}>
