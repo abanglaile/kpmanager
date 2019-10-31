@@ -194,7 +194,21 @@ class ExerciseSample extends React.Component {
 			                </Row>
 			                );
 			        }));
-			        break;
+					break;
+				case 3://解答题
+					answerRow.push(answer.map((item, i) => {
+						return(
+							<Row className="choice_row" gutter={16} type="flex" justify="space-between">
+								<Col span={12}>
+									<Input className="edit_choice_input" value={item.value} onChange={(e) => this.props.sampleAnswerChange(e.target.value, i, sample_select)} rows={1} />
+								</Col>
+								<Col span={12}>
+									<Tex content={item.value} />
+								</Col>
+							</Row>
+						);
+					}));
+					break;
 			    default:
 			    	break;
 			}

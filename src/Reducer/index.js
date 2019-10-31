@@ -104,7 +104,7 @@ export const exerciseData = (state = defaultlState, action = {}) => {
         case 'CHANGE_CHOICE_IMG':
             return state.setIn(['exercise','answer', action.i, 'value'], action.value);
     	case 'CHANGE_EXERCISE_TYPE':
-            if(action.exercise_type == 0){
+            if(action.exercise_type == 0 || action.exercise_type == 3){
                 return state.setIn(['exercise','exercise_type'], action.exercise_type)
                             .setIn(['exercise','answer'],Immutable.fromJS(blankAnswer));
             }else{

@@ -48,54 +48,68 @@ export default class ExercisesView extends React.Component {
         	console.log("answer: ",answer);
         	console.log("sample: ",sample);
         	switch(exercise_type){
-	        		case 0:  
-	        			answerDom = (  //填空题答案
-							<div className="step_answer">
-								<p className="step_index">答案：&nbsp;</p>
-								{answer.map((item, i) => {
-			        				return(
-			            				<div>
-											<Tex className="step_content" content={item.value} sample={sample}/>
-			            				</div>
-			            			);
-								})}
-							</div>
-	        			);
-	        			break;
-	        		case 1:
-	        			answerDom = (  //选择题选项和答案
-							answer.map((item, i) => {
-		        				return(
-		            				<Row className="row_answer" type="flex" justify="start" align="middle">
-		            					<Col span={1}>
-											<p><Checkbox checked={expand? item.correct:0} disabled ></Checkbox></p>
-										</Col>
-		            					<Col span={18}>
-											<Tex content={item.value} sample={sample} />
-										</Col>
-		            				</Row>
-		            			);
-							})
-	        			);
-	        			break;
-	        		case 2:
-						answerDom = (  //选择题 图片选项和答案
-							answer.map((item, i) => {
-		        				return(
-		            				<Row className="row_answer" type="flex" justify="start" align="middle">
-		            					<Col span={1}>
-											<p><Checkbox checked={expand? item.correct:0} disabled ></Checkbox></p>
-										</Col>
-		            					<Col span={18}>
-											<div style={{width:130,height:60}}>
-												<img className="answer_img" src={item.value}/>
-											</div>
-										</Col>
-		            				</Row>
-		            			);
-							})
-						);
-						break;
+				case 0:  
+					answerDom = (  //填空题答案
+						<div className="step_answer">
+							<p className="step_index">答案：&nbsp;</p>
+							{answer.map((item, i) => {
+								return(
+									<div>
+										<Tex className="step_content" content={item.value} sample={sample}/>
+									</div>
+								);
+							})}
+						</div>
+					);
+					break;
+				case 1:
+					answerDom = (  //选择题选项和答案
+						answer.map((item, i) => {
+							return(
+								<Row className="row_answer" type="flex" justify="start" align="middle">
+									<Col span={1}>
+										<p><Checkbox checked={expand? item.correct:0} disabled ></Checkbox></p>
+									</Col>
+									<Col span={18}>
+										<Tex content={item.value} sample={sample} />
+									</Col>
+								</Row>
+							);
+						})
+					);
+					break;
+				case 2:
+					answerDom = (  //选择题 图片选项和答案
+						answer.map((item, i) => {
+							return(
+								<Row className="row_answer" type="flex" justify="start" align="middle">
+									<Col span={1}>
+										<p><Checkbox checked={expand? item.correct:0} disabled ></Checkbox></p>
+									</Col>
+									<Col span={18}>
+										<div style={{width:130,height:60}}>
+											<img className="answer_img" src={item.value}/>
+										</div>
+									</Col>
+								</Row>
+							);
+						})
+					);
+					break;
+				case 3:  
+					answerDom = (  //解答题答案
+						<div className="step_answer">
+							<p className="step_index">答案：&nbsp;</p>
+							{answer.map((item, i) => {
+								return(
+									<div>
+										<Tex className="step_content" content={item.value} sample={sample}/>
+									</div>
+								);
+							})}
+						</div>
+					);
+					break;
 	        }
 
         	var steps = [];
