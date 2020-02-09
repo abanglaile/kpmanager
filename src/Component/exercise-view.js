@@ -33,7 +33,7 @@ export default class ExercisesView extends React.Component {
 		if(this.props.exercise){
 			console.log("this.props.exercise: ",this.props.exercise);
 			console.log("this.props.exercise_sample: ",this.props.exercise_sample);
-			var {title, exercise_type, answer, breakdown, title_img_url, title_audio_url, exercise_id} = this.props.exercise;
+			var {title, exercise_type, answer, breakdown, title_img_url, title_audio_url, exercise_id, answer_assist_url} = this.props.exercise;
 			const exercise_sample = this.props.exercise_sample;
 			var sample;
 
@@ -112,7 +112,14 @@ export default class ExercisesView extends React.Component {
 					break;
 	        }
 
-        	var steps = [];
+			var steps = [];
+			if(answer_assist_url && answer_assist_url.indexOf('cdn') > 0){
+				steps.push(
+					<div className="step_frame">
+						<img src={answer_assist_url}/>
+					</div>
+				);
+			}
 			for(var j = 0; j < breakdown.length; j++) {
             	steps.push(
             	<div key={j} className="step_frame">
@@ -131,7 +138,7 @@ export default class ExercisesView extends React.Component {
         	
         		
         	return(
-				<div style={{padding: "10px",
+				<div style={{padding: "25px", margin: "25px",
 							border: "1px solid #e9e9e9"}}>
 					<div className="exercise_id_div">
 						{exercise_id}

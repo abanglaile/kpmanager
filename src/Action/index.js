@@ -855,7 +855,7 @@ export const uploadExercise = () => {
             var flagc = 0;
             for(var i = 0; i < breakdown.length; i++){
                 var b = breakdown[i];
-                if(!b.content || !b.kpid){
+                if(!b.content || !b.kpid || !b.sn_rating){
                     mask = 3;
                     break;
                 }

@@ -4,3 +4,5 @@ node_modules/**
 dist/**
 img/**
 
+dist/index.js
+dist/index.js.map

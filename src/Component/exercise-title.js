@@ -70,7 +70,7 @@ class ExerciseTitle extends React.Component {
                 />  
               </Col>
     					<Col span={12}>
-    				    <img src={title_img_url} height="100px"
+    				    <img src={title_img_url+'?t='+new Date().getTime()} height="100px"
                   ref={element => {this.title_img = element;}}
                   onLoad = {() => this.titleImageLoaded()} 
                   style={{width: title_img_width, height: title_img_height}}

@@ -85,7 +85,8 @@ class ExerciseEditBreakdown extends React.Component {
     onAdd(){
     	//this.props.add(this.props.exercise_id);
     	var {breakdown} = this.props;
-		const newData = {content:'', checked: false, sn: breakdown.length + 1, presn:(breakdown.length).toString()};
+		// const newData = {content:'', checked: false, sn: breakdown.length + 1, presn:(breakdown.length).toString(), sn_rating: 500};
+		const newData = {content:'', checked: false, sn: breakdown.length + 1, presn:(breakdown.length).toString(), kpid: -1, kpname: '', sn_rating: 500};
 		this.props.addBreakdown(newData);
 		//this.setState({breakdown: [...breakdown, newData]});
 	}
@@ -139,7 +140,7 @@ class ExerciseEditBreakdown extends React.Component {
     	var {kp_options} = this.state;
 		var {breakdown, exercise_id, course_id, answer_assist_url} = this.props;
 		console.log("breakdown$$$",JSON.stringify(breakdown))
-    	breakdown = breakdown ? breakdown : [{sn: 1, presn: 0, kpid: -1, kpname: '', checked: false, content:''}];
+    	breakdown = breakdown ? breakdown : [{sn: 1, presn: 0, kpid: -1, kpname: '', checked: false, content:'', sn_rating: 500}];
     	var preoptions = [];
         for(var j = 0; j < breakdown.length; j++) {
 			// console.log('breakdown[j].presn:',breakdown[j].presn);
@@ -147,7 +148,6 @@ class ExerciseEditBreakdown extends React.Component {
         }
 		
     	var editunit = breakdown.map((item,i) => {
-    		item.sn_rating = item.sn_rating ? item.sn_rating : 0;
     		return(
     			<div key={i}>
     				<Row type="flex" gutter={16} justify="space-between">

@@ -298,7 +298,11 @@ class ImageManager extends React.Component {
               <Radio  value={3}>英语</Radio>
               <Radio  value={4}>物理</Radio>
               <Radio  value={5}>化学</Radio>
+              <Radio  value={6}>地理</Radio>
+              <Radio  value={7}>语文</Radio>
+              <Radio  value={8}>政治</Radio>
               <Radio  value={9}>历史</Radio>
+              <Radio  value={10}>生物</Radio>
             </RadioGroup>
             <Row style={{marginTop: '18px'}}>
               <Col span={10}>

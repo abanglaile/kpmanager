@@ -1598,7 +1598,7 @@ button_button.Group = button_group;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.uploadExercise = exports.deleteSampleField = exports.updateAllSample = exports.updateOneSample = exports.saveModalCancel = exports.delSelectedFile = exports.saveUploadUrl = exports.saveModalOpen = exports.saveWavUrlChange = exports.saveUrlChange = exports.uploadimg = exports.saveTestMedia = exports.getQiniuToken = exports.getMediaList = exports.codeRender = exports.addOneSample = exports.modalOpen = exports.modalCancel = exports.updateRadioKey = exports.updateTabKey = exports.updateMenu = exports.uploadBreakdown = exports.addInSampleList = exports.changeRatingExercise = exports.updateBreakdown = exports.changeRatingBreakdown = exports.selectKpBreakdown = exports.delBreakdown = exports.addBreakdown = exports.checkChangeBreakdown = exports.presnChangeBreakdown = exports.inputChangeBreakdown = exports.titleAudioChange = exports.titleImgChange = exports.titleChange = exports.answerSampleImgChange = exports.answerImgChange = exports.delSampleAnswer = exports.delAnswer = exports.addSampleAnswer = exports.addAnswer = exports.choiceSampleSelectChange = exports.choiceSelectChange = exports.sampleAnswerChange = exports.titleSampleAudioChange = exports.titleSampleImgChange = exports.sampleInputChange = exports.answerInputChange = exports.exerciseTypeChange = exports.getSampleList = exports.getExercise = exports.sampleSelect = exports.sampleValueChange = exports.courseSelect = exports.getSampleKey = exports.searchMedia = exports.codeChange = exports.getCourse = undefined;
+exports.uploadExercise = exports.deleteSampleField = exports.updateAllSample = exports.updateOneSample = exports.saveModalCancel = exports.delSelectedFile = exports.saveUploadUrl = exports.saveModalOpen = exports.saveWavUrlChange = exports.saveUrlChange = exports.uploadimg = exports.saveTestMedia = exports.getQiniuToken = exports.getMediaList = exports.codeRender = exports.addOneSample = exports.modalOpen = exports.modalCancel = exports.updateRadioKey = exports.updateTabKey = exports.updateMenu = exports.uploadBreakdown = exports.addInSampleList = exports.changeRatingExercise = exports.updateBreakdown = exports.changeRatingBreakdown = exports.selectKpBreakdown = exports.delBreakdown = exports.addBreakdown = exports.checkChangeBreakdown = exports.presnChangeBreakdown = exports.inputChangeBreakdown = exports.assistImgChange = exports.titleAudioChange = exports.titleImgChange = exports.titleChange = exports.answerSampleImgChange = exports.answerImgChange = exports.delSampleAnswer = exports.delAnswer = exports.addSampleAnswer = exports.addAnswer = exports.choiceSampleSelectChange = exports.choiceSelectChange = exports.sampleAnswerChange = exports.titleSampleAudioChange = exports.titleSampleImgChange = exports.sampleInputChange = exports.answerInputChange = exports.exerciseTypeChange = exports.getSampleList = exports.getExercise = exports.sampleSelect = exports.sampleValueChange = exports.courseSelect = exports.getSampleKey = exports.searchMedia = exports.codeChange = exports.getCourse = undefined;
 
 var _NetUtil = __webpack_require__(34);
 
@@ -2008,6 +2008,14 @@ var titleAudioChange = exports.titleAudioChange = function titleAudioChange(url)
     };
 };
 
+//更新answer_assist_img 答案辅助图
+var assistImgChange = exports.assistImgChange = function assistImgChange(content) {
+    return {
+        type: 'CHANGE_ASSIST_IMG',
+        content: content
+    };
+};
+
 //更新breakdown_input
 var inputChangeBreakdown = exports.inputChangeBreakdown = function inputChangeBreakdown(content, i) {
     return {
@@ -2108,7 +2116,8 @@ var addInSampleList = exports.addInSampleList = function addInSampleList(exercis
 };
 
 //upload Breakdown
-var uploadBreakdown = exports.uploadBreakdown = function uploadBreakdown(exercise_id, breakdown) {
+var uploadBreakdown = exports.uploadBreakdown = function uploadBreakdown(exercise_id, breakdown, answer_assist_url) {
+    console.log("answer_assist_url:", answer_assist_url);
     return function (dispatch) {
         var mask = 0;
         if (exercise_id == 0) {
@@ -2126,7 +2135,7 @@ var uploadBreakdown = exports.uploadBreakdown = function uploadBreakdown(exercis
         if (!mask) {
             var url = target + "/updateBreakdown";
 
-            return _axios2.default.post(url, { exercise_id: exercise_id, breakdown: breakdown }).then(function (response) {
+            return _axios2.default.post(url, { exercise_id: exercise_id, breakdown: breakdown, answer_assist_url: answer_assist_url }).then(function (response) {
                 alert("更新题目成功！");
                 // dispatch(getExerciseSuccess(response.data));
             }).catch(function (error) {
@@ -2221,6 +2230,7 @@ var getQiniuToken = exports.getQiniuToken = function getQiniuToken() {
 };
 
 var saveTestMedia = exports.saveTestMedia = function saveTestMedia(save_url, save_wav_url) {
+    //上传已命名的图片及音频url
     var url = target + '/saveTestMedia';
     // console.log('saveTestMedia save_url:',save_url);
     // console.log('saveTestMedia save_wav_url:',save_wav_url);
@@ -2228,6 +2238,8 @@ var saveTestMedia = exports.saveTestMedia = function saveTestMedia(save_url, sav
         return _axios2.default.post(url, { save_url: save_url, save_wav_url: save_wav_url }).then(function (response) {
             console.log(response.data);
             dispatch(saveTestMediaSuccess(response.data));
+            dispatch(getMediaList('2'));
+            alert('保存成功!');
         }).catch(function (error) {
             console.log(error);
         });
@@ -2270,8 +2282,8 @@ var saveModalOpen = exports.saveModalOpen = function saveModalOpen(wav_url) {
     }
     return {
         type: 'SAVE_MODAL_OPEN',
-        save_url: save_url,
-        save_wav_url: save_wav_url
+        save_url: save_url, //图片上传的url地址
+        save_wav_url: save_wav_url //音频上传的url地址，没有的话为空
     };
 };
 
@@ -2429,7 +2441,7 @@ var uploadExercise = exports.uploadExercise = function uploadExercise() {
             var flagc = 0;
             for (var i = 0; i < breakdown.length; i++) {
                 var b = breakdown[i];
-                if (!b.content || !b.kpid) {
+                if (!b.content || !b.kpid || !b.sn_rating) {
                     mask = 3;
                     break;
                 }
@@ -26832,7 +26844,8 @@ var ExercisesView = function (_React$Component) {
 				    breakdown = _props$exercise.breakdown,
 				    title_img_url = _props$exercise.title_img_url,
 				    title_audio_url = _props$exercise.title_audio_url,
-				    exercise_id = _props$exercise.exercise_id;
+				    exercise_id = _props$exercise.exercise_id,
+				    answer_assist_url = _props$exercise.answer_assist_url;
 
 				var exercise_sample = this.props.exercise_sample;
 				var sample;
@@ -26916,9 +26929,35 @@ var ExercisesView = function (_React$Component) {
 							);
 						});
 						break;
+					case 3:
+						answerDom = //解答题答案
+						_react2.default.createElement(
+							'div',
+							{ className: 'step_answer' },
+							_react2.default.createElement(
+								'p',
+								{ className: 'step_index' },
+								'\u7B54\u6848\uFF1A\xA0'
+							),
+							answer.map(function (item, i) {
+								return _react2.default.createElement(
+									'div',
+									null,
+									_react2.default.createElement(_renderer2.default, { className: 'step_content', content: item.value, sample: sample })
+								);
+							})
+						);
+						break;
 				}
 
 				var steps = [];
+				if (answer_assist_url && answer_assist_url.indexOf('cdn') > 0) {
+					steps.push(_react2.default.createElement(
+						'div',
+						{ className: 'step_frame' },
+						_react2.default.createElement('img', { src: answer_assist_url })
+					));
+				}
 				for (var j = 0; j < breakdown.length; j++) {
 					steps.push(_react2.default.createElement(
 						'div',
@@ -26956,7 +26995,7 @@ var ExercisesView = function (_React$Component) {
 
 				return _react2.default.createElement(
 					'div',
-					{ style: { padding: "10px",
+					{ style: { padding: "25px", margin: "25px",
 							border: "1px solid #e9e9e9" } },
 					_react2.default.createElement(
 						'div',
@@ -33540,6 +33579,7 @@ var defaultlState = _immutable2.default.fromJS({
         title_img_url: '',
         title_audio_url: '',
         answer: choiceAnswer,
+        answer_assist_url: '',
         exercise_rating: 500,
         breakdown: breakdown
     },
@@ -33556,6 +33596,8 @@ var defaultlState = _immutable2.default.fromJS({
 var defaultlImageState = _immutable2.default.fromJS({
     test_url: "http://localhost/kpmanager/img/test.png",
     wavUrl: '',
+    save_url: '',
+    save_wav_url: '',
     media_list: [],
     tab_state: '1',
     radio_state: null
@@ -33615,7 +33657,7 @@ var exerciseData = exports.exerciseData = function exerciseData() {
         case 'CHANGE_CHOICE_IMG':
             return state.setIn(['exercise', 'answer', action.i, 'value'], action.value);
         case 'CHANGE_EXERCISE_TYPE':
-            if (action.exercise_type == 0) {
+            if (action.exercise_type == 0 || action.exercise_type == 3) {
                 return state.setIn(['exercise', 'exercise_type'], action.exercise_type).setIn(['exercise', 'answer'], _immutable2.default.fromJS(blankAnswer));
             } else {
                 return state.setIn(['exercise', 'exercise_type'], action.exercise_type).setIn(['exercise', 'answer'], _immutable2.default.fromJS(choiceAnswer));
@@ -33641,7 +33683,7 @@ var exerciseData = exports.exerciseData = function exerciseData() {
             return state.setIn(['sample_list', action.sample_select, 'sample', action.key], action.value);
         case 'ADD_ANSWER':
             //选择题
-            if (action.exercise_type == 1) {
+            if (action.exercise_type > 0) {
                 return state.updateIn(['exercise', 'answer'], function (list) {
                     return list.push(_immutable2.default.fromJS({ value: '', correct: false }));
                 });
@@ -33671,6 +33713,8 @@ var exerciseData = exports.exerciseData = function exerciseData() {
             return state.updateIn(['sample_list', action.sample_select, 'answer'], function (list) {
                 return list.pop();
             });
+        case 'CHANGE_ASSIST_IMG':
+            return state.setIn(['exercise', 'answer_assist_url'], action.content);
         case 'CHANGE_INPUT_BREAKDOWN':
             return state.setIn(['exercise', 'breakdown', action.i, 'content'], action.content);
         case 'CHANGE_CHECK_BREAKDOWN':
@@ -39271,8 +39315,9 @@ var ExerciseEditBreakdown = function (_React$Component) {
 		value: function onAdd() {
 			//this.props.add(this.props.exercise_id);
 			var breakdown = this.props.breakdown;
+			// const newData = {content:'', checked: false, sn: breakdown.length + 1, presn:(breakdown.length).toString(), sn_rating: 500};
 
-			var newData = { content: '', checked: false, sn: breakdown.length + 1, presn: breakdown.length.toString() };
+			var newData = { content: '', checked: false, sn: breakdown.length + 1, presn: breakdown.length.toString(), kpid: -1, kpname: '', sn_rating: 500 };
 			this.props.addBreakdown(newData);
 			//this.setState({breakdown: [...breakdown, newData]});
 		}
@@ -39338,10 +39383,11 @@ var ExerciseEditBreakdown = function (_React$Component) {
 			var _props2 = this.props,
 			    breakdown = _props2.breakdown,
 			    exercise_id = _props2.exercise_id,
-			    course_id = _props2.course_id;
+			    course_id = _props2.course_id,
+			    answer_assist_url = _props2.answer_assist_url;
 
 			console.log("breakdown$$$", JSON.stringify(breakdown));
-			breakdown = breakdown ? breakdown : [{ sn: 1, presn: 0, kpid: -1, kpname: '', checked: false, content: '' }];
+			breakdown = breakdown ? breakdown : [{ sn: 1, presn: 0, kpid: -1, kpname: '', checked: false, content: '', sn_rating: 500 }];
 			var preoptions = [];
 			for (var j = 0; j < breakdown.length; j++) {
 				// console.log('breakdown[j].presn:',breakdown[j].presn);
@@ -39353,7 +39399,6 @@ var ExerciseEditBreakdown = function (_React$Component) {
 			}
 
 			var editunit = breakdown.map(function (item, i) {
-				item.sn_rating = item.sn_rating ? item.sn_rating : 0;
 				return _react2.default.createElement(
 					'div',
 					{ key: i },
@@ -39491,11 +39536,35 @@ var ExerciseEditBreakdown = function (_React$Component) {
 					_react2.default.createElement(
 						_button2.default,
 						{ disabled: isDisabled, onClick: function onClick(e) {
-								return _this5.props.uploadBreakdown(exercise_id, breakdown);
+								return _this5.props.uploadBreakdown(exercise_id, breakdown, answer_assist_url);
 							} },
 						'\u66F4\u65B0\u5206\u89E3'
 					),
 					this.renderCourseSelect()
+				),
+				_react2.default.createElement(
+					'div',
+					{ style: { marginBottom: 16, marginTop: 16 } },
+					_react2.default.createElement(
+						_row2.default,
+						{ type: 'flex', gutter: 16, justify: 'space-between' },
+						_react2.default.createElement(
+							_col2.default,
+							{ span: 12 },
+							_react2.default.createElement(_input2.default, {
+								addonBefore: '\u8F85\u52A9\u56FE',
+								value: answer_assist_url,
+								onChange: function onChange(e) {
+									return _this5.props.assistImgChange(e.target.value);
+								}
+							})
+						),
+						_react2.default.createElement(
+							_col2.default,
+							{ span: 12 },
+							answer_assist_url ? _react2.default.createElement('img', { src: answer_assist_url, height: '100' }) : ''
+						)
+					)
 				),
 				_react2.default.createElement(
 					_rcQueueAnim2.default,
@@ -39510,9 +39579,10 @@ var ExerciseEditBreakdown = function (_React$Component) {
 
 exports.default = (0, _reactRedux.connect)(function (state) {
 	var newState = state.exerciseData.toJS();
-	//   console.log("breakdown:",newState.exercise.breakdown);
+	console.log("exercise:", JSON.stringify(newState.exercise));
 	return {
 		breakdown: newState.exercise.breakdown,
+		answer_assist_url: newState.exercise.answer_assist_url,
 		course: newState.course,
 		course_id: newState.course_id,
 		exercise_id: newState.exercise.exercise_id,
@@ -62140,6 +62210,27 @@ var ExerciseSample = function (_React$Component) {
 							);
 						}));
 						break;
+					case 3:
+						//解答题
+						answerRow.push(answer.map(function (item, i) {
+							return _react2.default.createElement(
+								_row2.default,
+								{ className: 'choice_row', gutter: 16, type: 'flex', justify: 'space-between' },
+								_react2.default.createElement(
+									_col2.default,
+									{ span: 12 },
+									_react2.default.createElement(_input2.default, { className: 'edit_choice_input', value: item.value, onChange: function onChange(e) {
+											return _this4.props.sampleAnswerChange(e.target.value, i, sample_select);
+										}, rows: 1 })
+								),
+								_react2.default.createElement(
+									_col2.default,
+									{ span: 12 },
+									_react2.default.createElement(_renderer2.default, { content: item.value })
+								)
+							);
+						}));
+						break;
 					default:
 						break;
 				}
@@ -62693,6 +62784,28 @@ var ExerciseAnswer = function (_React$Component) {
 						);
 					});
 					break;
+				case 3:
+					//解答题
+					isDisabled = answer.length <= 1 ? true : false;
+					answerRow = answer.map(function (item, i) {
+						return _react2.default.createElement(
+							_row2.default,
+							{ className: 'choice_row', gutter: 16, type: 'flex', justify: 'space-between' },
+							_react2.default.createElement(
+								_col2.default,
+								{ span: 12 },
+								_react2.default.createElement(_input2.default, { className: 'edit_choice_input', value: item.value, onChange: function onChange(e) {
+										return _this2.props.answerInputChange(e.target.value, i);
+									}, rows: 1 })
+							),
+							_react2.default.createElement(
+								_col2.default,
+								{ span: 12 },
+								_react2.default.createElement(_renderer2.default, { content: item.value })
+							)
+						);
+					});
+					break;
 				default:
 					break;
 			}
@@ -62722,6 +62835,11 @@ var ExerciseAnswer = function (_React$Component) {
 							Option,
 							{ value: '2' },
 							'\u56FE\u7247\u9009\u62E9\u9898'
+						),
+						_react2.default.createElement(
+							Option,
+							{ value: '3' },
+							'\u89E3\u7B54\u9898'
 						)
 					),
 					_react2.default.createElement(_button2.default, { icon: 'plus', onClick: function onClick() {
@@ -71445,7 +71563,7 @@ var ImageManager = function (_React$Component) {
                 'div',
                 null,
                 _react2.default.createElement(_input2.default, { value: item.url }),
-                _react2.default.createElement('img', { style: { marginBottom: '3px', marginTop: '3px' }, src: item.url })
+                _react2.default.createElement('img', { style: { marginBottom: '3px', marginTop: '3px' }, src: item.url + '?t=' + new Date().getTime() })
               ),
               item.wav_url ? _react2.default.createElement(
                 'div',
@@ -71458,7 +71576,7 @@ var ImageManager = function (_React$Component) {
                 _react2.default.createElement(
                   'div',
                   { style: { marginTop: '3px' } },
-                  _react2.default.createElement('audio', { ref: 'audio', src: item.wav_url, preload: 'metadata', controls: true })
+                  _react2.default.createElement('audio', { ref: 'audio', src: item.wav_url + '?t=' + new Date().getTime(), preload: 'metadata', controls: true })
                 )
               ) : ''
             )
@@ -71630,6 +71748,7 @@ var ImageManager = function (_React$Component) {
           save_url = _props2.save_url,
           wav_url = _props2.wav_url,
           save_wav_url = _props2.save_wav_url;
+      //save_url 为input框内的url，war_url为服务器保存的临时音频url，save_wav_url为上传到七牛服务器的音频url
 
       if (wav_url) {
         if (save_wav_url) {
@@ -71660,9 +71779,10 @@ var ImageManager = function (_React$Component) {
           tab_state = _props3.tab_state,
           radio_state = _props3.radio_state,
           wav_url = _props3.wav_url,
-          save_wav_url = _props3.save_wav_url;
+          save_wav_url = _props3.save_wav_url,
+          test_url = _props3.test_url;
 
-      console.log("radio_state:", radio_state);
+      console.log("test_url:", test_url);
       // console.log("upload_url",upload_url);
       return _react2.default.createElement(
         _tabs2.default,
@@ -71800,8 +71920,33 @@ var ImageManager = function (_React$Component) {
             ),
             _react2.default.createElement(
               _radio2.default,
+              { value: 5 },
+              '\u5316\u5B66'
+            ),
+            _react2.default.createElement(
+              _radio2.default,
+              { value: 6 },
+              '\u5730\u7406'
+            ),
+            _react2.default.createElement(
+              _radio2.default,
+              { value: 7 },
+              '\u8BED\u6587'
+            ),
+            _react2.default.createElement(
+              _radio2.default,
+              { value: 8 },
+              '\u653F\u6CBB'
+            ),
+            _react2.default.createElement(
+              _radio2.default,
               { value: 9 },
               '\u5386\u53F2'
+            ),
+            _react2.default.createElement(
+              _radio2.default,
+              { value: 10 },
+              '\u751F\u7269'
             )
           ),
           _react2.default.createElement(
