@@ -104,7 +104,7 @@ export const exerciseData = (state = defaultlState, action = {}) => {
         case 'CHANGE_CHOICE_IMG':
             return state.setIn(['exercise','answer', action.i, 'value'], action.value);
     	case 'CHANGE_EXERCISE_TYPE':
-            if(action.exercise_type == 0 || action.exercise_type == 3){
+            if(action.exercise_type == 0 || action.exercise_type == 3 || action.exercise_type == 4){
                 return state.setIn(['exercise','exercise_type'], action.exercise_type)
                             .setIn(['exercise','answer'],Immutable.fromJS(blankAnswer));
             }else{
@@ -127,11 +127,11 @@ export const exerciseData = (state = defaultlState, action = {}) => {
             // console.log("sample_list.sample :",state.getIn(['sample_list',action.sample_select,'sample',action.key]));
             return state.setIn(['sample_list',action.sample_select, 'sample', action.key], action.value);
         case 'ADD_ANSWER':
-    		//选择题
-    		if(action.exercise_type > 0){
+    		//选择题(文字、图片)
+    		if(action.exercise_type == 1 || action.exercise_type == 2){
     			return state.updateIn(['exercise','answer'], list =>list.push(Immutable.fromJS({value: '', correct: false})));
-    		}else if(action.exercise_type == 0){
-    			//填空题
+    		}else{
+    			//填空题、解答题、音频题
     			return state.updateIn(['exercise','answer'], list => list.push(Immutable.fromJS({value: ''})));
     		}
         case 'ADD_SAMPLE_ANSWER':

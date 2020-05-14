@@ -88,7 +88,7 @@ export default class ExercisesView extends React.Component {
 									</Col>
 									<Col span={18}>
 										<div style={{width:130,height:60}}>
-											<img className="answer_img" src={item.value}/>
+											<img className="answer_img" src={item.value +'?t='+new Date().getTime()} />
 										</div>
 									</Col>
 								</Row>
@@ -98,6 +98,20 @@ export default class ExercisesView extends React.Component {
 					break;
 				case 3:  
 					answerDom = (  //解答题答案
+						<div className="step_answer">
+							<p className="step_index">答案：&nbsp;</p>
+							{answer.map((item, i) => {
+								return(
+									<div>
+										<Tex className="step_content" content={item.value} sample={sample}/>
+									</div>
+								);
+							})}
+						</div>
+					);
+					break;
+				case 4:
+					answerDom = (  //音频题
 						<div className="step_answer">
 							<p className="step_index">答案：&nbsp;</p>
 							{answer.map((item, i) => {
@@ -148,7 +162,7 @@ export default class ExercisesView extends React.Component {
 						{
 							title_img_url? 
 							<div style={{width:680,height:60}}>
-								<img src={title_img_url} height="100px"
+								<img src={title_img_url +'?t='+new Date().getTime()} height="100px"
 				                  ref={element => {this.title_img = element;}}
 				                  onLoad = {() => this.titleImageLoaded()} 
 				                  style={{width: title_img_width, height: title_img_height}}

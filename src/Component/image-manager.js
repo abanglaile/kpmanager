@@ -193,7 +193,7 @@ class ImageManager extends React.Component {
             <Col span={1}>
             </Col>
             <Col span={10}>
-              <img src={item.url} />
+              <img src={item.url +'?t='+new Date().getTime()} />
             </Col>
           </Row>
         )
@@ -266,7 +266,7 @@ class ImageManager extends React.Component {
                   </div>  
                 </Col>
                 <Col span={12}>
-                  <div><img src={this.props.test_url} /></div>
+                  <div><img src={this.props.test_url +'?t='+new Date().getTime()} /></div>
                   {/* <img src="http://119.23.41.237/kpmanager/img/test.png" /> */}
                   {wav_url ?
                     <div>

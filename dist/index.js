@@ -26923,7 +26923,7 @@ var ExercisesView = function (_React$Component) {
 									_react2.default.createElement(
 										'div',
 										{ style: { width: 130, height: 60 } },
-										_react2.default.createElement('img', { className: 'answer_img', src: item.value })
+										_react2.default.createElement('img', { className: 'answer_img', src: item.value + '?t=' + new Date().getTime() })
 									)
 								)
 							);
@@ -27009,7 +27009,7 @@ var ExercisesView = function (_React$Component) {
 						title_img_url ? _react2.default.createElement(
 							'div',
 							{ style: { width: 680, height: 60 } },
-							_react2.default.createElement('img', { src: title_img_url, height: '100px',
+							_react2.default.createElement('img', { src: title_img_url + '?t=' + new Date().getTime(), height: '100px',
 								ref: function ref(element) {
 									_this2.title_img = element;
 								},
@@ -62779,7 +62779,7 @@ var ExerciseAnswer = function (_React$Component) {
 								_col2.default,
 								{ span: 12 },
 								_react2.default.createElement(_checkbox2.default, { className: 'edit_choice_select', checked: item.correct }),
-								_react2.default.createElement('img', { src: item.value, height: '100' })
+								_react2.default.createElement('img', { src: item.value + '?t=' + new Date().getTime(), height: '100' })
 							)
 						);
 					});
@@ -68453,7 +68453,7 @@ var ExerciseTitle = function (_React$Component) {
           _react2.default.createElement(
             _col2.default,
             { span: 12 },
-            _react2.default.createElement('img', { src: title_img_url, height: '100px',
+            _react2.default.createElement('img', { src: title_img_url + '?t=' + new Date().getTime(), height: '100px',
               ref: function ref(element) {
                 _this2.title_img = element;
               },
@@ -71723,7 +71723,7 @@ var ImageManager = function (_React$Component) {
           _react2.default.createElement(
             _col2.default,
             { span: 10 },
-            _react2.default.createElement('img', { src: item.url })
+            _react2.default.createElement('img', { src: item.url + '?t=' + new Date().getTime() })
           )
         );
       });
@@ -71851,7 +71851,7 @@ var ImageManager = function (_React$Component) {
                 _react2.default.createElement(
                   'div',
                   null,
-                  _react2.default.createElement('img', { src: this.props.test_url })
+                  _react2.default.createElement('img', { src: this.props.test_url + '?t=' + new Date().getTime() })
                 ),
                 wav_url ? _react2.default.createElement(
                   'div',

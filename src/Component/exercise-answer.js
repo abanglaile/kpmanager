@@ -67,13 +67,28 @@ class ExerciseAnswer extends React.Component {
 		                    </Col>
 		                    <Col span={12}>
 		                        <Checkbox className="edit_choice_select" checked={item.correct} />
-		                        <img src={item.value} height='100' />
+		                        <img src={item.value +'?t='+new Date().getTime()} height='100' />
 		                    </Col>
 		                </Row>
 		                );
 		        });
 				break;
 		    case 3://解答题
+		    	isDisabled = answer.length <= 1 ? true : false;
+		    	answerRow = answer.map((item, i) => {
+					return(
+						<Row className="choice_row" gutter={16} type="flex" justify="space-between">
+		                    <Col span={12}>
+		                        <Input className="edit_choice_input" value={item.value} onChange={(e) => this.props.answerInputChange(e.target.value, i)} rows={1} />
+		                    </Col>
+		                    <Col span={12}>
+								<Tex content={item.value} />
+		                    </Col>
+		                </Row>
+					);
+		    	});
+				break;
+			case 4://音频题，上传的答案为音频
 		    	isDisabled = answer.length <= 1 ? true : false;
 		    	answerRow = answer.map((item, i) => {
 					return(
@@ -100,6 +115,7 @@ class ExerciseAnswer extends React.Component {
 						<Option value="1">文字选择题</Option>
 						<Option value="2">图片选择题</Option>
 						<Option value="3">解答题</Option>
+						<Option value="4">音频题</Option>
 					</Select>
 					<Button icon="plus" onClick={()=>this.props.addAnswer(exercise_type)}></Button>
 					<Button disabled = {isDisabled} icon="minus" onClick={()=>this.props.delAnswer(exercise_type)}></Button>
