@@ -9,7 +9,7 @@
   "license": "MIT",
   "dependencies": {
     "antd": "^3.6.1",
-    "axios": "^0.17.1",
+    "axios": "^0.21.1",
     "history": "^3.3.0",
     "katex": "^0.10.0",
     "midi-player-js": "^2.0.5",
