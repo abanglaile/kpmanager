@@ -201,6 +201,20 @@ class ExerciseEditBreakdown extends React.Component {
 							</div>
 						</Col>
 	    			</Row>
+					<Row type="flex" gutter={16} justify="space-between">
+    					<Col span={12}>
+							<div style = {{marginTop: '5px'}}>
+								<Select defaultValue="lucy" style={{ width: 165 }}>
+									<Option value="lucy">Lucy</Option>
+								</Select>
+							</div>
+    					</Col>
+    					<Col span={12}>
+							<div style = {{ width: '250px', marginTop: '5px', padding: '5px', border: '1px solid #d9d9d9', background: '#fff'}}>
+								二级标签
+							</div>
+						</Col>
+    				</Row>
 				</div>
 			);
 		});

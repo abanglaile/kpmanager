@@ -1,8 +1,5 @@
 node_modules/**
-**/bundle.js
-
 dist/**
 img/**
+**/bundle.js
 
-dist/index.js
-dist/index.js.map

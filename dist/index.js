@@ -26948,6 +26948,25 @@ var ExercisesView = function (_React$Component) {
 							})
 						);
 						break;
+					case 4:
+						answerDom = //音频题
+						_react2.default.createElement(
+							'div',
+							{ className: 'step_answer' },
+							_react2.default.createElement(
+								'p',
+								{ className: 'step_index' },
+								'\u7B54\u6848\uFF1A\xA0'
+							),
+							answer.map(function (item, i) {
+								return _react2.default.createElement(
+									'div',
+									null,
+									_react2.default.createElement(_renderer2.default, { className: 'step_content', content: item.value, sample: sample })
+								);
+							})
+						);
+						break;
 				}
 
 				var steps = [];
@@ -33657,7 +33676,7 @@ var exerciseData = exports.exerciseData = function exerciseData() {
         case 'CHANGE_CHOICE_IMG':
             return state.setIn(['exercise', 'answer', action.i, 'value'], action.value);
         case 'CHANGE_EXERCISE_TYPE':
-            if (action.exercise_type == 0 || action.exercise_type == 3) {
+            if (action.exercise_type == 0 || action.exercise_type == 3 || action.exercise_type == 4) {
                 return state.setIn(['exercise', 'exercise_type'], action.exercise_type).setIn(['exercise', 'answer'], _immutable2.default.fromJS(blankAnswer));
             } else {
                 return state.setIn(['exercise', 'exercise_type'], action.exercise_type).setIn(['exercise', 'answer'], _immutable2.default.fromJS(choiceAnswer));
@@ -33682,13 +33701,13 @@ var exerciseData = exports.exerciseData = function exerciseData() {
             // console.log("sample_list.sample :",state.getIn(['sample_list',action.sample_select,'sample',action.key]));
             return state.setIn(['sample_list', action.sample_select, 'sample', action.key], action.value);
         case 'ADD_ANSWER':
-            //选择题
-            if (action.exercise_type > 0) {
+            //选择题(文字、图片)
+            if (action.exercise_type == 1 || action.exercise_type == 2) {
                 return state.updateIn(['exercise', 'answer'], function (list) {
                     return list.push(_immutable2.default.fromJS({ value: '', correct: false }));
                 });
-            } else if (action.exercise_type == 0) {
-                //填空题
+            } else {
+                //填空题、解答题、音频题
                 return state.updateIn(['exercise', 'answer'], function (list) {
                     return list.push(_immutable2.default.fromJS({ value: '' }));
                 });
@@ -62231,6 +62250,27 @@ var ExerciseSample = function (_React$Component) {
 							);
 						}));
 						break;
+					case 4:
+						//音频题
+						answerRow.push(answer.map(function (item, i) {
+							return _react2.default.createElement(
+								_row2.default,
+								{ className: 'choice_row', gutter: 16, type: 'flex', justify: 'space-between' },
+								_react2.default.createElement(
+									_col2.default,
+									{ span: 12 },
+									_react2.default.createElement(_input2.default, { className: 'edit_choice_input', value: item.value, onChange: function onChange(e) {
+											return _this4.props.sampleAnswerChange(e.target.value, i, sample_select);
+										}, rows: 1 })
+								),
+								_react2.default.createElement(
+									_col2.default,
+									{ span: 12 },
+									_react2.default.createElement(_renderer2.default, { content: item.value })
+								)
+							);
+						}));
+						break;
 					default:
 						break;
 				}
@@ -62806,6 +62846,28 @@ var ExerciseAnswer = function (_React$Component) {
 						);
 					});
 					break;
+				case 4:
+					//音频题，上传的答案为音频
+					isDisabled = answer.length <= 1 ? true : false;
+					answerRow = answer.map(function (item, i) {
+						return _react2.default.createElement(
+							_row2.default,
+							{ className: 'choice_row', gutter: 16, type: 'flex', justify: 'space-between' },
+							_react2.default.createElement(
+								_col2.default,
+								{ span: 12 },
+								_react2.default.createElement(_input2.default, { className: 'edit_choice_input', value: item.value, onChange: function onChange(e) {
+										return _this2.props.answerInputChange(e.target.value, i);
+									}, rows: 1 })
+							),
+							_react2.default.createElement(
+								_col2.default,
+								{ span: 12 },
+								_react2.default.createElement(_renderer2.default, { content: item.value })
+							)
+						);
+					});
+					break;
 				default:
 					break;
 			}
@@ -62840,6 +62902,11 @@ var ExerciseAnswer = function (_React$Component) {
 							Option,
 							{ value: '3' },
 							'\u89E3\u7B54\u9898'
+						),
+						_react2.default.createElement(
+							Option,
+							{ value: '4' },
+							'\u97F3\u9891\u9898'
 						)
 					),
 					_react2.default.createElement(_button2.default, { icon: 'plus', onClick: function onClick() {
