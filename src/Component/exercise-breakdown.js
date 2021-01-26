@@ -24,12 +24,16 @@ class ExerciseEditBreakdown extends React.Component {
     	this.props.updateMenu('2');
     	if(this.props.course_id){
     		this.loadChapterOptions(this.props.course_id);
-    	}
+		}
     }
 
     componentDidUpdate(prevProps, prevState){
     	if(this.props.course_id && prevProps.course_id != this.props.course_id){
-    		this.loadChapterOptions(this.props.course_id);
+			this.loadChapterOptions(this.props.course_id);
+			// console.log("this.props.breakdown[0].kpid",this.props.breakdown[0].kpid);
+			if(this.props.breakdown[0].kpid){
+				this.props.getKpTagBykpid(this.props.breakdown[0].kpid);
+			}
     	}
     }
 
@@ -86,7 +90,7 @@ class ExerciseEditBreakdown extends React.Component {
     	//this.props.add(this.props.exercise_id);
     	var {breakdown} = this.props;
 		// const newData = {content:'', checked: false, sn: breakdown.length + 1, presn:(breakdown.length).toString(), sn_rating: 500};
-		const newData = {content:'', checked: false, sn: breakdown.length + 1, presn:(breakdown.length).toString(), kpid: -1, kpname: '', sn_rating: 500};
+		const newData = {content:'', checked: false, sn: breakdown.length + 1, presn:(breakdown.length).toString(), kpid: -1,kp_tag_id:null,kp_tag_name:'', kpname: '', sn_rating: 500};
 		this.props.addBreakdown(newData);
 		//this.setState({breakdown: [...breakdown, newData]});
 	}
@@ -107,6 +111,18 @@ class ExerciseEditBreakdown extends React.Component {
 		this.props.updateBreakdown(breakdown);
 		// this.setState({breakdown});
 		// this.props.onChange(breakdown);
+	}
+
+	selectBreakdownKp(selectedOptions, i){
+		this.props.selectKpBreakdown(selectedOptions, i);
+		this.props.getKpTagBykpid(selectedOptions[2].kpid);
+		// var url = target + "/getKpTagBykpid";  
+		// NetUtil.get(url, {kpid: selectedOptions[2].kpid}, (results) => {
+		// 	console.log("results:",JSON.stringify(results));
+		// 	this.setState({kp_tag: results})
+		// }, errors => {
+		// 	console.log(errors);
+		// });
 	}
 	// onInputChange(e,i){
 	// 	const value = e.target.value;
@@ -138,9 +154,13 @@ class ExerciseEditBreakdown extends React.Component {
 	//TODO:解决breakdown初始化问题
     render() {
     	var {kp_options} = this.state;
-		var {breakdown, exercise_id, course_id, answer_assist_url} = this.props;
+		var {breakdown, exercise_id, course_id, answer_assist_url, kp_tag} = this.props;
+		var kp_tag_option = [];
+		if(kp_tag.length){
+			kp_tag_option = kp_tag.map((item) => <Option value={item.kp_tag_id}>{item.kp_tag_name}</Option>);
+		}
 		console.log("breakdown$$$",JSON.stringify(breakdown))
-    	breakdown = breakdown ? breakdown : [{sn: 1, presn: 0, kpid: -1, kpname: '', checked: false, content:'', sn_rating: 500}];
+    	breakdown = breakdown ? breakdown : [{sn: 1, presn: 0, kpid: -1, kpname: '', kp_tag_id:null,kp_tag_name:'',checked: false, content:'', sn_rating: 500}];
     	var preoptions = [];
         for(var j = 0; j < breakdown.length; j++) {
 			// console.log('breakdown[j].presn:',breakdown[j].presn);
@@ -169,7 +189,8 @@ class ExerciseEditBreakdown extends React.Component {
 								<Cascader 
 									options={kp_options} 
 									expandTrigger="hover" 
-									onChange={(value, selectedOptions)=>this.props.selectKpBreakdown(selectedOptions, i)} 
+									// onChange={(value, selectedOptions)=>this.props.selectKpBreakdown(selectedOptions, i)}
+									onChange={(value, selectedOptions)=>this.selectBreakdownKp(selectedOptions, i)} 
 									displayRender={(label)=>this.displayRender(label)} 
 									placeholder="选择知识点"
 									loadData={(e) => this.loadKpOptions(e)}
@@ -204,14 +225,19 @@ class ExerciseEditBreakdown extends React.Component {
 					<Row type="flex" gutter={16} justify="space-between">
     					<Col span={12}>
 							<div style = {{marginTop: '5px'}}>
-								<Select defaultValue="lucy" style={{ width: 165 }}>
-									<Option value="lucy">Lucy</Option>
+								<Select 
+									labelInValue
+									placeholder='知识点二级标签' 
+									style={{ width: 165 }}
+									onChange={(value)=> {this.props.selectBreakdownKpTag(value,i)}}
+								>
+									{kp_tag_option}
 								</Select>
 							</div>
     					</Col>
     					<Col span={12}>
 							<div style = {{ width: '250px', marginTop: '5px', padding: '5px', border: '1px solid #d9d9d9', background: '#fff'}}>
-								二级标签
+								{item.kp_tag_name}
 							</div>
 						</Col>
     				</Row>
@@ -269,7 +295,8 @@ export default connect(state => {
 	course: newState.course,
   	course_id: newState.course_id,
     exercise_id: newState.exercise.exercise_id, 
-    isLoading: newState.isLoading, 
+	isLoading: newState.isLoading, 
+	kp_tag: newState.kp_tag,
   }
 }, action)(ExerciseEditBreakdown);
 

@@ -1,6 +1,6 @@
 import Immutable from 'immutable';
 
-const breakdown = [{sn: 1, presn: 0, kpid: -1, kpname: '', sn_rating: 500, checked: false, content:''}];
+const breakdown = [{sn: 1, presn: 0, kpid: -1, kpname: '', kp_tag_id: null,kp_tag_name: '', sn_rating: 500, checked: false, content:''}];
 
 var blankAnswer = [{value: ''}];
 var choiceAnswer = [
@@ -43,6 +43,7 @@ const defaultlState = Immutable.fromJS({
         sample_list: [],
         sample_key: {},
         sample_select: 0,
+        kp_tag : [],
 	});
 
 const defaultlImageState = Immutable.fromJS({
@@ -83,6 +84,8 @@ export const exerciseData = (state = defaultlState, action = {}) => {
                 console.log("没有该exercise_id！");
                 return state.set("exercise_id", action.json.exercise_id);
             }
+        case 'GET_KP_TAG_SUCESS':
+            return state.set('kp_tag', Immutable.fromJS(action.json));
         case 'GET_SAMPLE_LIST_SUCCESS':
             return state.set('sample_list', Immutable.fromJS(action.json));
         case 'GET_SAMPLE_KEY':
@@ -157,6 +160,9 @@ export const exerciseData = (state = defaultlState, action = {}) => {
     	case 'SELECT_KP_BREAKDOWN':
     		return state.setIn(['exercise','breakdown', action.i, 'kpid'], action.kpid)
             .setIn(['exercise','breakdown', action.i, 'kpname'], action.kpname);
+        case 'SELECT_BREAKDOWN_KP_TAG':
+            return state.setIn(['exercise','breakdown', action.i, 'kp_tag_id'], action.kp_tag_id)
+            .setIn(['exercise','breakdown', action.i, 'kp_tag_name'], action.kp_tag_name);
     	case 'ADD_BREAKDOWN':
     		return state.updateIn(['exercise','breakdown'], list => list.push(Immutable.fromJS(action.newData)));
     	case 'DEL_BREAKDOWN':

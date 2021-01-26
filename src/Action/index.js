@@ -232,6 +232,26 @@ export const getExercise = (exercise_id) => {
         });
     }
 }
+//获取知识点关联kp_tag
+export const getKpTagBykpid = (kpid) => {
+    let url = target + '/getKpTagBykpid';
+    return dispatch => {
+        return axios.get(url,{
+            params:{
+                kpid,
+            }
+        })
+        .then(function (response) {
+            dispatch({
+                type : 'GET_KP_TAG_SUCESS',
+                json : response.data, 
+            });
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+}
 
 //获取sample_list
 export const getSampleList = (exercise_id) => {
@@ -461,6 +481,17 @@ export const selectKpBreakdown = (selectOption, i) => {
         type: 'SELECT_KP_BREAKDOWN',
         kpid: selectOption[2].kpid,
         kpname: selectOption[2].kpname,
+        i,
+    }
+}
+
+//更新breakdown绑定的kp_tag_id
+export const selectBreakdownKpTag = (value, i) => {
+    console.log("selectBreakdownKpTag value:",value);
+    return {
+        type: 'SELECT_BREAKDOWN_KP_TAG',
+        kp_tag_id: value.key,
+        kp_tag_name: value.label,
         i,
     }
 }
